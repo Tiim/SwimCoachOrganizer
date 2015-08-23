@@ -106,6 +106,7 @@ task genJOOQ(dependsOn: ['genDB']) << {
     GenerationTool.generate(
             JAXB.unmarshal(file('src/main/resources/jooq.xml'), org.jooq.util.jaxb.Configuration.class)
     )
+    print "Succeeded: " + file('src/generated/java/ch').exists()
 }
 assemble.dependsOn genJOOQ
 
