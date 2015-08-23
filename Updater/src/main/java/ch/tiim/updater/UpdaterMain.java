@@ -109,7 +109,7 @@ public final class UpdaterMain {
                     }
                 } else if (e.getName().equals("meta.xml")) {
                     System.out.println("META");
-                    parseMetadata(new UnClosableInputStream(zis));
+                    parseMetadata(new UnclosableInputStream(zis));
                 }
                 e = zis.getNextEntry();
             }

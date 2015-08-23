@@ -3,12 +3,12 @@ package ch.tiim.updater;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class UnClosableInputStream extends InputStream {
+public class UnclosableInputStream extends InputStream {
 
 
     private final InputStream is;
 
-    public UnClosableInputStream(InputStream is) {
+    public UnclosableInputStream(InputStream is) {
 
         this.is = is;
     }
