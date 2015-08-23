@@ -89,6 +89,7 @@ task genJOOQ << {
             JAXB.unmarshal(file('src/main/resources/jooq.xml'), org.jooq.util.jaxb.Configuration.class)
     )
 }
+assemble.dependsOn genJOOQ
 
 //Set java 1.5 compatibility for the MainWrapper
 compileMwrapperJava {
