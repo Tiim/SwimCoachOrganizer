@@ -11,5 +11,5 @@ install:
 
 script:
     - gradle assemble
-    - [ ! -d src/generated/java/ch ] && echo \"File not found!\" || echo \"File found :D\"
+    - [ ! -d src/generated/java/ch ] && echo Filenotfound! || echo Filefound:D
     - gradle test
