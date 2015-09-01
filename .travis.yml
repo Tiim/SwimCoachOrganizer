@@ -1,14 +1,14 @@
 language: java
 
-sudo: required
-
-jdk:
-    - oraclejdk8
-
-install:
-    - sudo apt-get update && sudo apt-get install oracle-java8-installer
-    - java -version
+before-script:
+    - "wget --no-cookies --header \"Cookie: oraclelicense=accept-securebackup-cookie\" http://download.oracle.com/otn-pub/java/jdk/8u60-b27/jdk-8u60-linux-x64.tar.gz -O /tmp/OracleJDK.tar.gz"
+    - tar -xzvf /tmp/OracleJDK.tar.gz -C $HOME
+    - export PATH=$PATH:$HOME/jdk1.8.0_60/bin
 
 script:
     - gradle assemble
     - gradle test
+
+
+cache:
+    - $HOME/jdk1.8.0_60
