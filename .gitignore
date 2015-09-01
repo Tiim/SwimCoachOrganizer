@@ -1,4 +1,4 @@
-/src/generated
+# /src/generated
 out/
 build/
 .idea/
