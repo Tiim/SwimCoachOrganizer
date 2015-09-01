@@ -1,14 +1,13 @@
 language: java
 
-before-script:
-    - "wget --no-cookies --header \"Cookie: oraclelicense=accept-securebackup-cookie\" http://download.oracle.com/otn-pub/java/jdk/8u60-b27/jdk-8u60-linux-x64.tar.gz -O /tmp/OracleJDK.tar.gz"
-    - tar -xzvf /tmp/OracleJDK.tar.gz -C $HOME
-    - export PATH=$PATH:$HOME/jdk1.8.0_60/bin
+jdk:
+  - oraclejdk8
+
+addons:
+  apt:
+    packages:
+      - oracle-java8-installer
 
 script:
-    - gradle assemble
-    - gradle test
-
-
-cache:
-    - $HOME/jdk1.8.0_60
+  - gradle assemble
+  - gradle test
