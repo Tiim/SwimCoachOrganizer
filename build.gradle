@@ -108,7 +108,6 @@ task genJOOQ(dependsOn: ['genDB']) << {
     )
     print "Succeeded: " + file('src/generated/java/ch').exists()
 }
-assemble.dependsOn genJOOQ
 
 //Set java 1.5 compatibility for the MainWrapper
 compileMwrapperJava {
