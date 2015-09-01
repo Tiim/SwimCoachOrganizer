@@ -55,7 +55,7 @@ public class TableTrainingContentTest {
 
     @Test
     public void testAddSetToTraining() throws Exception {
-        // Tested in ´testGetSetsForTraining´
+        // Tested in testGetSetsForTraining
     }
 
     @Test
