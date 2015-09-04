@@ -20,7 +20,7 @@ public class ValidationListener implements ChangeListener<String> {
     @Override
     public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
         if (newValue == null) {
-            return;
+            newValue = "";
         }
         parent.pseudoClassStateChanged(ERROR_CLASS, !newValue.matches(pattern));
     }
