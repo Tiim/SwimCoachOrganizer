@@ -57,7 +57,7 @@ public class MemberPresenter extends Page {
     }
 
     private void updateMemberList() {
-            int i = listMembers.getSelectionModel().getSelectedIndex();
+        int i = listMembers.getSelectionModel().getSelectedIndex();
         try {
             members.setAll(db.getTblSwimmer().getAllSwimmers());
         } catch (Exception e) {
@@ -72,6 +72,7 @@ public class MemberPresenter extends Page {
         listMembers.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> selected(newValue)
         );
+        listMembers.setCellFactory(param -> new SwimmerCell());
         fieldNameFirst.textProperty().addListener(new ValidationListener(PATTERN_NAME, fieldNameFirst));
         fieldNameLast.textProperty().addListener(new ValidationListener(PATTERN_NAME, fieldNameLast));
         fieldEmail.textProperty().addListener(new ValidationListener(PATTERN_EMAIL, fieldEmail));
@@ -181,5 +182,15 @@ public class MemberPresenter extends Page {
     @Override
     public String getName() {
         return "Member";
+    }
+
+    private class SwimmerCell extends ListCell<Swimmer> {
+        @Override
+        protected void updateItem(Swimmer item, boolean empty) {
+            super.updateItem(item, empty);
+            if (item != null) {
+                setText(item.uiString());
+            }
+        }
     }
 }
