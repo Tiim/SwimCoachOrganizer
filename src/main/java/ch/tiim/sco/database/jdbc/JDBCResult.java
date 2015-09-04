@@ -11,6 +11,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -37,13 +38,18 @@ public class JDBCResult extends Table implements TableResult {
         update = db.getPrepStmt(getSql("update"));
     }
 
+    //TODO: add test for null parameters
     @Override
     public void addResult(Swimmer s, Result r) throws SQLException {
         add.setInt("swimmer_id", s.getId());
         add.setString("meet", r.getMeet());
         add.setString("meet_date", r.getMeetDate().toString());
         add.setLong("swim_time", r.getSwimTime().toMillis());
-        add.setInt("reaction_time", (int) r.getReactionTime().toMillis());
+        if (r.getReactionTime() != null) {
+            add.setInt("reaction_time", (int) r.getReactionTime().toMillis());
+        } else {
+            add.setNull("reaction_time", Types.INTEGER);
+        }
         add.setString("stroke", r.getStroke().toString());
         add.setInt("distance", r.getDistance());
         testUpdate(add);
