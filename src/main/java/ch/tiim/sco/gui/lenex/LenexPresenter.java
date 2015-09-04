@@ -9,7 +9,6 @@ import ch.tiim.sco.lenex.ImportReultsTask;
 import ch.tiim.sco.lenex.LenexLoadTask;
 import ch.tiim.sco.lenex.model.Lenex;
 import ch.tiim.sco.util.FileChooserUtil;
-import ch.tiim.sco.util.NameablePair;
 import com.google.common.eventbus.EventBus;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -17,6 +16,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressIndicator;
+import javafx.scene.input.KeyCode;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Pair;
@@ -56,6 +56,13 @@ public class LenexPresenter extends Page {
     @FXML
     private void initialize() {
         resultList.setItems(results);
+        resultList.setOnKeyReleased(event -> {
+            int i;
+            if (event.getCode().equals(KeyCode.DELETE) &&
+                    (i = resultList.getSelectionModel().getSelectedIndex()) >= 0) {
+                results.remove(i);
+            }
+        });
     }
 
     @FXML
@@ -73,14 +80,24 @@ public class LenexPresenter extends Page {
         if (lenex != null) {
             try {
                 ImportReultsTask task = new ImportReultsTask(db.getTblSwimmer().getAllSwimmers(), lenex);
-                task.setOnSucceeded(event -> {
-                    results.setAll(task.getValue());
-                });
+                task.setOnSucceeded(event -> results.setAll(task.getValue()));
                 eventBus.post(task);
             } catch (Exception e) {
                 LOGGER.warn(e);
             }
         }
+    }
+
+    @FXML
+    private void onBtnImportResultsFinal() {
+        for (Pair<Swimmer, Result> r : results) {
+            try {
+                db.getTblResult().addResult(r.getKey(), r.getValue());
+            } catch (Exception e) {
+                LOGGER.warn(e);
+            }
+        }
+        results.clear();
     }
 
     @FXML
