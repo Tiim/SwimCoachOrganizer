@@ -46,7 +46,10 @@ public class ResultsData {
         String meet = m.name;
         LocalDate date = s.date;
         Duration swimTime = r.swimTime.asDuration();
-        Duration reactionTime = r.reactionTime.asDuration();
+        Duration reactionTime = null;
+        if (r.reactionTime != null) {
+            reactionTime = r.reactionTime.asDuration();
+        }
         Stroke stroke = e.swimstyle.stroke.toStroke();
         int distance = e.swimstyle.distance;
 

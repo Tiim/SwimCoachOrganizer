@@ -104,4 +104,17 @@ public class Result {
                 Objects.equals(this.stroke, that.stroke) &&
                 Objects.equals(this.distance, that.distance);
     }
+
+    @Override
+    public String toString() {
+        return "Result{" +
+                "id=" + id +
+                ", meet='" + meet + '\'' +
+                ", meetDate=" + meetDate +
+                ", swimTime=" + swimTime +
+                ", reactionTime=" + reactionTime +
+                ", stroke=" + stroke +
+                ", distance=" + distance +
+                '}';
+    }
 }
