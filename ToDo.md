@@ -44,3 +44,5 @@
     * [ ] Import meet invitation
         * [ ] Automatically recommend swimmers with fast enough times
     * [ ] Export meet sign up
+* [ ] Support the `DSV 5` format
+* [ ] Support the `Belgian TopSwim CSV` format
