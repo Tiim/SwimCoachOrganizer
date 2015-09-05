@@ -4,7 +4,7 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.util.Objects;
 
-public class Result {
+public class Result implements Model {
 
     private Integer id;
     private String meet;
@@ -29,6 +29,16 @@ public class Result {
         this.reactionTime = reactionTime;
         this.stroke = stroke;
         this.distance = distance;
+    }
+
+    @Override
+    public boolean hasId() {
+        return false;
+    }
+
+    @Override
+    public String uiString() {
+        return String.format("%dm %s: %s - %s %s", distance, stroke, swimTime, meetDate.toString(), meet);
     }
 
     public Integer getId() {

@@ -184,7 +184,7 @@ public class MemberPresenter extends Page {
         return "Member";
     }
 
-    private class SwimmerCell extends ListCell<Swimmer> {
+    public static class SwimmerCell extends ListCell<Swimmer> {
         @Override
         protected void updateItem(Swimmer item, boolean empty) {
             super.updateItem(item, empty);

@@ -11,6 +11,7 @@ import ch.tiim.sco.gui.lenex.LenexView;
 import ch.tiim.sco.gui.member.MemberView;
 import ch.tiim.sco.gui.metadata.FocusView;
 import ch.tiim.sco.gui.metadata.FormView;
+import ch.tiim.sco.gui.results.ResultsView;
 import ch.tiim.sco.gui.sets.SetsView;
 import ch.tiim.sco.gui.team.TeamView;
 import ch.tiim.sco.gui.training.TrainingView;
@@ -32,7 +33,6 @@ import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -90,6 +90,7 @@ public class RootPresenter {
                 new TeamView(),
                 new MemberView(),
                 null,
+                new ResultsView(),
                 new BirthdayView(),
                 null,
                 new LenexView()
