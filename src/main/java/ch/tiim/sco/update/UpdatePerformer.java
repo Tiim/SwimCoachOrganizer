@@ -22,7 +22,7 @@ public class UpdatePerformer implements Runnable {
             }
             launchUpdater();
         } catch (final IOException e) {
-            LOGGER.warn(e);
+            LOGGER.warn("", e);
         }
         System.exit(0);
     }

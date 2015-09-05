@@ -54,7 +54,7 @@ public class TeamPresenter extends Page {
         try {
             teams.setAll(db.getTblTeam().getAllTeams());
         } catch (Exception e) {
-            LOGGER.warn(e);
+            LOGGER.warn("Error on loading teams", e);
         }
         listTeams.getSelectionModel().select(i);
     }
@@ -83,7 +83,7 @@ public class TeamPresenter extends Page {
             try {
                 members.setAll(db.getTblTeamContent().getMembers(t));
             } catch (Exception e) {
-                LOGGER.warn(e);
+                LOGGER.warn("Error on loading team members", e);
             }
         }
     }
@@ -94,7 +94,7 @@ public class TeamPresenter extends Page {
                 try {
                     db.getTblTeam().addTeam(new Team(fieldName.getText()));
                 } catch (Exception e) {
-                    LOGGER.warn(e);
+                    LOGGER.warn("Error on adding team", e);
                 }
                 updateTeams();
             }
@@ -108,7 +108,7 @@ public class TeamPresenter extends Page {
             try {
                 db.getTblTeam().updateTeam(t);
             } catch (Exception e) {
-                LOGGER.warn(e);
+                LOGGER.warn("Error on updating team", e);
             }
             updateTeams();
         }
@@ -120,7 +120,7 @@ public class TeamPresenter extends Page {
                 try {
                     db.getTblTeam().deleteTeam(listTeams.getSelectionModel().getSelectedItem());
                 } catch (Exception e) {
-                    LOGGER.warn(e);
+                    LOGGER.warn("Error on deleting team", e);
                 }
                 updateTeams();
             }

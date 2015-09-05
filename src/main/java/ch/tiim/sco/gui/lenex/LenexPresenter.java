@@ -83,7 +83,7 @@ public class LenexPresenter extends Page {
                 task.setOnSucceeded(event -> results.setAll(task.getValue()));
                 eventBus.post(task);
             } catch (Exception e) {
-                LOGGER.warn(e);
+                LOGGER.warn("Error on importing results", e);
             }
         }
     }
@@ -94,7 +94,7 @@ public class LenexPresenter extends Page {
             try {
                 db.getTblResult().addResult(r.getKey(), r.getValue());
             } catch (Exception e) {
-                LOGGER.warn(e);
+                LOGGER.warn("Error on importing results", e);
             }
         }
         results.clear();

@@ -101,7 +101,7 @@ public class ResultsPresenter extends Page {
             try {
                 db.getTblResult().addResult(s, r);
             } catch (Exception e) {
-                LOGGER.warn(e);
+                LOGGER.warn("Error while adding result", e);
             }
             updateResults();
         }
@@ -117,7 +117,7 @@ public class ResultsPresenter extends Page {
             try {
                 db.getTblResult().updateResult(r);
             } catch (Exception e) {
-                LOGGER.warn(e);
+                LOGGER.warn("Error while updating result", e);
             }
             updateResults();
         }
@@ -130,7 +130,7 @@ public class ResultsPresenter extends Page {
             try {
                 db.getTblResult().deleteResult(original);
             } catch (Exception e) {
-                LOGGER.warn(e);
+                LOGGER.warn("Error while deleting result", e);
             }
             updateResults();
         }
@@ -139,7 +139,7 @@ public class ResultsPresenter extends Page {
     private Result getResultFromFields() {
         String meet = fieldMeet.getText();
         LocalDate d = date.getValue();
-        Duration time = null;
+        Duration time;
         try {
             time = DurationFormatter.parse(fieldTime.getText());
         } catch (IllegalArgumentException e) {
@@ -172,11 +172,11 @@ public class ResultsPresenter extends Page {
     }
 
     private void selectSwimmer(Swimmer newValue) {
-        if (swimmers != null) {
+        if (newValue != null) {
             try {
                 results.setAll(db.getTblResult().getResults(newValue));
             } catch (Exception e) {
-                LOGGER.warn(e);
+                LOGGER.warn("Error while loading results", e);
             }
         }
     }
@@ -190,7 +190,7 @@ public class ResultsPresenter extends Page {
                 tableResults.getSelectionModel().select(i);
             }
         } catch (Exception e) {
-            LOGGER.warn(e);
+            LOGGER.warn("Error while updating swimmers", e);
         }
     }
 
@@ -200,7 +200,7 @@ public class ResultsPresenter extends Page {
             swimmers.setAll(db.getTblSwimmer().getAllSwimmers());
             listSwimmers.getSelectionModel().select(i);
         } catch (Exception e) {
-            LOGGER.warn(e);
+            LOGGER.warn("Error while updating swimmers", e);
         }
     }
 

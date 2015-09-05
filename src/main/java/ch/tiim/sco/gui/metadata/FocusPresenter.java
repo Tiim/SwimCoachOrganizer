@@ -46,7 +46,7 @@ public class FocusPresenter extends Page {
         try {
             foci.setAll(db.getTblSetFocus().getAllFoci());
         } catch (Exception e) {
-            LOGGER.warn(e);
+            LOGGER.warn("Error on loading focus", e);
         }
         list.getSelectionModel().select(i);
     }
@@ -85,7 +85,7 @@ public class FocusPresenter extends Page {
             try {
                 db.getTblSetFocus().updateSetFocus(new SetFocus(f.getId(), name, abbr, notes));
             } catch (Exception e) {
-                LOGGER.warn(e);
+                LOGGER.warn("Error on updating focus", e);
             }
             updateFocusList();
         }
@@ -112,7 +112,7 @@ public class FocusPresenter extends Page {
         try {
             db.getTblSetFocus().addSetFocus(new SetFocus(name, abbr, notes));
         } catch (Exception e) {
-            LOGGER.warn(e);
+            LOGGER.warn("Error on adding focus", e);
         }
         updateFocusList();
     }
@@ -124,7 +124,7 @@ public class FocusPresenter extends Page {
             try {
                 db.getTblSetFocus().deleteSetFocus(f);
             } catch (Exception e) {
-                LOGGER.warn(e);
+                LOGGER.warn("Error on deleting focus", e);
             }
             updateFocusList();
         }

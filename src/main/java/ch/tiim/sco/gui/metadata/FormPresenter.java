@@ -44,7 +44,7 @@ public class FormPresenter extends Page {
         try {
             forms.setAll(db.getTblSetForm().getAllForms());
         } catch (Exception e) {
-            LOGGER.warn(e);
+            LOGGER.warn("Error on loading forms", e);
         }
         list.getSelectionModel().select(i);
     }
@@ -83,7 +83,7 @@ public class FormPresenter extends Page {
             try {
                 db.getTblSetForm().updateSetForm(new SetForm(f.getId(), name, abbr, notes));
             } catch (Exception e) {
-                LOGGER.warn(e);
+                LOGGER.warn("Error on updating form", e);
             }
             updateFormList();
         }
@@ -110,7 +110,7 @@ public class FormPresenter extends Page {
         try {
             db.getTblSetForm().addSetForm(new SetForm(name, abbr, notes));
         } catch (Exception e) {
-            LOGGER.warn(e);
+            LOGGER.warn("Error on adding form", e);
         }
         updateFormList();
     }
@@ -122,7 +122,7 @@ public class FormPresenter extends Page {
             try {
                 db.getTblSetForm().deleteSetForm(f);
             } catch (Exception e) {
-                LOGGER.warn(e);
+                LOGGER.warn("Error on deleting form", e);
             }
             updateFormList();
         }

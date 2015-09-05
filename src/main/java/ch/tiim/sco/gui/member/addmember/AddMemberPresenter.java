@@ -58,7 +58,7 @@ public class AddMemberPresenter {
         try {
             excluded.setAll(db.getTblTeamContent().getNotMembers(team));
         } catch (Exception e) {
-            LOGGER.warn(e);
+            LOGGER.warn("Error while loading non members", e);
         }
     }
 
@@ -66,7 +66,7 @@ public class AddMemberPresenter {
         try {
             included.setAll(db.getTblTeamContent().getMembers(team));
         } catch (Exception e) {
-            LOGGER.warn(e);
+            LOGGER.warn("Error while loading members", e);
         }
     }
 
@@ -77,7 +77,7 @@ public class AddMemberPresenter {
             try {
                 db.getTblTeamContent().addMember(team, m);
             } catch (Exception e) {
-                LOGGER.warn(e);
+                LOGGER.warn("Error while adding member", e);
             }
         }
         updateExcluded();
@@ -96,7 +96,7 @@ public class AddMemberPresenter {
             try {
                 db.getTblTeamContent().deleteMember(team, m);
             } catch (Exception e) {
-                LOGGER.warn(e);
+                LOGGER.warn("Error while deleting member", e);
             }
         }
         updateExcluded();

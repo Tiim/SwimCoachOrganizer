@@ -66,7 +66,7 @@ public class SetsPresenter extends Page {
             forms.setAll(db.getTblSetForm().getAllForms());
             forms.add(0, new SetForm(0, "Nothing", "-", ""));
         } catch (Exception e) {
-            LOGGER.warn(e);
+            LOGGER.warn("Error on loading focus or form", e);
         }
     }
 
@@ -85,7 +85,7 @@ public class SetsPresenter extends Page {
         try {
             sets.setAll(db.getTblSet().getAllSets());
         } catch (Exception e) {
-            LOGGER.warn(e);
+            LOGGER.warn("Error on loading sets", e);
         }
         listSets.getSelectionModel().select(i);
     }
@@ -158,7 +158,7 @@ public class SetsPresenter extends Page {
             try {
                 db.getTblSet().updateSet(newSet);
             } catch (Exception e) {
-                LOGGER.warn(e);
+                LOGGER.warn("Error on updating set", e);
             }
             updateSetList();
         }
@@ -172,7 +172,7 @@ public class SetsPresenter extends Page {
         try {
             db.getTblSet().addSet(set);
         } catch (Exception e) {
-            LOGGER.warn(e);
+            LOGGER.warn("Error on adding set", e);
         }
         updateSetList();
     }
@@ -217,7 +217,7 @@ public class SetsPresenter extends Page {
         try {
             db.getTblSet().deleteSet(listSets.getSelectionModel().getSelectedItem());
         } catch (Exception e) {
-            LOGGER.warn(e);
+            LOGGER.warn("Error on deleting set", e);
         }
         updateSetList();
     }

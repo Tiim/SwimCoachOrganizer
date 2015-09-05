@@ -34,7 +34,7 @@ public final class VersionChecker {
             final Version local = new Version(Constants.readString(Constants.LOCAL_UPDATER_VERSION_URL));
             return local.compareTo(remote) < 0;
         } catch (final IOException | IllegalArgumentException e) {
-            LOGGER.warn(e);
+            LOGGER.warn("", e);
         }
         return true;
     }
@@ -73,7 +73,7 @@ public final class VersionChecker {
         try {
             v = new Version(Constants.downloadString(Constants.REMOTE_PROGRAM_VERSION_URL));
         } catch (final IOException e) {
-            LOGGER.warn(e);
+            LOGGER.warn("", e);
             v = new Version();
         }
         remoteVersion = v;

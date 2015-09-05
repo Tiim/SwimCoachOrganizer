@@ -61,7 +61,7 @@ public class MemberPresenter extends Page {
         try {
             members.setAll(db.getTblSwimmer().getAllSwimmers());
         } catch (Exception e) {
-            LOGGER.warn(e);
+            LOGGER.warn("Error on loading swimmers", e);
         }
         listMembers.getSelectionModel().select(i);
     }
@@ -112,7 +112,7 @@ public class MemberPresenter extends Page {
             try {
                 db.getTblSwimmer().addSwimmer(getMember());
             } catch (Exception e) {
-                LOGGER.warn(e);
+                LOGGER.warn("Error on adding swimmer", e);
             }
             updateMemberList();
         }
@@ -155,7 +155,7 @@ public class MemberPresenter extends Page {
             try {
                 db.getTblSwimmer().updateSwimmer(newM);
             } catch (Exception e) {
-                LOGGER.warn(e);
+                LOGGER.warn("Error on updating swimmer", e);
             }
             updateMemberList();
         }
@@ -168,7 +168,7 @@ public class MemberPresenter extends Page {
             try {
                 db.getTblSwimmer().deleteSwimmer(m);
             } catch (Exception e) {
-                LOGGER.warn(e);
+                LOGGER.warn("Error on deleting swimmer", e);
             }
             updateMemberList();
         }

@@ -65,7 +65,7 @@ public class TrainingPresenter extends Page {
         try {
             trainings.setAll(db.getTblTraining().getAllTrainings());
         } catch (Exception e) {
-            LOGGER.warn(e);
+            LOGGER.warn("Error on loading trainings", e);
         }
         listTrainings.getSelectionModel().select(i);
     }
@@ -109,7 +109,7 @@ public class TrainingPresenter extends Page {
             try {
                 sets.setAll(db.getTblTrainingContent().getSets(newVal));
             } catch (Exception e) {
-                LOGGER.warn(e);
+                LOGGER.warn("Error on loading sets", e);
             }
         } else {
             sets.clear();
@@ -126,7 +126,7 @@ public class TrainingPresenter extends Page {
         try {
             db.getTblTraining().deleteTraining(t);
         } catch (Exception e) {
-            LOGGER.warn(e);
+            LOGGER.warn("Error on delete training", e);
         }
         updateTrainingsList();
     }
@@ -140,7 +140,7 @@ public class TrainingPresenter extends Page {
             try {
                 db.getTblTraining().addTraining(new Training(c.getName()));
             } catch (Exception e) {
-                LOGGER.warn(e);
+                LOGGER.warn("Error on adding training", e);
             }
             updateTrainingsList();
         }
@@ -165,7 +165,7 @@ public class TrainingPresenter extends Page {
             try {
                 db.getTblTrainingContent().addSet(t, c.getSelectedSet(), maxIndex + 1);
             } catch (Exception e) {
-                LOGGER.warn(e);
+                LOGGER.warn("Error on adding set", e);
             }
             updateSetsList();
         }
@@ -185,7 +185,7 @@ public class TrainingPresenter extends Page {
             try {
                 db.getTblTrainingContent().updateIndex(t, s.getIndex(), true);
             } catch (Exception e) {
-                LOGGER.warn(e);
+                LOGGER.warn("Error on updating index", e);
             }
             updateSetsList();
             tableTrainingContent.getSelectionModel().select(s.getIndex() - 2);
@@ -200,7 +200,7 @@ public class TrainingPresenter extends Page {
             try {
                 db.getTblTrainingContent().updateIndex(t, s.getIndex(), false);
             } catch (Exception e) {
-                LOGGER.warn(e);
+                LOGGER.warn("Error on updating index", e);
             }
             updateSetsList();
             tableTrainingContent.getSelectionModel().select(s.getIndex());
@@ -215,7 +215,7 @@ public class TrainingPresenter extends Page {
         try {
             db.getTblTrainingContent().deleteSet(t, s.getSet(), s.getIndex());
         } catch (Exception e) {
-            LOGGER.warn(e);
+            LOGGER.warn("Error on delete set", e);
         }
         updateSetsList();
     }

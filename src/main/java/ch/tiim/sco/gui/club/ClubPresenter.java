@@ -82,7 +82,7 @@ public class ClubPresenter extends Page {
             try {
                 teams.setAll(db.getTblClubContent().getTeams(c));
             } catch (Exception e) {
-                LOGGER.warn(e);
+                LOGGER.warn("Error on loading teams", e);
             }
             listTeams.getSelectionModel().select(t);
         }
@@ -94,7 +94,7 @@ public class ClubPresenter extends Page {
         try {
             db.getTblClub().addClub(c);
         } catch (Exception e) {
-            LOGGER.warn(e);
+            LOGGER.warn("Error on adding club", e);
         }
         updateClubs();
     }
@@ -116,7 +116,7 @@ public class ClubPresenter extends Page {
         try {
             clubs.setAll(db.getTblClub().getAll());
         } catch (Exception e) {
-            LOGGER.warn(e);
+            LOGGER.warn("Error on loading clubs", e);
         }
         listClubs.getSelectionModel().select(i);
 
@@ -128,7 +128,7 @@ public class ClubPresenter extends Page {
         try {
             db.getTblClub().deleteClub(c);
         } catch (Exception e) {
-            LOGGER.warn(e);
+            LOGGER.warn("Error on deleting club", e);
         }
         updateClubs();
     }
@@ -141,7 +141,7 @@ public class ClubPresenter extends Page {
         try {
             db.getTblClub().updateClub(newC);
         } catch (Exception e) {
-            LOGGER.warn(e);
+            LOGGER.warn("Error on updating club", e);
         }
         updateClubs();
     }

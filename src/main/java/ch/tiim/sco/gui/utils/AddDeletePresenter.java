@@ -51,7 +51,7 @@ public class AddDeletePresenter<T> {
             try {
                 add.move(m);
             } catch (Exception e) {
-                LOGGER.warn(e);
+                LOGGER.warn("Error while adding", e);
             }
         }
         updateExcluded();
@@ -62,7 +62,7 @@ public class AddDeletePresenter<T> {
         try {
             excluded.setAll(excludedFactory.get());
         } catch (Exception e) {
-            LOGGER.warn(e);
+            LOGGER.warn("Error while loading excluded", e);
         }
     }
 
@@ -70,7 +70,7 @@ public class AddDeletePresenter<T> {
         try {
             included.setAll(includedFactory.get());
         } catch (Exception e) {
-            LOGGER.warn(e);
+            LOGGER.warn("Error while loading included", e);
         }
     }
 
@@ -86,7 +86,7 @@ public class AddDeletePresenter<T> {
             try {
                 remove.move(m);
             } catch (Exception e) {
-                LOGGER.warn(e);
+                LOGGER.warn("Error while removing", e);
             }
         }
         updateExcluded();

@@ -57,7 +57,7 @@ public class AddSetPresenter {
         try {
             sets.setAll(db.getTblSet().getAllSets());
         } catch (Exception e) {
-            LOGGER.warn(e);
+            LOGGER.warn("Error on loading sets", e);
         }
     }
 
