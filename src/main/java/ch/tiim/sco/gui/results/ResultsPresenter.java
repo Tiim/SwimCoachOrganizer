@@ -194,7 +194,7 @@ public class ResultsPresenter extends Page {
         }
     }
 
-    private void updateSimmers() {
+    private void updateSwimmers() {
         try {
             int i = listSwimmers.getSelectionModel().getSelectedIndex();
             swimmers.setAll(db.getTblSwimmer().getAllSwimmers());
@@ -206,7 +206,7 @@ public class ResultsPresenter extends Page {
 
     @Override
     public void opened() {
-        updateSimmers();
+        updateSwimmers();
     }
 
     @Override
