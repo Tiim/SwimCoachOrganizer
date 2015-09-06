@@ -8,10 +8,9 @@ import java.util.regex.Pattern;
 /**
  * This formatter is used to format a duration into a easy human readable form
  * and to parse such a string back into a duration.
- * TODO: Test me
  */
 public class DurationFormatter {
-    private static final Pattern PATTERN = Pattern.compile("(?:(?:(\\d+):)?(\\d{1,2}):)?(\\d{1,2})\\.(\\d{1,2})");
+    private static final Pattern PATTERN = Pattern.compile("(-?)(?:(?:(\\d+):)?(\\d{1,2}):)?(\\d{1,2})\\.(\\d{1,2})");
     private static final int SECONDS_PER_HOUR = 3600;
     private static final int SECONDS_PER_MINUTE = 60;
     private static final long NANOS_PER_SECOND = 1_000_000_000L;
@@ -44,10 +43,20 @@ public class DurationFormatter {
             b.append(hours).append(':');
         }
         if (minutes > 0) {
-            b.append(minutes).append(':');
+            if (hours > 0) {
+                b.append(String.format("%02d", minutes));
+            } else {
+                b.append(minutes);
+            }
+            b.append(':').append(String.format("%02d", secs));
+        } else if (hours > 0) {
+            b.append("00:");
+            b.append(String.format("%02d", secs));
+
+        } else {
+            b.append(secs);
         }
-        b.append(secs).append('.');
-        b.append(String.format("%02d", zenti));
+        b.append('.').append(String.format("%02d", zenti));
         return b.toString();
     }
 
@@ -58,14 +67,15 @@ public class DurationFormatter {
         }
         long duration = 0l;
         String s = null;
-        if ((s = m.group(1)) != null) {
+        boolean pos = m.group(1).isEmpty();
+        if ((s = m.group(2)) != null) {
             duration += Long.parseLong(s) * 60l * 60l * 1000l;
         }
-        if ((s = m.group(2)) != null) {
-            duration += Long.parseLong(m.group(s)) * 60l * 1000l;
+        if ((s = m.group(3)) != null) {
+            duration += Long.parseLong(s) * 60l * 1000l;
         }
-        duration += Long.parseLong(m.group(3)) * 1000l;
-        duration += Long.parseLong(m.group(4)) * 10l;
-        return Duration.ofMillis(duration);
+        duration += Long.parseLong(m.group(4)) * 1000l;
+        duration += Long.parseLong(m.group(5)) * 10l;
+        return Duration.ofMillis((pos ? 1 : -1) * duration);
     }
 }
