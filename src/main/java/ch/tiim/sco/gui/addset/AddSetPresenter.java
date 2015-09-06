@@ -5,6 +5,7 @@ import ch.tiim.sco.database.DatabaseController;
 import ch.tiim.sco.database.model.Set;
 import ch.tiim.sco.database.model.SetFocus;
 import ch.tiim.sco.database.model.SetForm;
+import ch.tiim.sco.gui.utils.ModelCell;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -64,6 +65,7 @@ public class AddSetPresenter {
     @FXML
     private void initialize() {
         listSets.itemsProperty().setValue(sets);
+        listSets.setCellFactory(param -> new ModelCell<>());
         listSets.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> selectedSet(newValue)
         );

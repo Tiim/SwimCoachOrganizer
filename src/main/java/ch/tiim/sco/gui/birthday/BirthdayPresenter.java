@@ -4,10 +4,13 @@ import ch.tiim.inject.Inject;
 import ch.tiim.sco.database.DatabaseController;
 import ch.tiim.sco.database.model.Swimmer;
 import ch.tiim.sco.gui.Page;
+import ch.tiim.sco.gui.utils.ModelCell;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.util.Callback;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -51,6 +54,12 @@ public class BirthdayPresenter extends Page {
         LocalDate endNextWeek = endThisWeek.plusDays(7);
         LocalDate startOfThirtyDays = endNextWeek.plusDays(1);
         LocalDate endOfThirtyDays = LocalDate.ofYearDay(today.getYear(), today.getDayOfYear() + 30);
+
+        Callback<ListView<Swimmer>, ListCell<Swimmer>> c = param -> new ModelCell<>();
+
+        listNextWeek.setCellFactory(c);
+        listThisWeek.setCellFactory(c);
+        listThirtyDays.setCellFactory(c);
 
         try {
             thisWeek.setAll(db.getTblSwimmer().getSwimmersWithBirthdayBetween(today, endThisWeek));

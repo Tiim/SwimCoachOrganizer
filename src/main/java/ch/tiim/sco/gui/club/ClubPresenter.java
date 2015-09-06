@@ -7,6 +7,7 @@ import ch.tiim.sco.database.model.Team;
 import ch.tiim.sco.gui.Page;
 import ch.tiim.sco.gui.utils.AddDeletePresenter;
 import ch.tiim.sco.gui.utils.AddDeleteView;
+import ch.tiim.sco.gui.utils.ModelCell;
 import ch.tiim.sco.lenex.model.Nation;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -50,6 +51,9 @@ public class ClubPresenter extends Page {
     private void initialize() {
         listClubs.setItems(clubs);
         listTeams.setItems(teams);
+
+        listClubs.setCellFactory(param -> new ModelCell<>());
+        listTeams.setCellFactory(param -> new ModelCell<>());
 
         listClubs.getSelectionModel().selectedItemProperty().addListener((o, oVal, nVal) -> selectClub(nVal));
 

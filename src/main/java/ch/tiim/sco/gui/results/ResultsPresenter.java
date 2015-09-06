@@ -8,7 +8,7 @@ import ch.tiim.sco.database.model.Result;
 import ch.tiim.sco.database.model.Stroke;
 import ch.tiim.sco.database.model.Swimmer;
 import ch.tiim.sco.gui.Page;
-import ch.tiim.sco.gui.member.MemberPresenter;
+import ch.tiim.sco.gui.utils.ModelCell;
 import ch.tiim.sco.util.DurationFormatter;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -82,7 +82,7 @@ public class ResultsPresenter extends Page {
         choiceCourse.setItems(courses);
         listSwimmers.setItems(swimmers);
         tableResults.setItems(results);
-        listSwimmers.setCellFactory(param -> new MemberPresenter.SwimmerCell());
+        listSwimmers.setCellFactory(param -> new ModelCell<>());
         listSwimmers.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) ->
                         selectSwimmer(newValue)
         );

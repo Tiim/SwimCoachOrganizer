@@ -5,6 +5,7 @@ import ch.tiim.javafx.ValidationListener;
 import ch.tiim.sco.database.DatabaseController;
 import ch.tiim.sco.database.model.Swimmer;
 import ch.tiim.sco.gui.Page;
+import ch.tiim.sco.gui.utils.ModelCell;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -72,7 +73,7 @@ public class MemberPresenter extends Page {
         listMembers.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> selected(newValue)
         );
-        listMembers.setCellFactory(param -> new SwimmerCell());
+        listMembers.setCellFactory(param -> new ModelCell<>());
         fieldNameFirst.textProperty().addListener(new ValidationListener(PATTERN_NAME, fieldNameFirst));
         fieldNameLast.textProperty().addListener(new ValidationListener(PATTERN_NAME, fieldNameLast));
         fieldEmail.textProperty().addListener(new ValidationListener(PATTERN_EMAIL, fieldEmail));
@@ -182,15 +183,5 @@ public class MemberPresenter extends Page {
     @Override
     public String getName() {
         return "Member";
-    }
-
-    public static class SwimmerCell extends ListCell<Swimmer> {
-        @Override
-        protected void updateItem(Swimmer item, boolean empty) {
-            super.updateItem(item, empty);
-            if (item != null) {
-                setText(item.uiString());
-            }
-        }
     }
 }

@@ -7,6 +7,7 @@ import ch.tiim.sco.database.model.Team;
 import ch.tiim.sco.gui.Page;
 import ch.tiim.sco.gui.utils.AddDeletePresenter;
 import ch.tiim.sco.gui.utils.AddDeleteView;
+import ch.tiim.sco.gui.utils.ModelCell;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -51,7 +52,7 @@ public class TeamPresenter extends Page {
     }
 
     private void updateTeams() {
-            int i = listTeams.getSelectionModel().getSelectedIndex();
+        int i = listTeams.getSelectionModel().getSelectedIndex();
         try {
             teams.setAll(db.getTblTeam().getAllTeams());
         } catch (Exception e) {
@@ -66,6 +67,7 @@ public class TeamPresenter extends Page {
         listTeams.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) ->
                         updateMembers()
         );
+        listTeams.setCellFactory(param1 -> new ModelCell<>());
         tableMembers.setItems(members);
 
         colFirstName.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getFirstName()));
@@ -91,14 +93,14 @@ public class TeamPresenter extends Page {
 
     @FXML
     private void onBtnAdd() {
-            if (!fieldName.getText().trim().isEmpty()) {
-                try {
-                    db.getTblTeam().addTeam(new Team(fieldName.getText()));
-                } catch (Exception e) {
-                    LOGGER.warn("Error on adding team", e);
-                }
-                updateTeams();
+        if (!fieldName.getText().trim().isEmpty()) {
+            try {
+                db.getTblTeam().addTeam(new Team(fieldName.getText()));
+            } catch (Exception e) {
+                LOGGER.warn("Error on adding team", e);
             }
+            updateTeams();
+        }
     }
 
     @FXML
@@ -117,14 +119,14 @@ public class TeamPresenter extends Page {
 
     @FXML
     private void onBtnDelete() {
-            if (listTeams.getSelectionModel().getSelectedItem() != null) {
-                try {
-                    db.getTblTeam().deleteTeam(listTeams.getSelectionModel().getSelectedItem());
-                } catch (Exception e) {
-                    LOGGER.warn("Error on deleting team", e);
-                }
-                updateTeams();
+        if (listTeams.getSelectionModel().getSelectedItem() != null) {
+            try {
+                db.getTblTeam().deleteTeam(listTeams.getSelectionModel().getSelectedItem());
+            } catch (Exception e) {
+                LOGGER.warn("Error on deleting team", e);
             }
+            updateTeams();
+        }
     }
 
     @FXML

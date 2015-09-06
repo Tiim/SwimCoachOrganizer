@@ -7,6 +7,7 @@ import ch.tiim.sco.database.model.Set;
 import ch.tiim.sco.database.model.SetFocus;
 import ch.tiim.sco.database.model.SetForm;
 import ch.tiim.sco.gui.Page;
+import ch.tiim.sco.gui.utils.ModelCell;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -93,7 +94,7 @@ public class SetsPresenter extends Page {
     @FXML
     private void initialize() {
         listSets.itemsProperty().setValue(sets);
-        listSets.setCellFactory(param -> new SetListCell());
+        listSets.setCellFactory(param -> new ModelCell<>());
         listSets.getSelectionModel().selectedItemProperty().addListener((observable, oldVal, newVal) -> {
             selectedNewSet(newVal);
         });
@@ -220,15 +221,5 @@ public class SetsPresenter extends Page {
             LOGGER.warn("Error on deleting set", e);
         }
         updateSetList();
-    }
-
-    private static class SetListCell extends ListCell<Set> {
-        @Override
-        protected void updateItem(Set item, boolean empty) {
-            super.updateItem(item, empty);
-            if (item != null) {
-                setText(item.uiString());
-            }
-        }
     }
 }
