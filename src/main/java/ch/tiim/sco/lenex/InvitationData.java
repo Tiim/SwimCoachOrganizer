@@ -9,32 +9,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class InvitationData {
-    private Meet meet;
+    private List<Meet> meets;
 
-    public InvitationData(Lenex l, int meet) throws LenexException {
-        this.meet = l.meets.meets.get(meet);
-        String error;
-        if (!(error = validateData()).equals("")) throw new LenexException(error);
-    }
-
-    private String validateData() {
-        if (meet == null) return "No meet object";
-        if (meet.sessions == null) return "Meet has no sessions";
-        if (meet.sessions.sessions.size() < 1) return "Meet has no sessions";
-        for (Session s : meet.sessions.sessions) {
-            if (s.events == null
-                    || s.events.events.size() < 1) return "Session has no events";
-            for (Event e : s.events.events) {
-                if (e.swimstyle == null) return "Event has no swim style";
-            }
-        }
-        return "";
+    public InvitationData(Lenex l) throws LenexException {
+        this.meets = l.meets.meets;
     }
 
     public List<Event> getEvents() {
         List<Event> events = new ArrayList<>();
-        for (Session s : meet.sessions.sessions) {
-            events.addAll(s.events.events);
+        for (Meet meet : meets) {
+            for (Session session : meet.sessions.sessions) {
+                events.addAll(session.events.events);
+            }
         }
         return events;
     }
