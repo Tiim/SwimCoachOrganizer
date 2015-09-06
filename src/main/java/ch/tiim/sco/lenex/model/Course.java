@@ -17,5 +17,34 @@ public enum Course {
     @XmlEnumValue("SCY27")SCY27,
     @XmlEnumValue("SCY33")SCY33,
     @XmlEnumValue("SCY36")SCY36,
-    @XmlEnumValue("OPEN")OPEN
+    @XmlEnumValue("OPEN")OPEN;
+
+    public ch.tiim.sco.database.model.Course toCourse() {
+        switch (this) {
+            case LCM:
+                return ch.tiim.sco.database.model.Course.LCM;
+            case SCM:
+                return ch.tiim.sco.database.model.Course.SCM;
+            case SCY:
+                return ch.tiim.sco.database.model.Course.SCY;
+            case SCM16:
+                return ch.tiim.sco.database.model.Course.SCM16;
+            case SCM20:
+                return ch.tiim.sco.database.model.Course.SCM20;
+            case SCM33:
+                return ch.tiim.sco.database.model.Course.SCM33;
+            case SCY20:
+                return ch.tiim.sco.database.model.Course.SCY20;
+            case SCY27:
+                return ch.tiim.sco.database.model.Course.SCY27;
+            case SCY33:
+                return ch.tiim.sco.database.model.Course.SCY33;
+            case SCY36:
+                return ch.tiim.sco.database.model.Course.SCY36;
+            case OPEN:
+                return ch.tiim.sco.database.model.Course.OPEN;
+            default:
+                return ch.tiim.sco.database.model.Course.LCM;
+        }
+    }
 }

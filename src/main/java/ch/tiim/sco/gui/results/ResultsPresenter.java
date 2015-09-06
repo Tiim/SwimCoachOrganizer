@@ -3,12 +3,14 @@ package ch.tiim.sco.gui.results;
 import ch.tiim.inject.Inject;
 import ch.tiim.javafx.ValidationListener;
 import ch.tiim.sco.database.DatabaseController;
+import ch.tiim.sco.database.model.Course;
 import ch.tiim.sco.database.model.Result;
 import ch.tiim.sco.database.model.Stroke;
 import ch.tiim.sco.database.model.Swimmer;
 import ch.tiim.sco.gui.Page;
 import ch.tiim.sco.gui.member.MemberPresenter;
 import ch.tiim.sco.util.DurationFormatter;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -39,6 +41,8 @@ public class ResultsPresenter extends Page {
     @FXML
     private TableColumn<Result, String> colMeet;
     @FXML
+    private TableColumn<Result, Course> colCourse;
+    @FXML
     private TextField fieldMeet;
     @FXML
     private DatePicker date;
@@ -52,6 +56,8 @@ public class ResultsPresenter extends Page {
     private Spinner<Integer> spinnerDistance;
     @FXML
     private Label labelResultString;
+    @FXML
+    private ChoiceBox<Course> choiceCourse;
 
     @Inject(name = "db-controller")
     private DatabaseController db;
@@ -69,8 +75,11 @@ public class ResultsPresenter extends Page {
     private void initialize() {
         spinnerDistance.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, Integer.MAX_VALUE, 100));
         ObservableList<Stroke> stroke = FXCollections.observableArrayList();
+        ObservableList<Course> courses = FXCollections.observableArrayList();
         stroke.setAll(Stroke.values());
+        courses.setAll(Course.values());
         choiceStroke.setItems(stroke);
+        choiceCourse.setItems(courses);
         listSwimmers.setItems(swimmers);
         tableResults.setItems(results);
         listSwimmers.setCellFactory(param -> new MemberPresenter.SwimmerCell());
@@ -85,6 +94,7 @@ public class ResultsPresenter extends Page {
                                 String.format("%dm %s", param.getValue().getDistance(), param.getValue().getStroke())
                         )
         );
+        colCourse.setCellValueFactory(param -> new SimpleObjectProperty<Course>(param.getValue().getCourse()));
         colTime.setCellValueFactory(param ->
                 new SimpleStringProperty(DurationFormatter.format(param.getValue().getSwimTime())));
         colDate.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getMeetDate().toString()));
@@ -154,8 +164,9 @@ public class ResultsPresenter extends Page {
         }
         Stroke str = choiceStroke.getValue();
         int distance = spinnerDistance.getValue();
+        Course c = choiceCourse.getValue();
         return new Result(
-                meet, d, time, reaction, str, distance
+                meet, d, time, reaction, str, distance, c
         );
     }
 
@@ -168,6 +179,7 @@ public class ResultsPresenter extends Page {
             choiceStroke.setValue(r.getStroke());
             labelResultString.setText(r.uiString());
             spinnerDistance.getValueFactory().setValue(r.getDistance());
+            choiceCourse.setValue(r.getCourse());
         }
     }
 

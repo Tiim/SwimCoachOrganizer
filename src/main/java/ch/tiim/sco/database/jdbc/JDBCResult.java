@@ -3,6 +3,7 @@ package ch.tiim.sco.database.jdbc;
 import ch.tiim.jdbc.namedparameters.NamedParameterPreparedStatement;
 import ch.tiim.sco.database.DatabaseController;
 import ch.tiim.sco.database.TableResult;
+import ch.tiim.sco.database.model.Course;
 import ch.tiim.sco.database.model.Result;
 import ch.tiim.sco.database.model.Stroke;
 import ch.tiim.sco.database.model.Swimmer;
@@ -52,6 +53,7 @@ public class JDBCResult extends Table implements TableResult {
         }
         add.setString("stroke", r.getStroke().toString());
         add.setInt("distance", r.getDistance());
+        add.setString("course", r.getCourse().toString());
         testUpdate(add);
         r.setId(getGenKey(add));
     }
@@ -64,6 +66,7 @@ public class JDBCResult extends Table implements TableResult {
         update.setInt("reaction_time", (int) r.getReactionTime().toMillis());
         update.setString("stroke", r.getStroke().toString());
         update.setInt("distance", r.getDistance());
+        update.setString("course", r.getCourse().toString());
         update.setInt("id", r.getId());
         testUpdate(update);
     }
@@ -94,7 +97,8 @@ public class JDBCResult extends Table implements TableResult {
                 Duration.ofMillis(rs.getLong("swim_time")),
                 Duration.ofMillis(rs.getInt("reaction_time")),
                 Stroke.valueOf(rs.getString("stroke")),
-                rs.getInt("distance")
+                rs.getInt("distance"),
+                Course.valueOf(rs.getString("course"))
         );
     }
 }

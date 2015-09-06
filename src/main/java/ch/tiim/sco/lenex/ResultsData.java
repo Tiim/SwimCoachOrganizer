@@ -40,7 +40,7 @@ public class ResultsData {
     private Result getResultFromLenexResult(Meet m, ch.tiim.sco.lenex.model.Result r) throws LenexException {
         Event e = getEventFromId(m, r.eventid);
         Session s = getSessionFromEventId(m, r.eventid);
-
+        ch.tiim.sco.database.model.Course c = m.course.toCourse();
         if (e == null || s == null) throw new LenexException("Invalid eventid for result" + r);
 
         String meet = m.name;
@@ -53,7 +53,7 @@ public class ResultsData {
         Stroke stroke = e.swimstyle.stroke.toStroke();
         int distance = e.swimstyle.distance;
 
-        return new Result(meet, date, swimTime, reactionTime, stroke, distance);
+        return new Result(meet, date, swimTime, reactionTime, stroke, distance, c);
     }
 
     private Session getSessionFromEventId(Meet m, int eventid) {

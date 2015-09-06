@@ -247,13 +247,14 @@
     </module>
     <module name="Result">
         <entry name="add">
-            INSERT INTO result (swimmer_id, meet, meet_date, swim_time, reaction_time, stroke, distance)
-            VALUES (:swimmer_id, :meet, :meet_date, :swim_time, :reaction_time, :stroke, :distance)
+            INSERT INTO result (swimmer_id, meet, meet_date, swim_time, reaction_time, stroke, distance, course)
+            VALUES (:swimmer_id, :meet, :meet_date, :swim_time, :reaction_time, :stroke, :distance, :course)
         </entry>
         <entry name="update">
             UPDATE result
             SET meet = :meet, meet_date = :meet_date, swim_time = :swim_time,
-                reaction_time = :reaction_time, stroke = :stroke, distance = :distance
+            reaction_time = :reaction_time, stroke = :stroke, distance = :distance,
+            course = :course
             WHERE result_id = :id
         </entry>
         <entry name="delete">
@@ -261,7 +262,7 @@
             WHERE result_id = :id
         </entry>
         <entry name="get">
-            SELECT result_id, meet, meet_date, swim_time, reaction_time, stroke, distance
+            SELECT result_id, meet, meet_date, swim_time, reaction_time, stroke, distance, course
             FROM result
             WHERE swimmer_id = :id
         </entry>

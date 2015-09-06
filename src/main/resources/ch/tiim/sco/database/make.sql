@@ -97,5 +97,6 @@ CREATE TABLE result (
     reaction_time INTEGER,
     stroke TEXT NOT NULL,
     distance INTEGER NOT NULL,
+    course TEXT NOT NULL,
     FOREIGN KEY(swimmer_id) REFERENCES public.swimmer(swimmer_id) ON DELETE CASCADE ON UPDATE CASCADE
 );

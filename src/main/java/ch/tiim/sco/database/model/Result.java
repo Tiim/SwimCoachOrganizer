@@ -13,22 +13,24 @@ public class Result implements Model {
     private Duration reactionTime;
     private Stroke stroke;
     private int distance;
+    private Course course;
 
 
     public Result(Integer id, String meet, LocalDate meetDate,
-                  Duration swimTime, Duration reactionTime, Stroke stroke, int distance) {
-        this(meet, meetDate, swimTime, reactionTime, stroke, distance);
+                  Duration swimTime, Duration reactionTime, Stroke stroke, int distance, Course course) {
+        this(meet, meetDate, swimTime, reactionTime, stroke, distance, course);
         this.id = id;
     }
 
     public Result(String meet, LocalDate meetDate,
-                  Duration swimTime, Duration reactionTime, Stroke stroke, int distance) {
+                  Duration swimTime, Duration reactionTime, Stroke stroke, int distance, Course course) {
         this.meet = meet;
         this.meetDate = meetDate;
         this.swimTime = swimTime;
         this.reactionTime = reactionTime;
         this.stroke = stroke;
         this.distance = distance;
+        this.course = course;
     }
 
     @Override
@@ -95,6 +97,14 @@ public class Result implements Model {
 
     public void setDistance(int distance) {
         this.distance = distance;
+    }
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
     }
 
     @Override

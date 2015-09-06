@@ -1,6 +1,7 @@
 package ch.tiim.sco.database.jdbc;
 
 import ch.tiim.sco.database.DatabaseController;
+import ch.tiim.sco.database.model.Course;
 import ch.tiim.sco.database.model.Result;
 import ch.tiim.sco.database.model.Stroke;
 import ch.tiim.sco.database.model.Swimmer;
@@ -29,10 +30,10 @@ public class JDBCResultTest {
         s = new Swimmer("John", "Smith", LocalDate.of(2000, 1, 1), "Address", null, null, null, null, null, true, null);
         db.getTblSwimmer().addSwimmer(s);
         r1 = new Result("SCBB RZW", LocalDate.of(2015, 9, 3),
-                Duration.ofMinutes(2), Duration.ofSeconds(1), Stroke.FREE, 200);
+                Duration.ofMinutes(2), Duration.ofSeconds(1), Stroke.FREE, 200, Course.LCM);
         r2 = new Result("Oktobermeeting Allschwil",
                 LocalDate.of(2001, 1, 20), Duration.ofSeconds(20),
-                Duration.ofSeconds(1), Stroke.BUTTERFLY, 50);
+                Duration.ofSeconds(1), Stroke.BUTTERFLY, 50, Course.SCM);
     }
 
     @After
