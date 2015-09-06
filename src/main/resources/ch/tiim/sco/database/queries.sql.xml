@@ -43,9 +43,12 @@
         </entry>
         <entry name="get_not">
             SELECT team.team_id, team.name
+            FROM team
+            WHERE NOT EXISTS (
+            SELECT 1
             FROM club_content
-            INNER JOIN team ON club_content.team_id = team.team_id
-            WHERE NOT club_id = :club_id
+            WHERE club_content.team_id = team.team_id AND club_content.club_id = :club_id
+            )
         </entry>
     </module>
     <module name="Team">
