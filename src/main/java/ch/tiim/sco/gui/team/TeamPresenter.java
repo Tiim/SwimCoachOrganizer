@@ -5,7 +5,8 @@ import ch.tiim.sco.database.DatabaseController;
 import ch.tiim.sco.database.model.Swimmer;
 import ch.tiim.sco.database.model.Team;
 import ch.tiim.sco.gui.Page;
-import ch.tiim.sco.gui.member.addmember.AddMemberView;
+import ch.tiim.sco.gui.utils.AddDeletePresenter;
+import ch.tiim.sco.gui.utils.AddDeleteView;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -130,8 +131,12 @@ public class TeamPresenter extends Page {
     private void onBtnMemberEdit() {
         Team t = listTeams.getSelectionModel().getSelectedItem();
         if (t != null) {
-            AddMemberView v = new AddMemberView(t);
-            v.getController().showAndWait();
+            AddDeletePresenter<Swimmer> v = new AddDeleteView<Swimmer>().getController();
+            v.setRemove(swimmer -> db.getTblTeamContent().deleteMember(t, swimmer));
+            v.setAdd(swimmer -> db.getTblTeamContent().addMember(t, swimmer));
+            v.setIncludedFactory(() -> db.getTblTeamContent().getMembers(t));
+            v.setExcludedFactory(() -> db.getTblTeamContent().getNotMembers(t));
+            v.showAndWait();
         }
         updateMembers();
     }
