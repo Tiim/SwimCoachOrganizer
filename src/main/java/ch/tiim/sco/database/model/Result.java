@@ -34,11 +34,6 @@ public class Result implements Model {
     }
 
     @Override
-    public boolean hasId() {
-        return false;
-    }
-
-    @Override
     public String uiString() {
         return String.format("%dm %s: %s - %s %s", distance, stroke, swimTime, meetDate.toString(), meet);
     }

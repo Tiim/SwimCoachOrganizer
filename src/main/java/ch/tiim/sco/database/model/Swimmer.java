@@ -40,11 +40,6 @@ public class Swimmer implements Model {
     }
 
     @Override
-    public boolean hasId() {
-        return id != null;
-    }
-
-    @Override
     public String uiString() {
         return firstName + " " + lastName + " [" + (isFemale ? "f" : "m") + "]";
     }

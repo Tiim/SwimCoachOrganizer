@@ -13,11 +13,6 @@ public class IndexedSet implements Model {
     }
 
     @Override
-    public boolean hasId() {
-        return false;
-    }
-
-    @Override
     public String uiString() {
         return toString();
     }

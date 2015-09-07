@@ -90,11 +90,6 @@ public class Set implements Model {
     }
 
     @Override
-    public boolean hasId() {
-        return id != null;
-    }
-
-    @Override
     public String uiString() {
         return name + " [" + getDistance() + "]";
     }

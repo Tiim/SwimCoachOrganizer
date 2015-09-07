@@ -42,11 +42,6 @@ public class SetFocus implements Model {
     }
 
     @Override
-    public boolean hasId() {
-        return id != null;
-    }
-
-    @Override
     public String uiString() {
         return toString();
     }
