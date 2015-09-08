@@ -1,5 +1,6 @@
 package ch.tiim.sco.update;
 
+import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -14,26 +15,24 @@ public class VersionTest {
 
     @Test
     public void parseGitInformation() {
-        Version v = new Version("v2.3.4-testbranch:123abc");
-        assertEquals(new Version(2, 3, 4, "testbranch", "123abc"), v);
-    }
-
-    @Test
-    public void parsePartialGitInfo() {
-        Version v = new Version("v2.3.4-:234bc");
-        assertEquals(new Version(2, 3, 4, null, "234bc"), v);
-    }
-
-    @Test
-    public void parsePartialGitInfo2() {
-        Version v = new Version("v2.3.4-branch:");
-        assertEquals(new Version(2, 3, 4, "branch", null), v);
+        Version v = new Version("v2.3.4-123abc");
+        assertEquals(new Version(2, 3, 4, "123abc"), v);
     }
 
     @Test
     public void compareDevVersion() {
         Version v = new Version(); //Dev Version
         assertFalse(v.newerThan(new Version(0, 1, 0)));
+    }
+
+    /**
+     * A version in the format 0.0.1-githash
+     * is a development version with commit metadata.
+     */
+    @Test
+    public void devVersion2() {
+        Version v = new Version(0, 0, 1, "githash");
+        assertThat(v.isDeployed(), CoreMatchers.is(false));
     }
 
     @Test
@@ -44,9 +43,9 @@ public class VersionTest {
 
     @Test
     public void compareWithGitInfo() {
-        assertTrue("v1.2.3-master:123 is neither newer nor older than v1.2.3-branch:234",
-                new Version(1, 2, 3, "master", "123").compareTo(
-                        new Version(1, 2, 3, "branch", "234")) == 0);
+        assertTrue("v1.2.3-123 is neither newer nor older than v1.2.3-234",
+                new Version(1, 2, 3, "123").compareTo(
+                        new Version(1, 2, 3, "234")) == 0);
     }
 
 
@@ -59,7 +58,7 @@ public class VersionTest {
     @Test
     public void deployedDevVersionWithGitInfo() {
         assertFalse("Empty version indicates dev version",
-                new Version(0, 0, 0, "master", "123ads").isDeployed());
+                new Version(0, 0, 0, "123ads").isDeployed());
     }
 
     @Test

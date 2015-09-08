@@ -3,7 +3,10 @@ package ch.tiim.sco;
 import ch.tiim.inject.Injector;
 import ch.tiim.sco.database.DatabaseController;
 import ch.tiim.sco.gui.root.RootView;
-import ch.tiim.sco.update.*;
+import ch.tiim.sco.update.NewVersionEvent;
+import ch.tiim.sco.update.Version;
+import ch.tiim.sco.update.VersionCheckTask;
+import ch.tiim.sco.update.VersionChecker;
 import ch.tiim.sco.util.async.DaemonFactory;
 import ch.tiim.sco.util.async.ExecutorEventListener;
 import com.google.common.eventbus.DeadEvent;
@@ -17,7 +20,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -90,11 +92,8 @@ public class Main extends Application {
             alert.initModality(Modality.APPLICATION_MODAL);
             Optional<ButtonType> t = alert.showAndWait();
             if (t.get() == ButtonType.YES) {
-                Alert update = new Alert(Alert.AlertType.INFORMATION, "Update is in progress.. The app will close soon.");
-                update.initStyle(StageStyle.UNDECORATED);
-                update.getButtonTypes().clear();
-                update.show();
-                eventBus.post(new UpdatePerformer());
+                //TODO: replace this url
+                getHostServices().showDocument("http://replace.this.url.ch/");
             }
         });
     }

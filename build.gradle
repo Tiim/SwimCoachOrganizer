@@ -1,10 +1,24 @@
 import groovy.xml.MarkupBuilder
+
 import java.time.LocalDate
 
+buildscript {
+    repositories {
+        mavenCentral()
+        maven { url 'https://plugins.gradle.org/m2/' }
+    }
+
+    dependencies {
+        classpath group: 'gradle.plugin.edu.sc.seis.gradle', name: 'launch4j', version: '1.5.1'
+    }
+}
+
 apply plugin: 'java'
+apply plugin: 'application'
+apply plugin: 'edu.sc.seis.launch4j'
 
 //Specify the main class and project version
-ext.mainClassName = 'ch.tiim.sco.MainWrapper'
+mainClassName = 'ch.tiim.sco.MainWrapper'
 project.ext.dbLocation = 'wd/file.db'
 version = getVersionFromGit()
 
@@ -12,14 +26,7 @@ version = getVersionFromGit()
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
-buildscript {
-    repositories {
-        mavenCentral()
-    }
 
-    dependencies {
-    }
-}
 //Add dependencies from maven
 repositories {
     mavenCentral()
@@ -66,8 +73,8 @@ jar {
     doFirst {
         manifest {
             attributes([
-                    'Manifest-Version'      : "1.0",
-                    'Main-Class'            : project.ext.mainClassName,
+                    'Manifest-Version': '1.0',
+                    'Main-Class'      : project.mainClassName,
                     'Class-Path'            : configurations.compile.collect { it.getName() }.join(' '),
                     'Implementation-Title'  : 'Swim Coach Organizer',
                     'Implementation-Version': version
@@ -76,7 +83,7 @@ jar {
     }
     //Merge the MainWrapper back into the same jar
     from sourceSets.mwrapper.output
-    archiveName = baseName + "." + extension
+    archiveName = baseName + '.' + extension
 }
 
 //Set java 1.5 compatibility for the MainWrapper
@@ -85,12 +92,17 @@ compileMwrapperJava {
     targetCompatibility = JavaVersion.VERSION_1_5
 }
 
+launch4j {
+    mainClassName = project.mainClassName
+    icon = 'D:\\Dev\\#JProjects\\SwimCoachOrganizer\\res\\icon_win.ico'
+}
+
 task metadata << {
     def writer = new OutputStreamWriter(file('build/meta.xml').newOutputStream())
     def xml = new MarkupBuilder(writer)
     xml.metadata() {
         build(version: project.version, date: LocalDate.now())
-        launch(arg: "java -jar " + project.name + ".jar")
+        launch(arg: "java -jar ${project.name}.jar")
     }
 }
 
@@ -113,7 +125,7 @@ task zipDeps(type: Zip, dependsOn: ['build', 'metadata']) {
 // or to "build/dist"
 // Write version of the project to "version.txt"
 // and the version of the updater to "updaterVersion.txt"
-task dist(type: Copy, dependsOn: ['build', ':Updater:build', 'zipDeps']) {
+task updaterPackage(type: Copy, dependsOn: ['build', ':Updater:build', 'zipDeps']) {
     from({ project(':Updater').jar.archivePath })
     from({ project.zipDeps.archivePath })
     if (project.hasProperty('dist_location')) {
@@ -125,30 +137,52 @@ task dist(type: Copy, dependsOn: ['build', ':Updater:build', 'zipDeps']) {
         destinationDir.mkdirs()
     }
     doLast {
-        (new File(destinationDir, "version.txt")).write(project.version)
-        (new File(destinationDir, "updaterVersion.txt")).write(project(':Updater').version)
+        (new File(destinationDir, 'version.txt')).write(project.version)
+        (new File(destinationDir, 'updaterVersion.txt')).write(project(':Updater').version)
     }
 }
 
-//Force rebuild when dist task in in the task graph
+task zipL4j(type: Zip, dependsOn: 'launch4j') {
+    from('build/launch4j') {
+        include 'lib/**'
+        include '*.exe'
+    }
+    destinationDir = file('build/launch4j')
+    archiveName "SwimCoachOrganizer-win-${project.version}.zip"
+}
+
+task deploy(type: Copy, dependsOn: ['zipL4j', 'distZip', 'distTar']) {
+    from('build/launch4j') {
+        include "*${project.version}.*"
+    }
+    from('build/distributions') {
+        include "*${project.version}.*"
+    }
+    destinationDir = file('build/deploy')
+    doFirst {
+        delete(destinationDir)
+        destinationDir.mkdirs()
+    }
+}
+
+//Force rebuild when deploy task in in the task graph
 jar {
     outputs.upToDateWhen {
-        !gradle.taskGraph.hasTask(dist)
+        !gradle.taskGraph.hasTask(deploy)
     }
 }
 
 // Returns version based on git tag:
 // first two blocks are the git tag name,
 // third digit is commit number since last tag
-def getVersionFromGit() {
-    def versionString = "git describe --tags --long".execute().text.trim()
-    def branch = "git rev-parse --abbrev-ref HEAD".execute().text.trim()
+String getVersionFromGit() {
+    def versionString = 'git describe --tags'.execute().text.trim()
 
-    def pattern = ~/v(\d+)\.(\d+)-(\d+)-(.*)/
+    def pattern = ~/v(\d+)\.(\d+)-(\d+)-?(.*)/
     def major = 0
     def minor = 0
     def patch = 0
-    def gitHash = "fatal_git_error"
+    def gitHash = ''
 
     if (versionString ==~ pattern) {
         def matcher = versionString =~ pattern
@@ -156,9 +190,12 @@ def getVersionFromGit() {
         minor = matcher[0][2]
         patch = matcher[0][3]
         gitHash = matcher[0][4]
+    } else {
+        patch = 1
+        gitHash = 'git rev-parse --short HEAD'.execute().text.trim()
     }
 
-    def v = "v${major}.${minor}.${patch}-${branch}:${gitHash}"
+    def v = "v${major}.${minor}.${patch}-${gitHash}"
 
     println "Current version: ${v}"
 

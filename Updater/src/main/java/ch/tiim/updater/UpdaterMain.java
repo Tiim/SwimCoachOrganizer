@@ -46,7 +46,7 @@ public final class UpdaterMain {
             do {
                 //TODO REMOVE THIS AS SOON AS THE PROGRAM GETS STABLE
                 try {
-                    Files.deleteIfExists(Paths.get("file.db"));
+                    Files.deleteIfExists(Paths.get("file.db.mv.db"));
                     parentIsDead = true;
                 } catch (IOException e) {
                     dialog.message("Parent has not yet terminated! waiting 5sec...");

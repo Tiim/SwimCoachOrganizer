@@ -1,5 +1,6 @@
 package ch.tiim.sco.update;
 
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -9,29 +10,26 @@ import java.util.regex.Pattern;
  */
 public class Version implements Comparable {
 
-    private static final Pattern VERSION_PATTERN = Pattern.compile("\\s*v(\\d+)\\.(\\d+)\\.(\\d+)(?:-(.*):(.*))?\\s*");
+    private static final Pattern VERSION_PATTERN = Pattern.compile("\\s*v(\\d+)\\.(\\d+)\\.(\\d+)(?:-(.*))?\\s*");
 
     private final int major;
     private final int minor;
     private final int patch;
 
-    private String branch;
     private String gitHash;
 
     public Version() {
         this(0, 0, 0);
-        System.out.println("DevBuild --> v0.0.0");
     }
 
     public Version(final int major, final int minor, final int patch) {
-        this(major, minor, patch, null, null);
+        this(major, minor, patch, null);
     }
 
-    public Version(int major, int minor, int patch, String branch, String gitHash) {
+    public Version(int major, int minor, int patch, String gitHash) {
         this.major = major;
         this.minor = minor;
         this.patch = patch;
-        this.branch = branch;
         this.gitHash = gitHash;
     }
 
@@ -48,56 +46,31 @@ public class Version implements Comparable {
             this.major = Integer.parseInt(m.group(1));
             this.minor = Integer.parseInt(m.group(2));
             this.patch = Integer.parseInt(m.group(3));
-            this.branch = m.group(4);
-            this.gitHash = m.group(5);
+            this.gitHash = m.group(4);
         }
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Version version = (Version) o;
-
-        if (major != version.major) return false;
-        if (minor != version.minor) return false;
-        if (patch != version.patch) return false;
-
-        if (branch == null) {
-            if (version.branch != null && !version.branch.isEmpty()) return false;
-        } else if (version.branch == null) {
-            if (!branch.isEmpty()) return false;
+        if (o.getClass() != getClass()) {
+            return false;
         }
-
-        if (gitHash == null) {
-            if (version.gitHash != null && !version.gitHash.isEmpty()) return false;
-        } else if (version.gitHash == null) {
-            if (!gitHash.isEmpty()) return false;
-        }
-
-        return true;
-
+        Version v = (Version) o;
+        return Objects.equals(major, v.major);
     }
 
     @Override
     public String toString() {
-        if (isDeployed()) {
-            String s = String.format("v%d.%d.%d", major, minor, patch);
-            if (branch != null) {
-                s += "-" + branch + ":";
-                if (gitHash != null) {
-                    s += gitHash;
-                }
-            }
-            return s;
-        } else {
-            return "DevBuild";
+        String s = String.format("v%d.%d.%d", major, minor, patch);
+        if (gitHash != null) {
+            s += "-" + gitHash;
         }
+        return s;
     }
 
     public boolean isDeployed() {
-        return patch != 0 || minor != 0 || major != 0;
+        return (patch != 0 || minor != 0 || major != 0) &&
+                !(patch == 1 && minor == 0 && major == 0 && gitHash != null);
     }
 
     public boolean newerThan(Version other) {
