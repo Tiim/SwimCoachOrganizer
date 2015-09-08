@@ -1,9 +1,11 @@
 package ch.tiim.sco.lenex.model;
 
+import ch.tiim.sco.database.model.Model;
+
 import javax.xml.bind.annotation.*;
 
 @XmlRootElement(name = "AGEGROUP")
-public class AgeGroup {
+public class AgeGroup implements Model {
 
     @XmlAttribute(name = "agegroupid", required = true)
     public int agegroup;
@@ -30,6 +32,25 @@ public class AgeGroup {
     public String name;
     @XmlElement(name = "RANKINGS")
     public Rankings rankings;
+
+    @Override
+    public String uiString() {
+        StringBuilder b = new StringBuilder();
+        if (agemin > 0) {
+            b.append(agemin).append("J ");
+        }
+        b.append("- ");
+        if (agemax > 0) {
+            b.append(agemax).append("J");
+        }
+        if (name != null) {
+            b.append(" ").append(name);
+        }
+        if (handicap != 0) {
+            b.append("hc: ").append(handicap);
+        }
+        return b.toString();
+    }
 
     @XmlType
     @XmlEnum

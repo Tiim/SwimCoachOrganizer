@@ -6,22 +6,29 @@ import ch.tiim.sco.lenex.model.Meet;
 import ch.tiim.sco.lenex.model.Session;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class InvitationData {
-    private List<Meet> meets;
+
+    private final Lenex l;
 
     public InvitationData(Lenex l) throws LenexException {
-        this.meets = l.meets.meets;
+        this.l = l;
     }
 
-    public List<Event> getEvents() {
-        List<Event> events = new ArrayList<>();
-        for (Meet meet : meets) {
-            for (Session session : meet.sessions.sessions) {
-                events.addAll(session.events.events);
-            }
+    public List<Session> getSessions() {
+        List<Session> sessions = new ArrayList<>();
+        for (Meet m : l.meets.meets) {
+            sessions.addAll(m.sessions.sessions);
         }
+        Collections.sort(sessions);
+        return sessions;
+    }
+
+    public List<Event> getEvents(Session s) {
+        List<Event> events = s.events.events;
+        Collections.sort(events);
         return events;
     }
 }

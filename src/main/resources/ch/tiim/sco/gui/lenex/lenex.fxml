@@ -67,7 +67,8 @@
     <right>
         <VBox prefHeight="338.0" prefWidth="107.0" BorderPane.alignment="CENTER">
             <children>
-                <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onBtnImportMeet" text="Import Meet" />
+                <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onBtnSignUp"
+                        text="Sign Up To Meet"/>
                 <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onBtnImportResults" text="Import Results" />
             </children>
         </VBox>

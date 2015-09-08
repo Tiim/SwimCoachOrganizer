@@ -1,5 +1,6 @@
 package ch.tiim.sco.lenex.model;
 
+import ch.tiim.sco.database.model.Model;
 import ch.tiim.sco.lenex.adapder.LocalDateAdapter;
 import ch.tiim.sco.lenex.adapder.LocalTimeAdapter;
 
@@ -11,7 +12,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 @XmlRootElement(name = "SESSION")
-public class Session {
+public class Session implements Model, Comparable<Session> {
     @XmlAttribute(name = "course")
     public Course course;
     @XmlJavaTypeAdapter(LocalDateAdapter.class)
@@ -45,4 +46,17 @@ public class Session {
     @XmlAttribute(name = "warmupuntil")
     public LocalTime warmupuntil;
 
+    @Override
+    public int compareTo(Session o) {
+        int comp = date.compareTo(o.date) * 10_000;
+        if (daytime != null && o.daytime != null) {
+            comp += daytime.compareTo(o.daytime);
+        }
+        return comp;
+    }
+
+    @Override
+    public String uiString() {
+        return String.format("%s %s", date, daytime);
+    }
 }

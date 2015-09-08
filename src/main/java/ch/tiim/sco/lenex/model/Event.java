@@ -1,5 +1,6 @@
 package ch.tiim.sco.lenex.model;
 
+import ch.tiim.sco.database.model.Model;
 import ch.tiim.sco.lenex.adapder.LocalTimeAdapter;
 
 import javax.xml.bind.annotation.*;
@@ -7,7 +8,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.LocalTime;
 
 @XmlRootElement(name = "EVENT")
-public class Event {
+public class Event implements Model, Comparable<Event> {
     @XmlElement(name = "AGEGROUPS")
     public AgeGroups ageGroups;
     @XmlJavaTypeAdapter(LocalTimeAdapter.class)
@@ -41,6 +42,16 @@ public class Event {
     public Timing timing;
     @XmlAttribute(name = "type")
     public TypeEvent type;
+
+    @Override
+    public String uiString() {
+        return String.format("%s: %s - %s", daytime.toString(), gender.toString(), swimstyle.uiString());
+    }
+
+    @Override
+    public int compareTo(Event o) {
+        return daytime.compareTo(o.daytime);
+    }
 
     @XmlType
     @XmlEnum

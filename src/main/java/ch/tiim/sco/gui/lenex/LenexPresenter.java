@@ -5,7 +5,11 @@ import ch.tiim.sco.database.DatabaseController;
 import ch.tiim.sco.database.model.Result;
 import ch.tiim.sco.database.model.Swimmer;
 import ch.tiim.sco.gui.Page;
+import ch.tiim.sco.gui.signup.SignUpPresenter;
+import ch.tiim.sco.gui.signup.SignUpView;
 import ch.tiim.sco.lenex.ImportReultsTask;
+import ch.tiim.sco.lenex.InvitationData;
+import ch.tiim.sco.lenex.LenexException;
 import ch.tiim.sco.lenex.LenexLoadTask;
 import ch.tiim.sco.lenex.model.Lenex;
 import ch.tiim.sco.util.FileChooserUtil;
@@ -71,8 +75,17 @@ public class LenexPresenter extends Page {
     }
 
     @FXML
-    private void onBtnImportMeet() {
-
+    private void onBtnSignUp() {
+        if (lenex != null) {
+            try {
+                InvitationData data = new InvitationData(lenex);
+                SignUpPresenter signUp = new SignUpView().getController();
+                signUp.setData(data);
+                signUp.showAndWait();
+            } catch (LenexException e) {
+                LOGGER.warn("Error on loading invitation data", e);
+            }
+        }
     }
 
     @FXML
