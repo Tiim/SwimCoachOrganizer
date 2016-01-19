@@ -20,10 +20,10 @@ notifications:
     on_failure: always  # options: [always|never|change] default: always
     on_start: always    # options: [always|never|change] default: always
 
-deploy:
-  skip_cleanup: true
-  provider: script
-  script: gradle deploy
+#deploy:
+#  skip_cleanup: true
+#  provider: script
+#  script: gradle deploy
 
 env:
   global:
