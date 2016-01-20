@@ -1,0 +1,92 @@
+package ch.tiim.sco.gui.main;
+
+import ch.tiim.inject.Inject;
+import ch.tiim.sco.database.DatabaseController;
+import ch.tiim.sco.database.model.SetStroke;
+import ch.tiim.sco.gui.events.stroke.StrokeDeleteEvent;
+import ch.tiim.sco.gui.events.stroke.StrokeEvent;
+import ch.tiim.sco.gui.events.stroke.StrokeOpenEvent;
+import com.google.common.eventbus.Subscribe;
+import javafx.collections.FXCollections;
+import javafx.fxml.FXML;
+import javafx.scene.Parent;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextArea;
+
+public class StrokeView extends MainView {
+
+    @Inject(name = "db-controller")
+    private DatabaseController db;
+
+
+    @FXML
+    private Parent root;
+    @FXML
+    private ListView<SetStroke> strokes;
+    @FXML
+    private Label name;
+    @FXML
+    private Label abbr;
+    @FXML
+    private TextArea notes;
+
+    @FXML
+    private void initialize() {
+        strokes.getSelectionModel().selectedItemProperty()
+                .addListener((observable, oldValue, newValue) -> onSelect(newValue));
+        reload();
+    }
+
+    private void onSelect(SetStroke stroke) {
+        if (stroke != null) {
+            name.setText(stroke.getName());
+            abbr.setText(stroke.getAbbr());
+            notes.setText(stroke.getName());
+        }
+    }
+
+    private void reload() {
+        try {
+            strokes.setItems(FXCollections.observableArrayList(db.getTblSetStroke().getAllStrokes()));
+        } catch (Exception e) {
+            LOGGER.warn("Can't load strokes", e);
+        }
+    }
+
+    @FXML
+    private void onNew() {
+        eventBus.post(new StrokeOpenEvent(null));
+    }
+
+    @FXML
+    private void onDelete() {
+        SetStroke item = strokes.getSelectionModel().getSelectedItem();
+        if (item != null) {
+            try {
+                db.getTblSetStroke().deleteSetStroke(item);
+            } catch (Exception e) {
+                LOGGER.warn("Can't delete focus", e);
+            }
+            eventBus.post(new StrokeDeleteEvent(item));
+        }
+    }
+
+    @FXML
+    private void onEdit() {
+        SetStroke item = strokes.getSelectionModel().getSelectedItem();
+        if (item != null) {
+            eventBus.post(new StrokeOpenEvent(item));
+        }
+    }
+
+    @Subscribe
+    public void onStroke(StrokeEvent event) {
+        reload();
+    }
+
+    @Override
+    public Parent getRoot() {
+        return root;
+    }
+}

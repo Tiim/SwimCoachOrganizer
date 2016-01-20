@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.BorderPane?>
+<SplitPane xmlns:fx="http://javafx.com/fxml/1" fx:id="root" dividerPositions="0.25" maxHeight="1.7976931348623157E308"
+           maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/8.0.40"
+           fx:controller="ch.tiim.sco.gui.main.TrainingView">
+    <items>
+        <BorderPane>
+            <center>
+                <ListView prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER"/>
+            </center>
+        </BorderPane>
+        <BorderPane>
+            <center>
+                <TableView maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity"
+                           minWidth="-Infinity">
+                    <columns>
+                        <TableColumn minWidth="-1.0" prefWidth="25.0" text="i"/>
+                        <TableColumn minWidth="-1.0" prefWidth="75.0" text="Name"/>
+                        <TableColumn minWidth="-1.0" prefWidth="75.0" text="Distance"/>
+                        <TableColumn minWidth="-1.0" prefWidth="75.0" text="Content"/>
+                        <TableColumn minWidth="-1.0" prefWidth="75.0" text="Intensity"/>
+                        <TableColumn minWidth="-1.0" prefWidth="75.0" text="Focus"/>
+                        <TableColumn minWidth="-1.0" prefWidth="75.0" text="Form"/>
+                        <TableColumn minWidth="-1.0" prefWidth="75.0" text="Time"/>
+                    </columns>
+                </TableView>
+            </center>
+            <bottom>
+                <ToolBar nodeOrientation="RIGHT_TO_LEFT" prefHeight="40.0" prefWidth="200.0"
+                         BorderPane.alignment="CENTER">
+                    <items>
+                        <Button mnemonicParsing="false" onAction="#onEdit" text="Edit"/>
+                        <Button mnemonicParsing="false" onAction="#onDelete" text="Delete"/>
+                        <Button mnemonicParsing="false" onAction="#onNew" text="New"/>
+                    </items>
+                </ToolBar>
+            </bottom>
+        </BorderPane>
+    </items>
+</SplitPane>
