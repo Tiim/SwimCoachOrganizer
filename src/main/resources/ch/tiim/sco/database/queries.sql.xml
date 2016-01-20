@@ -89,37 +89,37 @@
             FROM set_focus
         </entry>
     </module>
-    <module name="SetForm">
+    <module name="SetStroke">
         <entry name="add">
-            INSERT INTO set_form (name, abbr, notes)
+            INSERT INTO set_stroke (name, abbr, notes)
             VALUES (:name, :abbr, :notes)
         </entry>
         <entry name="update">
-            UPDATE set_form
+            UPDATE set_stroke
             SET name = :name, abbr = :abbr, notes = :notes
-            WHERE form_id = :id
+            WHERE stroke_id = :id
         </entry>
         <entry name="delete">
-            DELETE FROM set_form
-            WHERE form_id = :id
+            DELETE FROM set_stroke
+            WHERE stroke_id = :id
         </entry>
         <entry name="get_all">
-            SELECT form_id, name, abbr, notes
-            FROM set_form
+            SELECT stroke_id, name, abbr, notes
+            FROM set_stroke
         </entry>
     </module>
     <module name="Sets">
         <entry name="add">
             INSERT INTO sets (name, content, distance_f1, distance_f2, distance_f3, intensity,
-                focus_id, form_id, notes, interval, is_pause)
+            focus_id, stroke_id, notes, interval, is_pause)
             VALUES (:name, :content, :distance1, :distance2, :distance3, :intensity,
-                :focus_id, :form_id, :notes, :interval, :is_pause)
+            :focus_id, :stroke_id, :notes, :interval, :is_pause)
         </entry>
         <entry name="update">
             UPDATE sets
             SET name = :name, content = :content, distance_f1 = :distance1,
                 distance_f2 = :distance2, distance_f3 = :distance3, intensity = :intensity,
-                focus_id = :focus_id, form_id = :form_id, notes = :notes,
+            focus_id = :focus_id, stroke_id = :stroke_id, notes = :notes,
                 interval = :interval, is_pause = :is_pause
             WHERE set_id = :id
         </entry>
@@ -131,12 +131,12 @@
             SELECT set_id, sets.name, content, distance_f1, distance_f2, distance_f3, intensity,
                 set_focus.focus_id, set_focus.name as focus_name, set_focus.abbr as focus_abbr,
                     set_focus.notes as focus_notes,
-                set_form.form_id, set_form.name as form_name, set_form.abbr as form_abbr,
-                    set_form.notes as form_notes,
+            set_stroke.stroke_id, set_stroke.name as stroke_name, set_stroke.abbr as stroke_abbr,
+            set_stroke.notes as stroke_notes,
                 sets.notes, interval, is_pause
             FROM sets
                 LEFT OUTER JOIN set_focus ON sets.focus_id = set_focus.focus_id
-                LEFT OUTER JOIN set_form ON sets.form_id = set_form.form_id
+            LEFT OUTER JOIN set_stroke ON sets.stroke_id = set_stroke.stroke_id
         </entry>
     </module>
     <module name="TeamContent">
@@ -229,13 +229,13 @@
             SELECT sets.set_id, sets.name, content, distance_f1, distance_f2, distance_f3,
                 intensity, set_focus.focus_id, set_focus.name as focus_name,
                 set_focus.abbr as focus_abbr, set_focus.notes as focus_notes,
-                set_form.form_id, set_form.name as form_name,
-                set_form.abbr as form_abbr, set_form.notes as form_notes,
+            set_stroke.stroke_id, set_stroke.name as stroke_name,
+            set_stroke.abbr as stroke_abbr, set_stroke.notes as stroke_notes,
                 sets.notes, interval, is_pause, index
             FROM training_content
                 INNER JOIN sets ON training_content.set_id = sets.set_id
                     LEFT OUTER JOIN set_focus ON sets.focus_id = set_focus.focus_id
-                    LEFT OUTER JOIN set_form ON sets.form_id = set_form.form_id
+            LEFT OUTER JOIN set_stroke ON sets.stroke_id = set_stroke.stroke_id
             WHERE training_id = :training_id
         </entry>
         <entry name="update_index">

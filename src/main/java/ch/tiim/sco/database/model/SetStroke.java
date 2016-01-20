@@ -3,19 +3,19 @@ package ch.tiim.sco.database.model;
 
 import java.util.Objects;
 
-public class SetForm implements Model {
+public class SetStroke implements Model {
 
     private Integer id;
     private String name;
     private String abbr;
     private String notes;
 
-    public SetForm(int id, String name, String abbr, String notes) {
+    public SetStroke(int id, String name, String abbr, String notes) {
         this(name, abbr, notes);
         this.id = id;
     }
 
-    public SetForm(String name, String abbr, String notes) {
+    public SetStroke(String name, String abbr, String notes) {
         this.name = name;
         this.abbr = abbr;
         this.notes = notes;
@@ -30,7 +30,7 @@ public class SetForm implements Model {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        SetForm that = (SetForm) o;
+        SetStroke that = (SetStroke) o;
         return Objects.equals(this.id, that.id) &&
                 Objects.equals(this.name, that.name) &&
                 Objects.equals(this.abbr, that.abbr) &&

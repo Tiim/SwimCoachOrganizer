@@ -2,7 +2,8 @@ package ch.tiim.sco.database.jdbc;
 
 import ch.tiim.jdbc.namedparameters.NamedParameterPreparedStatement;
 import ch.tiim.sco.database.DatabaseController;
-import ch.tiim.sco.database.model.SetForm;
+import ch.tiim.sco.database.TableSetStroke;
+import ch.tiim.sco.database.model.SetStroke;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -12,14 +13,14 @@ import java.util.LinkedList;
 import java.util.List;
 
 
-public class JDBCSetForm extends Table implements ch.tiim.sco.database.TableSetForm {
-    private static final Logger LOGGER = LogManager.getLogger(JDBCSetForm.class.getName());
+public class JDBCSetStroke extends Table implements TableSetStroke {
+    private static final Logger LOGGER = LogManager.getLogger(JDBCSetStroke.class.getName());
     private NamedParameterPreparedStatement add;
     private NamedParameterPreparedStatement update;
     private NamedParameterPreparedStatement delete;
     private NamedParameterPreparedStatement getAll;
 
-    public JDBCSetForm(DatabaseController db) throws SQLException {
+    public JDBCSetStroke(DatabaseController db) throws SQLException {
         super(db);
     }
 
@@ -32,50 +33,50 @@ public class JDBCSetForm extends Table implements ch.tiim.sco.database.TableSetF
     }
 
     @Override
-    public void addSetForm(SetForm form) throws SQLException {
-        add.setString("name", form.getName());
-        add.setString("abbr", form.getAbbr());
-        add.setString("notes", form.getNotes());
+    public void addSetStroke(SetStroke stroke) throws SQLException {
+        add.setString("name", stroke.getName());
+        add.setString("abbr", stroke.getAbbr());
+        add.setString("notes", stroke.getNotes());
         LOGGER.debug(MARKER_QUERRY, add);
         testUpdate(add);
-        form.setId(getGenKey(add));
+        stroke.setId(getGenKey(add));
     }
 
     @Override
-    public void updateSetForm(SetForm form) throws SQLException {
-        update.setString("name", form.getName());
-        update.setString("abbr", form.getAbbr());
-        update.setString("notes", form.getNotes());
-        update.setInt("id", form.getId());
+    public void updateSetStroke(SetStroke stroke) throws SQLException {
+        update.setString("name", stroke.getName());
+        update.setString("abbr", stroke.getAbbr());
+        update.setString("notes", stroke.getNotes());
+        update.setInt("id", stroke.getId());
         LOGGER.debug(MARKER_QUERRY, update);
         testUpdate(update);
     }
 
     @Override
-    public void deleteSetForm(SetForm form) throws SQLException {
-        delete.setInt("id", form.getId());
+    public void deleteSetStroke(SetStroke stroke) throws SQLException {
+        delete.setInt("id", stroke.getId());
         LOGGER.debug(MARKER_QUERRY, delete);
         testUpdate(delete);
     }
 
     @Override
-    public List<SetForm> getAllForms() throws SQLException {
+    public List<SetStroke> getAllStrokes() throws SQLException {
         ResultSet rs = getAll.executeQuery();
         LOGGER.debug(MARKER_QUERRY, getAll);
-        List<SetForm> l = new LinkedList<>();
+        List<SetStroke> l = new LinkedList<>();
         while (rs.next()) {
-            l.add(getSetForm(rs));
+            l.add(getSetStroke(rs));
         }
         return l;
     }
 
-    static SetForm getSetForm(ResultSet rs) throws SQLException {
-        return getSetForm(rs, "");
+    static SetStroke getSetStroke(ResultSet rs) throws SQLException {
+        return getSetStroke(rs, "");
     }
 
-    static SetForm getSetForm(ResultSet rs, String prefix) throws SQLException {
-        return new SetForm(
-                rs.getInt("form_id"),
+    static SetStroke getSetStroke(ResultSet rs, String prefix) throws SQLException {
+        return new SetStroke(
+                rs.getInt("stroke_id"),
                 rs.getString(prefix + "name"),
                 rs.getString(prefix + "abbr"),
                 rs.getString(prefix + "notes")

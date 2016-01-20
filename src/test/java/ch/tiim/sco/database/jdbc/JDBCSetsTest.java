@@ -4,7 +4,7 @@ import ch.tiim.sco.database.DatabaseController;
 import ch.tiim.sco.database.TableSets;
 import ch.tiim.sco.database.model.Set;
 import ch.tiim.sco.database.model.SetFocus;
-import ch.tiim.sco.database.model.SetForm;
+import ch.tiim.sco.database.model.SetStroke;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.After;
@@ -67,12 +67,12 @@ public class JDBCSetsTest {
     @Test
     public void testGetAllSets() throws Exception {
         SetFocus sf = new SetFocus("Test focus", "tf", "Focus notes");
-        SetForm sfo = new SetForm("Test form", "tfo", "Form Notes");
+        SetStroke sfo = new SetStroke("Test stroke", "tfo", "Stroke Notes");
         db.getTblSetFocus().addSetFocus(sf);
-        db.getTblSetForm().addSetForm(sfo);
+        db.getTblSetStroke().addSetStroke(sfo);
         Set s1 = set();
         s1.setFocus(sf);
-        s1.setForm(sfo);
+        s1.setStroke(sfo);
         sets.addSet(s1);
 
         Assert.assertEquals(s1, sets.getAllSets().get(0));

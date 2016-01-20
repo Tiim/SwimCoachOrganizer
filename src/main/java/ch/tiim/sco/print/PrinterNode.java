@@ -61,7 +61,7 @@ public class PrinterNode extends VBox {
                     new Label(s.getIntervalString()),
                     new Label(s.getFocus() == null ? "-" : s.getFocus().getAbbr()),
                     new Label(String.valueOf(s.getIntensity())),
-                    new Label(s.getForm() == null ? "-" : s.getForm().getAbbr())
+                    new Label(s.getStroke() == null ? "-" : s.getStroke().getAbbr())
             );
             RowConstraints rc = new RowConstraints();
             rc.setValignment(VPos.TOP);
@@ -74,7 +74,7 @@ public class PrinterNode extends VBox {
         ColumnConstraints cInterval = new ColumnConstraints(35, 35, 35, Priority.NEVER, HPos.LEFT, false);
         ColumnConstraints cFocus = new ColumnConstraints(25, 25, 25, Priority.NEVER, HPos.LEFT, false);
         ColumnConstraints cIntensity = new ColumnConstraints(25, 25, 25, Priority.NEVER, HPos.LEFT, false);
-        ColumnConstraints cForm = new ColumnConstraints(25, 25, 25, Priority.NEVER, HPos.LEFT, false);
+        ColumnConstraints cStroke = new ColumnConstraints(25, 25, 25, Priority.NEVER, HPos.LEFT, false);
 
 
         pane.getColumnConstraints().add(cTotalDist);
@@ -83,7 +83,7 @@ public class PrinterNode extends VBox {
         pane.getColumnConstraints().addAll(cInterval);
         pane.getColumnConstraints().addAll(cFocus);
         pane.getColumnConstraints().addAll(cIntensity);
-        pane.getColumnConstraints().addAll(cForm);
+        pane.getColumnConstraints().addAll(cStroke);
 
         getChildren().add(pane);
     }

@@ -24,7 +24,7 @@ public class DatabaseController implements Closeable {
     private static final String VERSION = "1";
 
     private final TableSetFocus tblSetFocus;
-    private final TableSetForm tblSetForm;
+    private final TableSetStroke tblSetStroke;
     private final TableTraining tblTraining;
     private final TableTrainingContent tblTrainingContent;
     private final TableTeam tblTeam;
@@ -68,7 +68,7 @@ public class DatabaseController implements Closeable {
 
         sqlLoader = new SqlLoader("/ch/tiim/sco/database/queries.sql.xml");
         tblSetFocus = new JDBCSetFocus(this);
-        tblSetForm = new JDBCSetForm(this);
+        tblSetStroke = new JDBCSetStroke(this);
         tblTraining = new JDBCTraining(this);
         tblSet = new JDBCSets(this);
         tblTrainingContent = new JDBCTrainingContent(this);
@@ -151,8 +151,8 @@ public class DatabaseController implements Closeable {
         return tblSetFocus;
     }
 
-    public TableSetForm getTblSetForm() {
-        return tblSetForm;
+    public TableSetStroke getTblSetStroke() {
+        return tblSetStroke;
     }
 
     public TableTeam getTblTeam() {
