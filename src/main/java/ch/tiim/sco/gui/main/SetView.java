@@ -3,12 +3,9 @@ package ch.tiim.sco.gui.main;
 import ch.tiim.inject.Inject;
 import ch.tiim.sco.database.DatabaseController;
 import ch.tiim.sco.database.model.Set;
-import ch.tiim.sco.gui.events.set.SetDeleteEvent;
-import ch.tiim.sco.gui.events.set.SetEvent;
-import ch.tiim.sco.gui.events.set.SetOpenEvent;
+import ch.tiim.sco.gui.events.SetEvent;
 import ch.tiim.sco.gui.util.ModelCell;
 import com.google.common.eventbus.Subscribe;
-import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
@@ -72,7 +69,7 @@ public class SetView extends MainView {
 
     private void reload() {
         try {
-            sets.setItems(FXCollections.observableArrayList(db.getTblSet().getAllSets()));
+            sets.getItems().setAll(db.getTblSet().getAllSets());
         } catch (Exception e) {
             LOGGER.warn("Can't load sets.", e);
         }
@@ -80,7 +77,7 @@ public class SetView extends MainView {
 
     @FXML
     private void onNew() {
-        eventBus.post(new SetOpenEvent(null));
+        eventBus.post(new SetEvent.SetOpenEvent(null, mainStage));
     }
 
     @FXML
@@ -92,7 +89,7 @@ public class SetView extends MainView {
             } catch (Exception e) {
                 LOGGER.warn("Can't delete set", e);
             }
-            eventBus.post(new SetDeleteEvent(set));
+            eventBus.post(new SetEvent.SetDeleteEvent(set));
         }
     }
 
@@ -100,7 +97,7 @@ public class SetView extends MainView {
     private void onEdit() {
         Set set = sets.getSelectionModel().getSelectedItem();
         if (set != null) {
-            eventBus.post(new SetOpenEvent(set));
+            eventBus.post(new SetEvent.SetOpenEvent(set, mainStage));
         }
     }
 

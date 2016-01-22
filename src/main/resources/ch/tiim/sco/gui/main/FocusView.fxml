@@ -26,14 +26,13 @@
                 </GridPane>
             </center>
             <bottom>
-                <ToolBar maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
-                         nodeOrientation="RIGHT_TO_LEFT" BorderPane.alignment="CENTER">
-                    <items>
+                <HBox alignment="CENTER_RIGHT" BorderPane.alignment="CENTER">
+                    <children>
                         <Button mnemonicParsing="false" onAction="#onEdit" text="Edit"/>
                         <Button mnemonicParsing="false" onAction="#onDelete" text="Delete"/>
                         <Button mnemonicParsing="false" onAction="#onNew" text="New"/>
-                    </items>
-                </ToolBar>
+                    </children>
+                </HBox>
             </bottom>
         </BorderPane>
     </items>

@@ -3,9 +3,7 @@ package ch.tiim.sco.gui.main;
 import ch.tiim.inject.Inject;
 import ch.tiim.sco.database.DatabaseController;
 import ch.tiim.sco.database.model.SetStroke;
-import ch.tiim.sco.gui.events.stroke.StrokeDeleteEvent;
-import ch.tiim.sco.gui.events.stroke.StrokeEvent;
-import ch.tiim.sco.gui.events.stroke.StrokeOpenEvent;
+import ch.tiim.sco.gui.events.StrokeEvent;
 import com.google.common.eventbus.Subscribe;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -13,12 +11,14 @@ import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
+import javafx.stage.Stage;
 
 public class StrokeView extends MainView {
 
     @Inject(name = "db-controller")
     private DatabaseController db;
-
+    @Inject(name = "main-stage")
+    private Stage mainStage;
 
     @FXML
     private Parent root;
@@ -56,7 +56,7 @@ public class StrokeView extends MainView {
 
     @FXML
     private void onNew() {
-        eventBus.post(new StrokeOpenEvent(null));
+        eventBus.post(new StrokeEvent.StrokeOpenEvent(null, mainStage));
     }
 
     @FXML
@@ -68,7 +68,7 @@ public class StrokeView extends MainView {
             } catch (Exception e) {
                 LOGGER.warn("Can't delete focus", e);
             }
-            eventBus.post(new StrokeDeleteEvent(item));
+            eventBus.post(new StrokeEvent.StrokeDeleteEvent(item));
         }
     }
 
@@ -76,7 +76,7 @@ public class StrokeView extends MainView {
     private void onEdit() {
         SetStroke item = strokes.getSelectionModel().getSelectedItem();
         if (item != null) {
-            eventBus.post(new StrokeOpenEvent(item));
+            eventBus.post(new StrokeEvent.StrokeOpenEvent(item, mainStage));
         }
     }
 

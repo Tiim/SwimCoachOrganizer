@@ -3,8 +3,8 @@ package ch.tiim.sco.gui;
 import ch.tiim.inject.Inject;
 import ch.tiim.sco.config.Config;
 import ch.tiim.sco.gui.dialog.DialogView;
-import ch.tiim.sco.gui.dialog.SetDialog;
 import ch.tiim.sco.gui.main.*;
+import ch.tiim.sco.gui.util.DialogListener;
 import ch.tiim.sco.update.Version;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -47,10 +47,7 @@ public class MainWindow extends View {
     }
 
     private void initDialogs() {
-        dialogViews = new DialogView[]{
-                ViewLoader.load(SetDialog.class)
-        };
-
+        eventBus.register(new DialogListener());
     }
 
     private void initToolbar() {
@@ -76,6 +73,8 @@ public class MainWindow extends View {
                     v.opened();
                 });
             }
+            root.setCenter(views[0].getRoot());
+            views[0].opened();
         }
     }
 

@@ -5,10 +5,9 @@ import ch.tiim.sco.database.DatabaseController;
 import ch.tiim.sco.database.model.Set;
 import ch.tiim.sco.database.model.SetFocus;
 import ch.tiim.sco.database.model.SetStroke;
-import ch.tiim.sco.gui.events.set.SetOpenEvent;
-import ch.tiim.sco.gui.events.set.SetSaveEvent;
+import ch.tiim.sco.gui.events.OpenEvent;
+import ch.tiim.sco.gui.events.SetEvent;
 import ch.tiim.sco.util.DurationFormatter;
-import com.google.common.eventbus.Subscribe;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -49,8 +48,6 @@ public class SetDialog extends DialogView {
 
     @Inject(name = "db-controller")
     private DatabaseController db;
-    @Inject(name = "main-stage")
-    private Stage mainStage;
 
     @FXML
     private void initialize() {
@@ -96,7 +93,7 @@ public class SetDialog extends DialogView {
             LOGGER.warn("Can't save set");
         }
 
-        eventBus.post(new SetSaveEvent(currentSet));
+        eventBus.post(new SetEvent.SetSaveEvent(currentSet));
         close();
     }
 
@@ -105,10 +102,10 @@ public class SetDialog extends DialogView {
         close();
     }
 
-    @Subscribe
-    public void onSetOpenEvent(SetOpenEvent event) {
-        open(mainStage);
-        populate(event.getSet());
+    @Override
+    public void open(OpenEvent e, Stage parent) {
+        super.open(e, parent);
+        populate(((SetEvent.SetOpenEvent) e).getSet());
     }
 
     private void populate(Set set) {

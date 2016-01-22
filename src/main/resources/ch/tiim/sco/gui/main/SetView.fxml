@@ -8,14 +8,13 @@
         <ListView fx:id="sets" prefHeight="200.0" prefWidth="200.0"/>
         <BorderPane prefHeight="200.0" prefWidth="200.0">
             <bottom>
-                <ToolBar nodeOrientation="RIGHT_TO_LEFT" prefHeight="40.0" prefWidth="200.0"
-                         BorderPane.alignment="CENTER">
-                    <items>
+                <HBox alignment="CENTER_RIGHT" BorderPane.alignment="CENTER">
+                    <children>
                         <Button mnemonicParsing="false" onAction="#onEdit" text="Edit"/>
                         <Button mnemonicParsing="false" onAction="#onDelete" text="Delete"/>
                         <Button mnemonicParsing="false" onAction="#onNew" text="New"/>
-                    </items>
-                </ToolBar>
+                    </children>
+                </HBox>
             </bottom>
             <center>
                 <GridPane BorderPane.alignment="CENTER">
