@@ -2,6 +2,7 @@ package ch.tiim.sco.gui.events;
 
 import ch.tiim.sco.database.model.SetStroke;
 import ch.tiim.sco.gui.dialog.DialogView;
+import ch.tiim.sco.gui.dialog.StrokeDialog;
 import javafx.stage.Stage;
 
 public abstract class StrokeEvent {
@@ -32,7 +33,7 @@ public abstract class StrokeEvent {
 
         @Override
         public Class<? extends DialogView> getDialog() {
-            return null;
+            return StrokeDialog.class;
         }
 
         @Override

@@ -43,7 +43,7 @@ public class FocusView extends MainView {
         if (focus != null) {
             name.setText(focus.getName());
             abbr.setText(focus.getAbbr());
-            notes.setText(focus.getName());
+            notes.setText(focus.getNotes());
         }
     }
 

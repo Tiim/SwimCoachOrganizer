@@ -2,6 +2,7 @@ package ch.tiim.sco.gui.events;
 
 import ch.tiim.sco.database.model.SetFocus;
 import ch.tiim.sco.gui.dialog.DialogView;
+import ch.tiim.sco.gui.dialog.FocusDialog;
 import javafx.stage.Stage;
 
 public abstract class FocusEvent {
@@ -40,7 +41,7 @@ public abstract class FocusEvent {
 
         @Override
         public Class<? extends DialogView> getDialog() {
-            return null;
+            return FocusDialog.class;
         }
 
         @Override

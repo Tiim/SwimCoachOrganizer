@@ -42,7 +42,7 @@ public class StrokeView extends MainView {
         if (stroke != null) {
             name.setText(stroke.getName());
             abbr.setText(stroke.getAbbr());
-            notes.setText(stroke.getName());
+            notes.setText(stroke.getNotes());
         }
     }
 

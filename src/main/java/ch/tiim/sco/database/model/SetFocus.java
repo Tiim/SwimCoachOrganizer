@@ -50,6 +50,10 @@ public class SetFocus implements Model {
         return abbr;
     }
 
+    public void setAbbr(String abbr) {
+        this.abbr = abbr;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -68,5 +72,9 @@ public class SetFocus implements Model {
 
     public String getNotes() {
         return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 }
