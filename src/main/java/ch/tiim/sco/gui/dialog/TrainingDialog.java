@@ -74,6 +74,30 @@ public class TrainingDialog extends DialogView {
     }
 
     @FXML
+    private void onUp() {
+        int idx = training.getSelectionModel().getSelectedIndex();
+        if (idx > 0) {
+            IndexedSet set = training.getItems().get(idx);
+            IndexedSet up = training.getItems().get(idx - 1);
+            training.getItems().set(idx, up);
+            training.getItems().set(idx - 1, set);
+            training.getSelectionModel().select(idx - 1);
+        }
+    }
+
+    @FXML
+    private void onDown() {
+        int idx = training.getSelectionModel().getSelectedIndex();
+        if (idx < training.getItems().size() - 1) {
+            IndexedSet set = training.getItems().get(idx);
+            IndexedSet down = training.getItems().get(idx + 1);
+            training.getItems().set(idx, down);
+            training.getItems().set(idx + 1, set);
+            training.getSelectionModel().select(idx + 1);
+        }
+    }
+
+    @FXML
     private void onSave() {
         boolean newTraining = false;
         if (currentTraining == null) {
