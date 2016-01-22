@@ -238,6 +238,10 @@
             LEFT OUTER JOIN set_stroke ON sets.stroke_id = set_stroke.stroke_id
             WHERE training_id = :training_id
         </entry>
+        <entry name="delete_all">
+            DELETE FROM training_content
+            WHERE training_id = :training_id
+        </entry>
         <entry name="update_index">
             UPDATE training_content
             SET index = (

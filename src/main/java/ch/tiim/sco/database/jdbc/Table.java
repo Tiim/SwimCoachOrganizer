@@ -32,7 +32,16 @@ abstract class Table {
     protected void testUpdate(PreparedStatement stmt) throws SQLException {
         int rows = stmt.executeUpdate();
         if (rows == 0) {
-            throw new SQLException("Creating user failed, no rows affected.");
+            throw new SQLException("Update failed, no rows affected.");
+        }
+    }
+
+    protected void testBatchUpdate(PreparedStatement stmt) throws SQLException {
+        int[] results = stmt.executeBatch();
+        for(int i : results) {
+            if (i == 0) {
+                throw new SQLException("Update failed, no rows affected.");
+            }
         }
     }
 
@@ -41,7 +50,7 @@ abstract class Table {
             if (generatedKeys.next()) {
                 return generatedKeys.getInt(1);
             } else {
-                throw new SQLException("Creating user failed, no ID obtained.");
+                throw new SQLException("Update failed, no ID obtained.");
             }
         }
     }
