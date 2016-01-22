@@ -2,10 +2,8 @@ package ch.tiim.sco.gui.main;
 
 import ch.tiim.inject.Inject;
 import ch.tiim.sco.database.DatabaseController;
-import ch.tiim.sco.database.model.IndexedSet;
-import ch.tiim.sco.database.model.SetFocus;
-import ch.tiim.sco.database.model.SetStroke;
-import ch.tiim.sco.database.model.Training;
+import ch.tiim.sco.database.model.*;
+import ch.tiim.sco.gui.events.SetEvent;
 import ch.tiim.sco.gui.events.TrainingEvent;
 import com.google.common.eventbus.Subscribe;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -64,6 +62,10 @@ public class TrainingView extends MainView {
         });
         colTime.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getSet().getIntervalString()));
         trainings.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> selected(newValue));
+        selectedTraining.setOnMouseClicked(event -> {
+            if (event.getClickCount() == 2) onDoubleClick();
+        });
+
         reload();
     }
 
@@ -76,6 +78,13 @@ public class TrainingView extends MainView {
             }
         } else {
             selectedTraining.getItems().setAll();
+        }
+    }
+
+    private void onDoubleClick() {
+        Set set = selectedTraining.getSelectionModel().getSelectedItem().getSet();
+        if (set != null) {
+            eventBus.post(new SetEvent.SetInspectOpenEvent(set, mainStage));
         }
     }
 

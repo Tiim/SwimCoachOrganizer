@@ -42,7 +42,7 @@ public abstract class DialogView extends View {
         stage.close();
     }
 
-    private Stage getStage() {
+    public Stage getStage() {
         return stage;
     }
 

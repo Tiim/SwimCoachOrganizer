@@ -6,6 +6,7 @@ import ch.tiim.sco.database.model.IndexedSet;
 import ch.tiim.sco.database.model.Set;
 import ch.tiim.sco.database.model.Training;
 import ch.tiim.sco.gui.events.OpenEvent;
+import ch.tiim.sco.gui.events.SetEvent;
 import ch.tiim.sco.gui.events.TrainingEvent;
 import ch.tiim.sco.gui.util.ModelCell;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -70,7 +71,15 @@ public class TrainingDialog extends DialogView {
 
     @FXML
     private void onInspect() {
-
+        Set set = null;
+        if (sets.isFocused()) {
+            set = sets.getSelectionModel().getSelectedItem();
+        } else if (training.isFocused()) {
+            set = training.getSelectionModel().getSelectedItem().getSet();
+        }
+        if (set != null) {
+            eventBus.post(new SetEvent.SetInspectOpenEvent(set, getStage()));
+        }
     }
 
     @FXML
