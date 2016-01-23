@@ -57,7 +57,9 @@ public class MainWindow extends View {
                 ViewLoader.load(SetView.class),
                 null,
                 ViewLoader.load(FocusView.class),
-                ViewLoader.load(StrokeView.class)
+                ViewLoader.load(StrokeView.class),
+                null,
+                ViewLoader.load(ClubView.class),
         };
 
         for (MainView v : views) {
