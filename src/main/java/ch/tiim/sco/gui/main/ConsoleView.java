@@ -8,10 +8,13 @@ import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
+import jdk.nashorn.api.scripting.NashornScriptEngine;
 
-import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 public class ConsoleView extends MainView {
 
@@ -25,29 +28,39 @@ public class ConsoleView extends MainView {
     @FXML
     private TextArea in;
 
-    private ScriptEngine engine;
+    private NashornScriptEngine engine;
 
     public ConsoleView() {
-        engine = new ScriptEngineManager().getEngineByName("nashorn");
+        engine = (NashornScriptEngine) new ScriptEngineManager().getEngineByName("nashorn");
         engine.put("db", db);
+        try {
+            engine.eval(new InputStreamReader(ConsoleView.class.getResourceAsStream("/ch/tiim/sco/console.js")));
+        } catch (ScriptException e) {
+            LOGGER.error("Error during js engine setup", e);
+        }
     }
 
     @FXML
     private void onClear() {
-
+        out.setText("");
     }
 
     @FXML
     private void onTyped(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER && !event.isShiftDown()) {
+            event.consume();
             String s = in.getText();
             in.setText("");
             out.appendText("\n> " + s);
             try {
                 Object eval = engine.eval(s);
-                out.appendText("\n" + eval.toString());
-            } catch (ScriptException e) {
-                LOGGER.warn("Script exception", e);
+                if (eval != null) {
+                    out.appendText("\n" + eval.toString());
+                }
+            } catch (Exception e) {
+                StringWriter sw = new StringWriter();
+                e.printStackTrace(new PrintWriter(sw));
+                out.appendText("\nException:\n" + e.getMessage() + "\n" + sw.toString());
             }
         }
     }
