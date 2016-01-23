@@ -4,7 +4,8 @@ load("nashorn:mozilla_compat.js");
 importPackage(
     java.util,
     java.time,
-    java.io
+    java.io,
+    java.lang
 );
 
 

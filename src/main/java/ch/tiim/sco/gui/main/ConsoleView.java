@@ -62,6 +62,8 @@ public class ConsoleView extends MainView {
                 e.printStackTrace(new PrintWriter(sw));
                 out.appendText("\nException:\n" + e.getMessage() + "\n" + sw.toString());
             }
+        } else if (event.getCode() == KeyCode.ENTER && event.isShiftDown()) {
+            in.appendText("\n");
         }
     }
 
