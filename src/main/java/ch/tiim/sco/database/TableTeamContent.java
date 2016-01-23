@@ -6,11 +6,11 @@ import ch.tiim.sco.database.model.Team;
 import java.util.List;
 
 public interface TableTeamContent {
-    List<Swimmer> getMembers(Team t)throws Exception;
+    List<Swimmer> getSwimmers(Team t) throws Exception;
 
-    void addMember(Team t, Swimmer m)throws Exception;
+    void addSwimmer(Team t, Swimmer m) throws Exception;
 
-    void deleteMember(Team t, Swimmer m)throws Exception;
+    void deleteSwimmer(Team t, Swimmer m) throws Exception;
 
-    List<Swimmer> getNotMembers(Team t)throws Exception;
+    List<Swimmer> getSwimmersNotInTeam(Team t) throws Exception;
 }
