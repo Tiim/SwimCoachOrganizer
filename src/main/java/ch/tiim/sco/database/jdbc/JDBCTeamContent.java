@@ -34,14 +34,6 @@ public class JDBCTeamContent extends Table implements ch.tiim.sco.database.Table
     }
 
     @Override
-    public void addSwimmers(Team t, Swimmer m) throws SQLException {
-        add.setInt("team_id", t.getId());
-        add.setInt("swimmer_id", m.getId());
-        LOGGER.debug(MARKER_QUERRY, add);
-        testUpdate(add);
-    }
-
-    @Override
     public List<Swimmer> getSwimmers(Team t) throws SQLException {
         get.setInt("team_id", t.getId());
         LOGGER.debug(MARKER_QUERRY, get);
@@ -51,6 +43,14 @@ public class JDBCTeamContent extends Table implements ch.tiim.sco.database.Table
             l.add(JDBCSwimmer.getSwimmer(rs));
         }
         return l;
+    }
+
+    @Override
+    public void addSwimmer(Team t, Swimmer m) throws SQLException {
+        add.setInt("team_id", t.getId());
+        add.setInt("swimmer_id", m.getId());
+        LOGGER.debug(MARKER_QUERRY, add);
+        testUpdate(add);
     }
 
     @Override
