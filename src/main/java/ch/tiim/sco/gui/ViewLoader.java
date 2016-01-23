@@ -8,6 +8,9 @@ public class ViewLoader {
     private static final Logger LOGGER = LogManager.getLogger(ViewLoader.class);
 
     public static <T extends View> T load(Class<T> clazz) {
+        if (clazz == null) {
+            throw new NullPointerException("View class is null");
+        }
         FXMLLoader loader = null;
         T c = null;
         try {

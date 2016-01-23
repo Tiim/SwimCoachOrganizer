@@ -165,6 +165,10 @@
                 WHERE team_content.swimmer_id = swimmer.swimmer_id AND team_content.team_id = :team_id
             );
         </entry>
+        <entry name="delete_all">
+            DELETE FROM team_content
+            WHERE team_id = :team_id
+        </entry>
     </module>
     <module name="Swimmer">
         <entry name="add">

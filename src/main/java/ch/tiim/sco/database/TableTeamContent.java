@@ -13,4 +13,6 @@ public interface TableTeamContent {
     void deleteSwimmer(Team t, Swimmer m) throws Exception;
 
     List<Swimmer> getSwimmersNotInTeam(Team t) throws Exception;
+
+    void setSwimmers(Team t, List<Swimmer> swimmers) throws Exception;
 }

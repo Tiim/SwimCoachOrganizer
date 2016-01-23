@@ -20,6 +20,7 @@ public class JDBCTeamContent extends Table implements ch.tiim.sco.database.Table
     private NamedParameterPreparedStatement delete;
     private NamedParameterPreparedStatement get;
     private NamedParameterPreparedStatement getNot;
+    private NamedParameterPreparedStatement deleteAll;
 
     public JDBCTeamContent(DatabaseController db) throws SQLException {
         super(db);
@@ -31,6 +32,7 @@ public class JDBCTeamContent extends Table implements ch.tiim.sco.database.Table
         delete = db.getPrepStmt(getSql("delete"));
         get = db.getPrepStmt(getSql("get"));
         getNot = db.getPrepStmt(getSql("get_not"));
+        deleteAll = db.getPrepStmt(getSql("delete_all"));
     }
 
     @Override
@@ -71,5 +73,20 @@ public class JDBCTeamContent extends Table implements ch.tiim.sco.database.Table
             l.add(JDBCSwimmer.getSwimmer(rs));
         }
         return l;
+    }
+
+    @Override
+    public void setSwimmers(Team t, List<Swimmer> swimmers) throws Exception {
+        deleteAll.setInt("team_id", t.getId());
+        LOGGER.debug(MARKER_QUERRY, deleteAll);
+        deleteAll.executeUpdate(); //Might affect zero rows
+        if (!swimmers.isEmpty()) {
+            for (Swimmer s : swimmers) {
+                add.setInt("team_id", t.getId());
+                add.setInt("swimmer_id", s.getId());
+                add.addBatch();
+            }
+            testBatchUpdate(add);
+        }
     }
 }
