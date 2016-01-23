@@ -18,6 +18,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class MainWindow extends View {
 
     private DialogView[] dialogViews;
@@ -52,7 +56,7 @@ public class MainWindow extends View {
 
     private void initToolbar() {
 
-        MainView[] views = {
+        List<MainView> views = new ArrayList<>(Arrays.asList(
                 ViewLoader.load(TrainingView.class),
                 ViewLoader.load(SetView.class),
                 null,
@@ -60,7 +64,14 @@ public class MainWindow extends View {
                 ViewLoader.load(StrokeView.class),
                 null,
                 ViewLoader.load(ClubView.class),
-        };
+                ViewLoader.load(TeamView.class)
+
+        ));
+
+        if (!version.isDeployed()) {
+            views.add(null);
+            views.add(ViewLoader.load(ConsoleView.class));
+        }
 
         for (MainView v : views) {
             if (v == null) {
@@ -75,8 +86,6 @@ public class MainWindow extends View {
                     v.opened();
                 });
             }
-            root.setCenter(views[0].getRoot());
-            views[0].opened();
         }
     }
 

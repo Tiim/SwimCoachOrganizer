@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<VBox xmlns:fx="http://javafx.com/fxml/1" fx:id="root" xmlns="http://javafx.com/javafx/8.0.40"
+      fx:controller="ch.tiim.sco.gui.main.ConsoleView">
+    <children>
+        <TextArea fx:id="out" editable="false" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS"/>
+        <TextArea fx:id="in" onKeyPressed="#onTyped" prefHeight="50.0" prefWidth="200.0"/>
+        <HBox alignment="CENTER_RIGHT">
+            <children>
+                <Button mnemonicParsing="false" onAction="#onClear" text="Clear"/>
+            </children>
+        </HBox>
+    </children>
+</VBox>
