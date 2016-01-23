@@ -6,16 +6,10 @@ import ch.tiim.sco.gui.dialog.SetDialog;
 import ch.tiim.sco.gui.dialog.SetInspectDialog;
 import javafx.stage.Stage;
 
-public abstract class SetEvent {
+public abstract class SetEvent extends Event<Set> {
 
-    private final Set set;
-
-    public SetEvent(Set set) {
-        this.set = set;
-    }
-
-    public Set getSet() {
-        return set;
+    public SetEvent(Set obj) {
+        super(obj);
     }
 
     public static class SetDeleteEvent extends SetEvent {

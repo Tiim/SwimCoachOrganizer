@@ -5,17 +5,10 @@ import ch.tiim.sco.gui.dialog.DialogView;
 import ch.tiim.sco.gui.dialog.FocusDialog;
 import javafx.stage.Stage;
 
-public abstract class FocusEvent {
-
-    private final SetFocus focus;
-
+public abstract class FocusEvent extends Event<SetFocus> {
 
     public FocusEvent(SetFocus focus) {
-        this.focus = focus;
-    }
-
-    public SetFocus getFocus() {
-        return focus;
+        super(focus);
     }
 
     public static class FocusSaveEvent extends FocusEvent {

@@ -5,16 +5,10 @@ import ch.tiim.sco.gui.dialog.DialogView;
 import ch.tiim.sco.gui.dialog.TrainingDialog;
 import javafx.stage.Stage;
 
-public abstract class TrainingEvent {
+public abstract class TrainingEvent extends Event<Training> {
 
-    private final Training training;
-
-    public TrainingEvent(Training training) {
-        this.training = training;
-    }
-
-    public Training getTraining() {
-        return training;
+    public TrainingEvent(Training obj) {
+        super(obj);
     }
 
     public static class TrainingOpenEvent extends TrainingEvent implements OpenEvent {

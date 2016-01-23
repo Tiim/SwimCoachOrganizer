@@ -5,15 +5,10 @@ import ch.tiim.sco.gui.dialog.DialogView;
 import ch.tiim.sco.gui.dialog.TeamDialog;
 import javafx.stage.Stage;
 
-public class TeamEvent {
-    private final Team team;
+public class TeamEvent extends Event<Team> {
 
-    public TeamEvent(Team team) {
-        this.team = team;
-    }
-
-    public Team getTeam() {
-        return team;
+    public TeamEvent(Team obj) {
+        super(obj);
     }
 
     public static class TeamDeleteEvent extends TeamEvent {

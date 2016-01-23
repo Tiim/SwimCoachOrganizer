@@ -5,16 +5,10 @@ import ch.tiim.sco.gui.dialog.DialogView;
 import ch.tiim.sco.gui.dialog.StrokeDialog;
 import javafx.stage.Stage;
 
-public abstract class StrokeEvent {
+public abstract class StrokeEvent extends Event<SetStroke> {
 
-    private final SetStroke stroke;
-
-    public StrokeEvent(SetStroke stroke) {
-        this.stroke = stroke;
-    }
-
-    public SetStroke getStroke() {
-        return stroke;
+    public StrokeEvent(SetStroke obj) {
+        super(obj);
     }
 
     public static class StrokeDeleteEvent extends StrokeEvent {
