@@ -81,12 +81,23 @@ public class ClubView extends MainView {
 
     @FXML
     void onDelete() {
-
+        Club club = clubs.getSelectionModel().getSelectedItem();
+        if (club != null) {
+            try {
+                db.getTblClub().deleteClub(club);
+            } catch (Exception e) {
+                LOGGER.warn("Can't delete club");
+            }
+            eventBus.post(new ClubEvent.ClubDeleteEvent(club));
+        }
     }
 
     @FXML
     void onEdit() {
-
+        Club club = clubs.getSelectionModel().getSelectedItem();
+        if (club != null) {
+            eventBus.post(new ClubEvent.ClubOpenEvent(club, mainStage));
+        }
     }
 
     @FXML

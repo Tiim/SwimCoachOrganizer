@@ -36,4 +36,10 @@ public class ClubEvent extends Event<Club> {
             super(club);
         }
     }
+
+    public static class ClubDeleteEvent extends ClubEvent {
+        public ClubDeleteEvent(Club club) {
+            super(club);
+        }
+    }
 }
