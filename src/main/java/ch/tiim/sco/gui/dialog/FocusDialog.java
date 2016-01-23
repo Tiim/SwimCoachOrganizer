@@ -30,7 +30,7 @@ public class FocusDialog extends DialogView {
     @Override
     public void open(OpenEvent event, Stage parent) {
         super.open(event, parent);
-        populate(((FocusEvent) event).getFocus());
+        populate(((FocusEvent) event).getObj());
     }
 
     private void populate(SetFocus stroke) {

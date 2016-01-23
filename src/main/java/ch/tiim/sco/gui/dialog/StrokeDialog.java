@@ -30,7 +30,7 @@ public class StrokeDialog extends DialogView {
     @Override
     public void open(OpenEvent event, Stage parent) {
         super.open(event, parent);
-        populate(((StrokeEvent.StrokeOpenEvent) event).getStroke());
+        populate(((StrokeEvent.StrokeOpenEvent) event).getObj());
     }
 
     private void populate(SetStroke stroke) {

@@ -34,7 +34,7 @@ public class SetInspectDialog extends DialogView {
     @Override
     public void open(OpenEvent event, Stage parent) {
         super.open(event, parent);
-        populate(((SetEvent.SetInspectOpenEvent) event).getSet());
+        populate(((SetEvent.SetInspectOpenEvent) event).getObj());
     }
 
     private void populate(Set set) {

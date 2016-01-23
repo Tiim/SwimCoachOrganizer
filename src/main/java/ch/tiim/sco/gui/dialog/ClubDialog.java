@@ -85,7 +85,7 @@ public class ClubDialog extends DialogView {
     @Override
     public void open(OpenEvent event, Stage parent) {
         super.open(event, parent);
-        populate(((ClubEvent.ClubOpenEvent) event).getClub());
+        populate(((ClubEvent.ClubOpenEvent) event).getObj());
     }
 
     private void populate(Club club) {

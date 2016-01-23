@@ -86,7 +86,7 @@ public class TeamDialog extends DialogView {
     @Override
     public void open(OpenEvent event, Stage parent) {
         super.open(event, parent);
-        populate(((TeamEvent.TeamOpenEvent) event).getTeam());
+        populate(((TeamEvent.TeamOpenEvent) event).getObj());
     }
 
     private void populate(Team team) {

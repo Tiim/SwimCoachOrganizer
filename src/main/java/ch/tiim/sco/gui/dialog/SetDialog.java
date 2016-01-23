@@ -105,7 +105,7 @@ public class SetDialog extends DialogView {
     @Override
     public void open(OpenEvent e, Stage parent) {
         super.open(e, parent);
-        populate(((SetEvent.SetOpenEvent) e).getSet());
+        populate(((SetEvent.SetOpenEvent) e).getObj());
     }
 
     private void populate(Set set) {

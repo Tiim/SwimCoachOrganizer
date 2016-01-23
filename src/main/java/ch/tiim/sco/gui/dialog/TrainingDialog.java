@@ -138,7 +138,7 @@ public class TrainingDialog extends DialogView {
     @Override
     public void open(OpenEvent event, Stage parent) {
         super.open(event, parent);
-        populate(((TrainingEvent.TrainingOpenEvent) event).getTraining());
+        populate(((TrainingEvent.TrainingOpenEvent) event).getObj());
     }
 
     private void populate(Training training) {
