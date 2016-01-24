@@ -13,4 +13,6 @@ public interface TableClubContent {
     List<Team> getTeams(Club c) throws Exception;
 
     List<Team> getNotTeams(Club c) throws Exception;
+
+    void setTeams(Club club, List<Team> teams) throws Exception;
 }

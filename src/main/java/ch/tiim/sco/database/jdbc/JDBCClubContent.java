@@ -18,6 +18,7 @@ public class JDBCClubContent extends Table implements ch.tiim.sco.database.Table
     private NamedParameterPreparedStatement delete;
     private NamedParameterPreparedStatement get;
     private NamedParameterPreparedStatement getNot;
+    private NamedParameterPreparedStatement deleteAll;
 
     public JDBCClubContent(DatabaseController db) throws SQLException {
         super(db);
@@ -29,6 +30,7 @@ public class JDBCClubContent extends Table implements ch.tiim.sco.database.Table
         delete = db.getPrepStmt(getSql("delete"));
         get = db.getPrepStmt(getSql("get"));
         getNot = db.getPrepStmt(getSql("get_not"));
+        deleteAll = db.getPrepStmt(getSql("delete_all"));
     }
 
     @Override
@@ -69,5 +71,20 @@ public class JDBCClubContent extends Table implements ch.tiim.sco.database.Table
             l.add(JDBCTeam.getTeam(rs));
         }
         return l;
+    }
+
+    @Override
+    public void setTeams(Club club, List<Team> teams) throws SQLException {
+        deleteAll.setInt("club_id", club.getId());
+        LOGGER.debug(MARKER_QUERRY, deleteAll);
+        deleteAll.executeUpdate(); //Might affect zero rows
+        if (!teams.isEmpty()) {
+            for (Team t : teams) {
+                add.setInt("club_id", club.getId());
+                add.setInt("team_id", t.getId());
+                add.addBatch();
+            }
+            testBatchUpdate(add);
+        }
     }
 }

@@ -49,7 +49,7 @@ public class ClubView extends MainView {
         clubs.setCellFactory(param -> new ModelCell<>());
         clubs.getSelectionModel().selectedItemProperty()
                 .addListener((observable, oldValue, newValue) -> selected(newValue));
-
+        teams.setCellFactory(param -> new ModelCell<>());
         reload();
     }
 

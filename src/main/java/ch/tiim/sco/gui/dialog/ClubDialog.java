@@ -3,18 +3,24 @@ package ch.tiim.sco.gui.dialog;
 import ch.tiim.inject.Inject;
 import ch.tiim.sco.database.DatabaseController;
 import ch.tiim.sco.database.model.Club;
+import ch.tiim.sco.database.model.Team;
 import ch.tiim.sco.gui.events.ClubEvent;
 import ch.tiim.sco.gui.events.OpenEvent;
 import ch.tiim.sco.lenex.model.Nation;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.SpinnerValueFactory;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.CheckBoxListCell;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class ClubDialog extends DialogView {
 
@@ -38,8 +44,10 @@ public class ClubDialog extends DialogView {
     private TextField code;
     @FXML
     private Spinner<Integer> externid;
+    @FXML
+    private ListView<Team> teams;
 
-
+    private HashMap<Team, ObservableValue<Boolean>> selected = new HashMap<>();
     private Club currentClub;
 
     @FXML
@@ -48,6 +56,18 @@ public class ClubDialog extends DialogView {
         Arrays.sort(nations);
         country.getItems().setAll(nations);
         externid.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, Integer.MAX_VALUE));
+
+        teams.setCellFactory(CheckBoxListCell.forListView(param -> selected.get(param), new StringConverter<Team>() {
+            @Override
+            public String toString(Team object) {
+                return object.uiString();
+            }
+
+            @Override
+            public Team fromString(String string) {
+                return null;
+            }
+        }));
     }
 
     @FXML
@@ -57,6 +77,10 @@ public class ClubDialog extends DialogView {
 
     @FXML
     void onSave() {
+        List<Team> teams = selected.keySet().stream()
+                .filter(team -> selected.get(team).getValue())
+                .collect(Collectors.toList());
+
         boolean isNew = false;
         if (currentClub == null) {
             isNew = true;
@@ -75,6 +99,7 @@ public class ClubDialog extends DialogView {
             } else {
                 db.getTblClub().updateClub(currentClub);
             }
+            db.getTblClubContent().setTeams(currentClub, teams);
         } catch (Exception e) {
             LOGGER.warn("Can't save club", e);
         }
@@ -101,6 +126,24 @@ public class ClubDialog extends DialogView {
             code.setText(club.getCode());
             externid.getValueFactory().setValue(club.getExternId());
         }
+        List<Team> notInClub;
+        List<Team> inClub;
+        try {
+            if (club != null) {
+                inClub = db.getTblClubContent().getTeams(club);
+                notInClub = db.getTblClubContent().getNotTeams(club);
+            } else {
+                inClub = new ArrayList<>();
+                notInClub = db.getTblTeam().getAllTeams();
+            }
+        } catch (Exception e) {
+            LOGGER.warn("Can't load teams", e);
+            return;
+        }
+        inClub.forEach(team -> selected.put(team, new SimpleBooleanProperty(true)));
+        notInClub.forEach(team -> selected.put(team, new SimpleBooleanProperty(false)));
+        teams.getItems().setAll(inClub);
+        teams.getItems().addAll(notInClub);
     }
 
 

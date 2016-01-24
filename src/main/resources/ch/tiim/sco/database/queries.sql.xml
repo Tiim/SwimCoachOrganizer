@@ -50,6 +50,10 @@
             WHERE club_content.team_id = team.team_id AND club_content.club_id = :club_id
             )
         </entry>
+        <entry name="delete_all">
+            DELETE FROM club_content
+            WHERE club_id = :club_id
+        </entry>
     </module>
     <module name="Team">
         <entry name="add">
