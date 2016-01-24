@@ -2,6 +2,7 @@ package ch.tiim.sco.database;
 
 import ch.tiim.jdbc.namedparameters.NamedParameterPreparedStatement;
 import ch.tiim.sco.database.jdbc.*;
+import ch.tiim.sco.util.Debug;
 import ch.tiim.sql_xml.SqlLoader;
 import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
@@ -99,10 +100,6 @@ public class DatabaseController implements Closeable {
         return "";
     }
 
-    public SqlLoader getSqlLoader() {
-        return sqlLoader;
-    }
-
     public NamedParameterPreparedStatement getPrepStmt(String query) throws SQLException {
         return NamedParameterPreparedStatement.createNamedParameterPreparedStatement(conn, query);
     }
@@ -131,8 +128,18 @@ public class DatabaseController implements Closeable {
         }
     }
 
+    public String debugQuery(String q) throws SQLException {
+        LOGGER.info("Running debug query " + q);
+        Statement stmt = conn.createStatement();
+        return Debug.rs(stmt.executeQuery(q));
+    }
+
     public Connection getConn() {
         return conn;
+    }
+
+    public SqlLoader getSqlLoader() {
+        return sqlLoader;
     }
 
     public TableClub getTblClub() {
@@ -141,6 +148,10 @@ public class DatabaseController implements Closeable {
 
     public TableClubContent getTblClubContent() {
         return tblClubContent;
+    }
+
+    public TableResult getTblResult() {
+        return tblResult;
     }
 
     public TableSets getTblSet() {
@@ -155,6 +166,10 @@ public class DatabaseController implements Closeable {
         return tblSetStroke;
     }
 
+    public TableSwimmer getTblSwimmer() {
+        return tblSwimmer;
+    }
+
     public TableTeam getTblTeam() {
         return tblTeam;
     }
@@ -163,19 +178,11 @@ public class DatabaseController implements Closeable {
         return tblTeamContent;
     }
 
-    public TableSwimmer getTblSwimmer() {
-        return tblSwimmer;
-    }
-
     public TableTraining getTblTraining() {
         return tblTraining;
     }
 
     public TableTrainingContent getTblTrainingContent() {
         return tblTrainingContent;
-    }
-
-    public TableResult getTblResult() {
-        return tblResult;
     }
 }

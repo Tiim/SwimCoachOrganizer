@@ -7,7 +7,7 @@
 <?import javafx.scene.text.Font?>
 <VBox xmlns:fx="http://javafx.com/fxml/1" fx:id="root" xmlns="http://javafx.com/javafx/8.0.40" fx:controller="ch.tiim.sco.gui.main.ConsoleView">
     <children>
-        <TextArea fx:id="out" editable="false" prefHeight="200.0" prefWidth="200.0" wrapText="true" VBox.vgrow="ALWAYS">
+        <TextArea fx:id="out" editable="false" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
          <font>
             <Font name="Courier New" size="14.0" />
          </font></TextArea>

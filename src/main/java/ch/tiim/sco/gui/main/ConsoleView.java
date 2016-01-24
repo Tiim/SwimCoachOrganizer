@@ -29,6 +29,7 @@ public class ConsoleView extends MainView {
     private TextArea in;
 
     private NashornScriptEngine engine;
+    private String lastCommand;
 
     public ConsoleView() {
         engine = (NashornScriptEngine) new ScriptEngineManager().getEngineByName("nashorn");
@@ -49,21 +50,48 @@ public class ConsoleView extends MainView {
     private void onTyped(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER && !event.isShiftDown()) {
             event.consume();
-            String s = in.getText();
+            String s = in.getText().trim();
             in.setText("");
             out.appendText("\n> " + s);
             try {
-                Object eval = engine.eval(s);
-                if (eval != null) {
-                    out.appendText("\n" + eval.toString());
-                }
+                eval(s);
+            } catch (ScriptException e) {
+                out.appendText("\n" + e.getMessage());
             } catch (Exception e) {
                 StringWriter sw = new StringWriter();
                 e.printStackTrace(new PrintWriter(sw));
                 out.appendText("\nException:\n" + e.getMessage() + "\n" + sw.toString());
             }
+            lastCommand = s;
         } else if (event.getCode() == KeyCode.ENTER && event.isShiftDown()) {
             in.appendText("\n");
+        } else if (event.getCode() == KeyCode.UP) {
+            in.setText(lastCommand);
+        }
+    }
+
+    private void eval(String s) throws ScriptException {
+        if (s.startsWith("$")) {
+            String[] split = s.split(" ", 2);
+            handle(split[0].trim(), split.length == 2 ? split[1].trim() : null);
+        } else {
+            Object eval = engine.eval(s);
+            if (eval != null) {
+                out.appendText("\n" + eval.toString());
+            }
+        }
+    }
+
+    private void handle(String cmd, String arg) throws ScriptException {
+        engine.put("__cmd__", cmd);
+        engine.put("__arg__", arg);
+        switch (cmd) {
+            case "$q":
+                eval("db.debugQuery(__arg__);");
+                break;
+            default:
+                eval("\"Unknown command \" + __cmd__");
+                break;
         }
     }
 
