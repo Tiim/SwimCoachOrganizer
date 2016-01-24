@@ -70,7 +70,7 @@ public class SwimmerDialog extends DialogView {
         currentSwimmer.setPhoneMobile(phoneMobile.getText());
         currentSwimmer.setPhoneWork(phoneWork.getText());
         currentSwimmer.setAddress(address1.getText() + "\n" + address2.getText() + "\n" + address3.getText());
-        if (!licenseId.getText().isEmpty()) {
+        if (licenseId.getText() != null && !licenseId.getText().isEmpty()) {
             currentSwimmer.setId(Integer.parseInt(licenseId.getText()));
         }
         currentSwimmer.setIsFemale(isFemale.isSelected());
