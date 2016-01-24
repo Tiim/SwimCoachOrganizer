@@ -4,6 +4,7 @@ import ch.tiim.sco.database.model.Result;
 import ch.tiim.sco.database.model.Swimmer;
 import ch.tiim.sco.gui.dialog.DialogView;
 import ch.tiim.sco.gui.dialog.ResultDialog;
+import ch.tiim.sco.gui.dialog.ResultImportDialog;
 import javafx.stage.Stage;
 
 public class ResultEvent extends Event<Result> {
@@ -47,6 +48,24 @@ public class ResultEvent extends Event<Result> {
     public static class ResultSaveEvent extends ResultEvent {
         public ResultSaveEvent(Result obj, Swimmer swimmer) {
             super(obj, swimmer);
+        }
+    }
+
+    public static class ResultImportEvent implements OpenEvent {
+        private final Stage stage;
+
+        public ResultImportEvent(Stage stage) {
+            this.stage = stage;
+        }
+
+        @Override
+        public Class<? extends DialogView> getDialog() {
+            return ResultImportDialog.class;
+        }
+
+        @Override
+        public Stage getParent() {
+            return stage;
         }
     }
 }

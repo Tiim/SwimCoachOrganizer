@@ -114,11 +114,16 @@ public class ResultView extends MainView {
         }
     }
 
+    @FXML
+    private void onImport() {
+        eventBus.post(new ResultEvent.ResultImportEvent(mainStage));
+    }
+
     @Subscribe
     public void onResult(ResultEvent event) {
         populate();
         swimmers.getSelectionModel().select(event.getSwimmer());
-        results.getSelectionModel().select(event.getObj());
+//        results.getSelectionModel().select(event.getObj());
     }
 
     @Override

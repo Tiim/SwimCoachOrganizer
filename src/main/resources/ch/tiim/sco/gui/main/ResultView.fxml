@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.*?>
 <SplitPane xmlns:fx="http://javafx.com/fxml/1" fx:id="root" dividerPositions="0.25" maxHeight="1.7976931348623157E308"
            maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity"
            xmlns="http://javafx.com/javafx/8.0.40" fx:controller="ch.tiim.sco.gui.main.ResultView">
@@ -26,6 +25,8 @@
                 </TableView>
                 <HBox alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                     <children>
+                        <Button mnemonicParsing="false" onAction="#onImport" text="Import"/>
+                        <Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS"/>
                         <Button mnemonicParsing="false" onAction="#onEdit" text="Edit"/>
                         <Button mnemonicParsing="false" onAction="#onDelete" text="Delete"/>
                         <Button mnemonicParsing="false" onAction="#onNew" text="New"/>
