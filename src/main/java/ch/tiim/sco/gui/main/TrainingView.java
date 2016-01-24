@@ -66,7 +66,7 @@ public class TrainingView extends MainView {
             if (event.getClickCount() == 2) onDoubleClick();
         });
 
-        reload();
+        populate();
     }
 
     private void selected(Training newValue) {
@@ -88,7 +88,7 @@ public class TrainingView extends MainView {
         }
     }
 
-    private void reload() {
+    private void populate() {
         try {
             trainings.getItems().setAll(db.getTblTraining().getAllTrainings());
         } catch (Exception e) {
@@ -124,7 +124,8 @@ public class TrainingView extends MainView {
 
     @Subscribe
     public void onTraining(TrainingEvent event) {
-        reload();
+        populate();
+        trainings.getSelectionModel().select(event.getObj());
     }
 
     @Override

@@ -117,6 +117,8 @@ public class ResultView extends MainView {
     @Subscribe
     public void onResult(ResultEvent event) {
         populate();
+        swimmers.getSelectionModel().select(event.getSwimmer());
+        results.getSelectionModel().select(event.getObj());
     }
 
     @Override

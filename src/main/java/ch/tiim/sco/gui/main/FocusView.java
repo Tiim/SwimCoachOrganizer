@@ -36,7 +36,7 @@ public class FocusView extends MainView {
     private void initialize() {
         foci.getSelectionModel().selectedItemProperty()
                 .addListener((observable, oldValue, newValue) -> onSelect(newValue));
-        reload();
+        populate();
     }
 
     private void onSelect(SetFocus focus) {
@@ -47,7 +47,7 @@ public class FocusView extends MainView {
         }
     }
 
-    private void reload() {
+    private void populate() {
         try {
             foci.setItems(FXCollections.observableArrayList(db.getTblSetFocus().getAllFoci()));
         } catch (Exception e) {
@@ -83,7 +83,8 @@ public class FocusView extends MainView {
 
     @Subscribe
     public void onFocus(FocusEvent event) {
-        reload();
+        populate();
+        foci.getSelectionModel().select(event.getObj());
     }
 
     @Override

@@ -35,7 +35,7 @@ public class StrokeView extends MainView {
     private void initialize() {
         strokes.getSelectionModel().selectedItemProperty()
                 .addListener((observable, oldValue, newValue) -> onSelect(newValue));
-        reload();
+        populate();
     }
 
     private void onSelect(SetStroke stroke) {
@@ -46,7 +46,7 @@ public class StrokeView extends MainView {
         }
     }
 
-    private void reload() {
+    private void populate() {
         try {
             strokes.setItems(FXCollections.observableArrayList(db.getTblSetStroke().getAllStrokes()));
         } catch (Exception e) {
@@ -82,7 +82,8 @@ public class StrokeView extends MainView {
 
     @Subscribe
     public void onStroke(StrokeEvent event) {
-        reload();
+        populate();
+        strokes.getSelectionModel().select(event.getObj());
     }
 
     @Override

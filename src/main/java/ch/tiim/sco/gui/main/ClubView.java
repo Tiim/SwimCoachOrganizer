@@ -50,7 +50,7 @@ public class ClubView extends MainView {
         clubs.getSelectionModel().selectedItemProperty()
                 .addListener((observable, oldValue, newValue) -> selected(newValue));
         teams.setCellFactory(param -> new ModelCell<>());
-        reload();
+        populate();
     }
 
     private void selected(Club newValue) {
@@ -71,7 +71,7 @@ public class ClubView extends MainView {
         }
     }
 
-    private void reload() {
+    private void populate() {
         try {
             clubs.getItems().setAll(db.getTblClub().getAll());
         } catch (Exception e) {
@@ -107,7 +107,8 @@ public class ClubView extends MainView {
 
     @Subscribe
     public void onClub(ClubEvent event) {
-        reload();
+        populate();
+        clubs.getSelectionModel().select(event.getObj());
     }
 
     @Override

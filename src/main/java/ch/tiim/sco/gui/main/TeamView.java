@@ -104,6 +104,7 @@ public class TeamView extends MainView {
     @Subscribe
     public void onTeam(TeamEvent event) {
         populate();
+        teams.getSelectionModel().select(event.getObj());
     }
 
     @Override

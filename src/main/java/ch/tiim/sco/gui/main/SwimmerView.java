@@ -124,6 +124,7 @@ public class SwimmerView extends MainView {
     @Subscribe
     public void onSwimmer(SwimmerEvent event) {
         populate();
+        swimmers.getSelectionModel().select(event.getObj());
     }
 
     @Override

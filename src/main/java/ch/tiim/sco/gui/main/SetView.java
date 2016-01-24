@@ -51,7 +51,7 @@ public class SetView extends MainView {
         sets.setCellFactory(param -> new ModelCell<>());
         sets.getSelectionModel().selectedItemProperty()
                 .addListener((observable, oldValue, newValue) -> onSelected(newValue));
-        reload();
+        populate();
     }
 
     private void onSelected(Set set) {
@@ -67,7 +67,7 @@ public class SetView extends MainView {
         }
     }
 
-    private void reload() {
+    private void populate() {
         try {
             sets.getItems().setAll(db.getTblSet().getAllSets());
         } catch (Exception e) {
@@ -103,7 +103,8 @@ public class SetView extends MainView {
 
     @Subscribe
     public void onSet(SetEvent event) {
-        reload();
+        populate();
+        sets.getSelectionModel().select(event.getObj());
     }
 
     @Override
