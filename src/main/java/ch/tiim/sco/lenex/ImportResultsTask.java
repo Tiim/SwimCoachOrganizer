@@ -10,12 +10,12 @@ import javafx.util.Pair;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ImportReultsTask extends Task<List<Pair<Swimmer, Result>>> {
+public class ImportResultsTask extends Task<List<Pair<Swimmer, Result>>> {
 
     private final List<Swimmer> swimmers;
     private final Lenex lenex;
 
-    public ImportReultsTask(List<Swimmer> swimmers, Lenex lenex) {
+    public ImportResultsTask(List<Swimmer> swimmers, Lenex lenex) {
 
         this.swimmers = swimmers;
         this.lenex = lenex;
