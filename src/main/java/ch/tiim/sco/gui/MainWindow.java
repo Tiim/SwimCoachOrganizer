@@ -65,7 +65,8 @@ public class MainWindow extends View {
                 null,
                 ViewLoader.load(ClubView.class),
                 ViewLoader.load(TeamView.class),
-                ViewLoader.load(SwimmerView.class)
+                ViewLoader.load(SwimmerView.class),
+                ViewLoader.load(ResultView.class)
         ));
 
         if (!version.isDeployed()) {

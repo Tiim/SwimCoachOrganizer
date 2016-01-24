@@ -16,6 +16,10 @@ public class Result implements Model {
     private Course course;
 
 
+    public Result() {
+
+    }
+
     public Result(Integer id, String meet, LocalDate meetDate,
                   Duration swimTime, Duration reactionTime, Stroke stroke, int distance, Course course) {
         this(meet, meetDate, swimTime, reactionTime, stroke, distance, course);
@@ -36,70 +40,6 @@ public class Result implements Model {
     @Override
     public String uiString() {
         return String.format("%dm %s: %s - %s %s", distance, stroke, swimTime, meetDate.toString(), meet);
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getMeet() {
-        return meet;
-    }
-
-    public void setMeet(String meet) {
-        this.meet = meet;
-    }
-
-    public LocalDate getMeetDate() {
-        return meetDate;
-    }
-
-    public void setMeetDate(LocalDate meetDate) {
-        this.meetDate = meetDate;
-    }
-
-    public Duration getSwimTime() {
-        return swimTime;
-    }
-
-    public void setSwimTime(Duration swimTime) {
-        this.swimTime = swimTime;
-    }
-
-    public Duration getReactionTime() {
-        return reactionTime;
-    }
-
-    public void setReactionTime(Duration reactionTime) {
-        this.reactionTime = reactionTime;
-    }
-
-    public Stroke getStroke() {
-        return stroke;
-    }
-
-    public void setStroke(Stroke stroke) {
-        this.stroke = stroke;
-    }
-
-    public int getDistance() {
-        return distance;
-    }
-
-    public void setDistance(int distance) {
-        this.distance = distance;
-    }
-
-    public Course getCourse() {
-        return course;
-    }
-
-    public void setCourse(Course course) {
-        this.course = course;
     }
 
     @Override
@@ -131,5 +71,69 @@ public class Result implements Model {
                 ", stroke=" + stroke +
                 ", distance=" + distance +
                 '}';
+    }
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
+    }
+
+    public int getDistance() {
+        return distance;
+    }
+
+    public void setDistance(int distance) {
+        this.distance = distance;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getMeet() {
+        return meet;
+    }
+
+    public void setMeet(String meet) {
+        this.meet = meet;
+    }
+
+    public LocalDate getMeetDate() {
+        return meetDate;
+    }
+
+    public void setMeetDate(LocalDate meetDate) {
+        this.meetDate = meetDate;
+    }
+
+    public Duration getReactionTime() {
+        return reactionTime;
+    }
+
+    public void setReactionTime(Duration reactionTime) {
+        this.reactionTime = reactionTime;
+    }
+
+    public Stroke getStroke() {
+        return stroke;
+    }
+
+    public void setStroke(Stroke stroke) {
+        this.stroke = stroke;
+    }
+
+    public Duration getSwimTime() {
+        return swimTime;
+    }
+
+    public void setSwimTime(Duration swimTime) {
+        this.swimTime = swimTime;
     }
 }
