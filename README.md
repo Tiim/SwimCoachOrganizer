@@ -1,6 +1,4 @@
-# SwimCoachManager :swimmer:
-
-[![Join the chat at https://gitter.im/Tiim/SwimCoachOrganizer](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Tiim/SwimCoachOrganizer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+# SwimCoachOrganizer :swimmer:
 
 [![Build Status](https://travis-ci.org/Tiim/SwimCoachOrganizer.svg?branch=master)](https://travis-ci.org/Tiim/SwimCoachOrganizer)
 
