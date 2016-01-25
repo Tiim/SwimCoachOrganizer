@@ -4,7 +4,7 @@ import ch.tiim.jdbc.namedparameters.NamedParameterPreparedStatement;
 import ch.tiim.sco.database.DatabaseController;
 import ch.tiim.sco.database.model.Set;
 import ch.tiim.sco.database.model.SetFocus;
-import ch.tiim.sco.database.model.SetForm;
+import ch.tiim.sco.database.model.SetStroke;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -47,10 +47,10 @@ public class JDBCSets extends Table implements ch.tiim.sco.database.TableSets {
         } else {
             add.setInt("focus_id", set.getFocus().getId());
         }
-        if (set.getForm() == null) {
-            add.setNull("form_id", Types.INTEGER);
+        if (set.getStroke() == null) {
+            add.setNull("stroke_id", Types.INTEGER);
         } else {
-            add.setInt("form_id", set.getForm().getId());
+            add.setInt("stroke_id", set.getStroke().getId());
         }
         add.setString("notes", set.getNotes());
         add.setInt("interval", set.getInterval());
@@ -73,10 +73,10 @@ public class JDBCSets extends Table implements ch.tiim.sco.database.TableSets {
         } else {
             update.setInt("focus_id", set.getFocus().getId());
         }
-        if (set.getForm() == null) {
-            update.setNull("form_id", Types.INTEGER);
+        if (set.getStroke() == null) {
+            update.setNull("stroke_id", Types.INTEGER);
         } else {
-            update.setInt("form_id", set.getForm().getId());
+            update.setInt("stroke_id", set.getStroke().getId());
         }
         update.setString("notes", set.getNotes());
         update.setInt("interval", set.getInterval());
@@ -105,9 +105,9 @@ public class JDBCSets extends Table implements ch.tiim.sco.database.TableSets {
     }
 
     static Set getSet(ResultSet rs) throws SQLException {
-        SetForm form = null;
-        if (rs.getInt("form_id") != 0) {
-            form = JDBCSetForm.getSetForm(rs, "form_");
+        SetStroke stroke = null;
+        if (rs.getInt("stroke_id") != 0) {
+            stroke = JDBCSetStroke.getSetStroke(rs, "stroke_");
         }
         SetFocus focus = null;
         if (rs.getInt("focus_id") != 0) {
@@ -122,7 +122,7 @@ public class JDBCSets extends Table implements ch.tiim.sco.database.TableSets {
                 rs.getInt("distance_f3"),
                 rs.getInt("intensity"),
                 focus,
-                form,
+                stroke,
                 rs.getString("notes"),
                 rs.getInt("interval"),
                 rs.getBoolean("is_pause")

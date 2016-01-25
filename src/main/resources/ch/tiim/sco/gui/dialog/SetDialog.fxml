@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<GridPane xmlns:fx="http://javafx.com/fxml/1" fx:id="root" maxHeight="1.7976931348623157E308"
+          maxWidth="1.7976931348623157E308" prefHeight="365.0" prefWidth="518.0" xmlns="http://javafx.com/javafx/8.0.40"
+          fx:controller="ch.tiim.sco.gui.dialog.SetDialog">
+    <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="248.0" minWidth="10.0" prefWidth="139.0"/>
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="405.0" minWidth="10.0" prefWidth="359.0"/>
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+    </rowConstraints>
+    <children>
+        <TextField fx:id="name" GridPane.columnIndex="1"/>
+        <Label text="Name"/>
+        <TextField fx:id="content" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <children>
+                <Spinner fx:id="distance1" maxWidth="1.7976931348623157E308"/>
+                <Label minHeight="-Infinity" minWidth="-Infinity" text="x"/>
+                <Spinner fx:id="distance2" maxWidth="1.7976931348623157E308"/>
+                <Label minHeight="-Infinity" minWidth="-Infinity" text="x"/>
+                <Spinner fx:id="distance3" maxWidth="1.7976931348623157E308"/>
+                <Label minHeight="-Infinity" minWidth="-Infinity" text=" Meters"/>
+            </children>
+        </HBox>
+        <Label text="Content" GridPane.rowIndex="1"/>
+        <Label text="Distance" GridPane.rowIndex="2"/>
+        <Label text="Intensity" GridPane.rowIndex="3"/>
+        <Label text="Focus" GridPane.rowIndex="4"/>
+        <Label text="Stroke" GridPane.rowIndex="5"/>
+        <Label text="Time" GridPane.rowIndex="6"/>
+        <Slider fx:id="intensity" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+        <ChoiceBox fx:id="focus" maxWidth="1.7976931348623157E308" minWidth="-Infinity" GridPane.columnIndex="1"
+                   GridPane.rowIndex="4"/>
+        <ChoiceBox fx:id="stroke" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+        <HBox alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.rowIndex="6">
+            <children>
+                <TextField fx:id="time" HBox.hgrow="ALWAYS"/>
+                <RadioButton fx:id="isIntervall" mnemonicParsing="false" selected="true" text="Intervall">
+                    <toggleGroup>
+                        <ToggleGroup fx:id="group"/>
+                    </toggleGroup>
+                </RadioButton>
+                <RadioButton mnemonicParsing="false" text="Pause" toggleGroup="$group"/>
+            </children>
+        </HBox>
+        <TextArea fx:id="notes" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="10.0"
+                  minWidth="0.0" GridPane.columnSpan="2" GridPane.rowIndex="7" GridPane.vgrow="ALWAYS">
+            <GridPane.margin>
+                <Insets bottom="5.0"/>
+            </GridPane.margin>
+        </TextArea>
+        <HBox alignment="CENTER_RIGHT" GridPane.columnIndex="1" GridPane.rowIndex="8">
+            <children>
+                <Button mnemonicParsing="false" onAction="#onSave" text="Save"/>
+                <Button mnemonicParsing="false" onAction="#onCancel" text="Cancel"/>
+            </children>
+        </HBox>
+    </children>
+    <padding>
+        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+    </padding>
+</GridPane>

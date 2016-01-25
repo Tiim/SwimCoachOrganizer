@@ -12,7 +12,7 @@ public class Set implements Model {
     private int distance3;
     private int intensity;
     private SetFocus focus;
-    private SetForm form;
+    private SetStroke stroke;
     private String notes;
     private int interval;
     private boolean isPause;
@@ -21,12 +21,12 @@ public class Set implements Model {
 
     }
 
-    public Set(int id, String name, String content, int distance1, int distance2, int distance3, int intensity, SetFocus focus, SetForm form, String notes, int interval, boolean isPause) {
-        this(name, content, distance1, distance2, distance3, intensity, focus, form, notes, interval, isPause);
+    public Set(int id, String name, String content, int distance1, int distance2, int distance3, int intensity, SetFocus focus, SetStroke stroke, String notes, int interval, boolean isPause) {
+        this(name, content, distance1, distance2, distance3, intensity, focus, stroke, notes, interval, isPause);
         this.id = id;
     }
 
-    public Set(String name, String content, int distance1, int distance2, int distance3, int intensity, SetFocus focus, SetForm form, String notes, int interval, boolean isPause) {
+    public Set(String name, String content, int distance1, int distance2, int distance3, int intensity, SetFocus focus, SetStroke stroke, String notes, int interval, boolean isPause) {
         this.name = name;
         this.content = content;
         this.distance1 = normalize(distance1);
@@ -34,7 +34,7 @@ public class Set implements Model {
         this.distance3 = normalize(distance3);
         this.intensity = intensity;
         this.focus = focus;
-        this.form = form;
+        this.stroke = stroke;
         this.notes = notes;
         this.interval = interval;
         this.isPause = isPause;
@@ -50,7 +50,7 @@ public class Set implements Model {
     @Override
     public int hashCode() {
         return Objects.hash(name, content, distance1, distance2,
-                distance3, intensity, focus, form, notes, interval, isPause);
+                distance3, intensity, focus, stroke, notes, interval, isPause);
     }
 
     @Override
@@ -65,7 +65,7 @@ public class Set implements Model {
                 Objects.equals(this.distance3, that.distance3) &&
                 Objects.equals(this.intensity, that.intensity) &&
                 Objects.equals(this.focus, that.focus) &&
-                Objects.equals(this.form, that.form) &&
+                Objects.equals(this.stroke, that.stroke) &&
                 Objects.equals(this.notes, that.notes) &&
                 Objects.equals(this.interval, that.interval) &&
                 Objects.equals(this.isPause, that.isPause);
@@ -82,7 +82,7 @@ public class Set implements Model {
                 ", distance3=" + distance3 +
                 ", intensity=" + intensity +
                 ", focus=" + focus +
-                ", form=" + form +
+                ", stroke=" + stroke +
                 ", notes='" + notes + '\'' +
                 ", interval=" + interval +
                 ", isPause=" + isPause +
@@ -146,12 +146,12 @@ public class Set implements Model {
         this.focus = focus;
     }
 
-    public SetForm getForm() {
-        return form;
+    public SetStroke getStroke() {
+        return stroke;
     }
 
-    public void setForm(SetForm form) {
-        this.form = form;
+    public void setStroke(SetStroke stroke) {
+        this.stroke = stroke;
     }
 
     public Integer getId() {

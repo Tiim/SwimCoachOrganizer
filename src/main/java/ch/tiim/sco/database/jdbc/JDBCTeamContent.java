@@ -20,6 +20,7 @@ public class JDBCTeamContent extends Table implements ch.tiim.sco.database.Table
     private NamedParameterPreparedStatement delete;
     private NamedParameterPreparedStatement get;
     private NamedParameterPreparedStatement getNot;
+    private NamedParameterPreparedStatement deleteAll;
 
     public JDBCTeamContent(DatabaseController db) throws SQLException {
         super(db);
@@ -31,26 +32,11 @@ public class JDBCTeamContent extends Table implements ch.tiim.sco.database.Table
         delete = db.getPrepStmt(getSql("delete"));
         get = db.getPrepStmt(getSql("get"));
         getNot = db.getPrepStmt(getSql("get_not"));
+        deleteAll = db.getPrepStmt(getSql("delete_all"));
     }
 
     @Override
-    public void addMember(Team t, Swimmer m) throws SQLException {
-        add.setInt("team_id", t.getId());
-        add.setInt("swimmer_id", m.getId());
-        LOGGER.debug(MARKER_QUERRY, add);
-        testUpdate(add);
-    }
-
-    @Override
-    public void deleteMember(Team t, Swimmer m) throws SQLException {
-        delete.setInt("team_id", t.getId());
-        delete.setInt("swimmer_id", m.getId());
-        LOGGER.debug(MARKER_QUERRY, delete);
-        testUpdate(delete);
-    }
-
-    @Override
-    public List<Swimmer> getMembers(Team t) throws SQLException {
+    public List<Swimmer> getSwimmers(Team t) throws SQLException {
         get.setInt("team_id", t.getId());
         LOGGER.debug(MARKER_QUERRY, get);
         ResultSet rs = get.executeQuery();
@@ -62,7 +48,23 @@ public class JDBCTeamContent extends Table implements ch.tiim.sco.database.Table
     }
 
     @Override
-    public List<Swimmer> getNotMembers(Team t) throws SQLException {
+    public void addSwimmer(Team t, Swimmer m) throws SQLException {
+        add.setInt("team_id", t.getId());
+        add.setInt("swimmer_id", m.getId());
+        LOGGER.debug(MARKER_QUERRY, add);
+        testUpdate(add);
+    }
+
+    @Override
+    public void deleteSwimmer(Team t, Swimmer m) throws SQLException {
+        delete.setInt("team_id", t.getId());
+        delete.setInt("swimmer_id", m.getId());
+        LOGGER.debug(MARKER_QUERRY, delete);
+        testUpdate(delete);
+    }
+
+    @Override
+    public List<Swimmer> getSwimmersNotInTeam(Team t) throws SQLException {
         getNot.setInt("team_id", t.getId());
         LOGGER.debug(MARKER_QUERRY, getNot);
         ResultSet rs = getNot.executeQuery();
@@ -71,5 +73,20 @@ public class JDBCTeamContent extends Table implements ch.tiim.sco.database.Table
             l.add(JDBCSwimmer.getSwimmer(rs));
         }
         return l;
+    }
+
+    @Override
+    public void setSwimmers(Team t, List<Swimmer> swimmers) throws Exception {
+        deleteAll.setInt("team_id", t.getId());
+        LOGGER.debug(MARKER_QUERRY, deleteAll);
+        deleteAll.executeUpdate(); //Might affect zero rows
+        if (!swimmers.isEmpty()) {
+            for (Swimmer s : swimmers) {
+                add.setInt("team_id", t.getId());
+                add.setInt("swimmer_id", s.getId());
+                add.addBatch();
+            }
+            testBatchUpdate(add);
+        }
     }
 }

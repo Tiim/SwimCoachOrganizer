@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<SplitPane xmlns:fx="http://javafx.com/fxml/1" fx:id="root" dividerPositions="0.25" maxHeight="1.7976931348623157E308"
+           maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity"
+           xmlns="http://javafx.com/javafx/8.0.40" fx:controller="ch.tiim.sco.gui.main.TeamView">
+    <items>
+        <ListView fx:id="teams" prefHeight="200.0" prefWidth="200.0"/>
+        <VBox>
+            <children>
+                <TableView fx:id="swimmers" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                           VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="firstName" prefWidth="75.0" text="First Name"/>
+                        <TableColumn fx:id="name" prefWidth="75.0" text="Name"/>
+                        <TableColumn fx:id="gender" prefWidth="75.0" text="Gender"/>
+                        <TableColumn fx:id="address" prefWidth="75.0" text="Address"/>
+                        <TableColumn fx:id="email" prefWidth="75.0" text="Email"/>
+                        <TableColumn fx:id="birthday" prefWidth="75.0" text="Birthday"/>
+                    </columns>
+                    <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                    </columnResizePolicy>
+                </TableView>
+                <HBox alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                    <children>
+                        <Button mnemonicParsing="false" onAction="#onEdit" text="Edit"/>
+                        <Button mnemonicParsing="false" onAction="#onDelete" text="Delete"/>
+                        <Button mnemonicParsing="false" onAction="#onNew" text="New"/>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </items>
+</SplitPane>

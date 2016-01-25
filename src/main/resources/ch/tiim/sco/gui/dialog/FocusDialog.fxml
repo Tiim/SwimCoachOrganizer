@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<VBox xmlns:fx="http://javafx.com/fxml/1" fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+      minWidth="-Infinity" prefHeight="229.0" prefWidth="466.0" xmlns="http://javafx.com/javafx/8.0.40"
+      fx:controller="ch.tiim.sco.gui.dialog.FocusDialog">
+    <children>
+        <HBox>
+            <children>
+                <TextField fx:id="name" promptText="Name" HBox.hgrow="ALWAYS"/>
+                <TextField fx:id="abbr" promptText="Abbrevation"/>
+            </children>
+        </HBox>
+        <TextArea fx:id="notes" prefHeight="200.0" prefWidth="200.0" promptText="Notes" VBox.vgrow="ALWAYS"/>
+        <HBox alignment="CENTER_RIGHT">
+            <children>
+                <Button mnemonicParsing="false" onAction="#onSave" text="Save"/>
+                <Button mnemonicParsing="false" onAction="#onCancel" text="Cancel"/>
+            </children>
+        </HBox>
+    </children>
+    <padding>
+        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+    </padding>
+</VBox>

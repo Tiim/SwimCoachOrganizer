@@ -2,6 +2,7 @@ package ch.tiim.sco.database;
 
 import ch.tiim.jdbc.namedparameters.NamedParameterPreparedStatement;
 import ch.tiim.sco.database.jdbc.*;
+import ch.tiim.sco.util.Debug;
 import ch.tiim.sql_xml.SqlLoader;
 import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
@@ -24,7 +25,7 @@ public class DatabaseController implements Closeable {
     private static final String VERSION = "1";
 
     private final TableSetFocus tblSetFocus;
-    private final TableSetForm tblSetForm;
+    private final TableSetStroke tblSetStroke;
     private final TableTraining tblTraining;
     private final TableTrainingContent tblTrainingContent;
     private final TableTeam tblTeam;
@@ -68,7 +69,7 @@ public class DatabaseController implements Closeable {
 
         sqlLoader = new SqlLoader("/ch/tiim/sco/database/queries.sql.xml");
         tblSetFocus = new JDBCSetFocus(this);
-        tblSetForm = new JDBCSetForm(this);
+        tblSetStroke = new JDBCSetStroke(this);
         tblTraining = new JDBCTraining(this);
         tblSet = new JDBCSets(this);
         tblTrainingContent = new JDBCTrainingContent(this);
@@ -99,10 +100,6 @@ public class DatabaseController implements Closeable {
         return "";
     }
 
-    public SqlLoader getSqlLoader() {
-        return sqlLoader;
-    }
-
     public NamedParameterPreparedStatement getPrepStmt(String query) throws SQLException {
         return NamedParameterPreparedStatement.createNamedParameterPreparedStatement(conn, query);
     }
@@ -131,8 +128,18 @@ public class DatabaseController implements Closeable {
         }
     }
 
+    public String debugQuery(String q) throws SQLException {
+        LOGGER.info("Running debug query " + q);
+        Statement stmt = conn.createStatement();
+        return Debug.rs(stmt.executeQuery(q));
+    }
+
     public Connection getConn() {
         return conn;
+    }
+
+    public SqlLoader getSqlLoader() {
+        return sqlLoader;
     }
 
     public TableClub getTblClub() {
@@ -143,6 +150,10 @@ public class DatabaseController implements Closeable {
         return tblClubContent;
     }
 
+    public TableResult getTblResult() {
+        return tblResult;
+    }
+
     public TableSets getTblSet() {
         return tblSet;
     }
@@ -151,8 +162,12 @@ public class DatabaseController implements Closeable {
         return tblSetFocus;
     }
 
-    public TableSetForm getTblSetForm() {
-        return tblSetForm;
+    public TableSetStroke getTblSetStroke() {
+        return tblSetStroke;
+    }
+
+    public TableSwimmer getTblSwimmer() {
+        return tblSwimmer;
     }
 
     public TableTeam getTblTeam() {
@@ -163,19 +178,11 @@ public class DatabaseController implements Closeable {
         return tblTeamContent;
     }
 
-    public TableSwimmer getTblSwimmer() {
-        return tblSwimmer;
-    }
-
     public TableTraining getTblTraining() {
         return tblTraining;
     }
 
     public TableTrainingContent getTblTrainingContent() {
         return tblTrainingContent;
-    }
-
-    public TableResult getTblResult() {
-        return tblResult;
     }
 }

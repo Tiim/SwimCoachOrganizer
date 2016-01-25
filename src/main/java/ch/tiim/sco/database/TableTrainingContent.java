@@ -14,4 +14,6 @@ public interface TableTrainingContent {
     void deleteSet(Training t, Set s, int index) throws Exception;
 
     void updateIndex(Training tr, int index, boolean up) throws Exception;
+
+    void setSets(Training tr, List<IndexedSet> items) throws Exception;
 }

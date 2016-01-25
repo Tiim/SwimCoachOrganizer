@@ -39,6 +39,7 @@ public class JDBCSwimmer extends Table implements TableSwimmer {
     public void addSwimmer(Swimmer m) throws SQLException {
         add.setString("first_name", m.getFirstName());
         add.setString("last_name", m.getLastName());
+        if (m.getBirthDay() == null) throw new NullPointerException("Birthday must be set");
         add.setString("birthday", m.getBirthDay().toString());
         add.setString("address", m.getAddress());
         add.setString("phone_private", m.getPhonePrivate());

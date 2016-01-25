@@ -45,29 +45,29 @@ public class JDBCTeamContentTest {
 
     @Test
     public void testGetMembersForTeam() throws Exception {
-        db.getTblTeamContent().addMember(team1, tm1);
-        db.getTblTeamContent().addMember(team2, tm2);
-        assertEquals(1, db.getTblTeamContent().getMembers(team1).size());
-        assertEquals(tm1, db.getTblTeamContent().getMembers(team1).get(0));
-        assertEquals(tm2, db.getTblTeamContent().getMembers(team2).get(0));
+        db.getTblTeamContent().addSwimmer(team1, tm1);
+        db.getTblTeamContent().addSwimmer(team2, tm2);
+        assertEquals(1, db.getTblTeamContent().getSwimmers(team1).size());
+        assertEquals(tm1, db.getTblTeamContent().getSwimmers(team1).get(0));
+        assertEquals(tm2, db.getTblTeamContent().getSwimmers(team2).get(0));
     }
 
     @Test
     public void testRemoveMemberFromTeam() throws Exception {
-        db.getTblTeamContent().addMember(team1, tm1);
-        db.getTblTeamContent().addMember(team1, tm2);
-        db.getTblTeamContent().deleteMember(team1, tm2);
-        assertEquals(1, db.getTblTeamContent().getMembers(team1).size());
-        assertEquals(tm1, db.getTblTeamContent().getMembers(team1).get(0));
+        db.getTblTeamContent().addSwimmer(team1, tm1);
+        db.getTblTeamContent().addSwimmer(team1, tm2);
+        db.getTblTeamContent().deleteSwimmer(team1, tm2);
+        assertEquals(1, db.getTblTeamContent().getSwimmers(team1).size());
+        assertEquals(tm1, db.getTblTeamContent().getSwimmers(team1).get(0));
     }
 
     @Test
     public void testGetMembersNotInTeam() throws Exception {
-        db.getTblTeamContent().addMember(team1, tm1);
-        db.getTblTeamContent().addMember(team1, tm2);
-        db.getTblTeamContent().deleteMember(team1, tm2);
-        List<Swimmer> m = db.getTblTeamContent().getMembers(team1);
-        List<Swimmer> nm = db.getTblTeamContent().getNotMembers(team1);
+        db.getTblTeamContent().addSwimmer(team1, tm1);
+        db.getTblTeamContent().addSwimmer(team1, tm2);
+        db.getTblTeamContent().deleteSwimmer(team1, tm2);
+        List<Swimmer> m = db.getTblTeamContent().getSwimmers(team1);
+        List<Swimmer> nm = db.getTblTeamContent().getSwimmersNotInTeam(team1);
         assertEquals(1, nm.size());
         assertEquals(tm2, nm.get(0));
     }

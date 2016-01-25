@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<SplitPane xmlns:fx="http://javafx.com/fxml/1" fx:id="root" dividerPositions="0.25" maxHeight="1.7976931348623157E308"
+           maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity"
+           xmlns="http://javafx.com/javafx/8.0.40" fx:controller="ch.tiim.sco.gui.main.BirthdayView">
+    <items>
+        <ListView fx:id="swimmers" prefHeight="200.0" prefWidth="200.0"/>
+        <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
+            <children>
+                <Label fx:id="name" text="Label"/>
+                <HBox alignment="CENTER">
+                    <children>
+                        <Label text="Birthday:"/>
+                        <Label fx:id="birthday" text="Label"/>
+                    </children>
+                </HBox>
+                <BorderPane prefHeight="200.0" prefWidth="200.0">
+                    <center>
+                        <ImageView fx:id="image" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true"
+                                   preserveRatio="true" visible="false" BorderPane.alignment="CENTER">
+                            <image>
+                                <Image url="@BirthdayView.png"/>
+                            </image>
+                        </ImageView>
+                    </center>
+                </BorderPane>
+            </children>
+        </VBox>
+    </items>
+</SplitPane>

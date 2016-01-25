@@ -5,8 +5,7 @@ import java.time.LocalDate
 plugins {
     id 'java'
     id 'application'
-    id 'edu.sc.seis.launch4j' version '1.5.1'
-    id 'org.hidetake.ssh' version '1.1.3'
+    id 'org.hidetake.ssh' version '1.1.3'                // SSH
     id 'com.github.johnrengelman.shadow' version '1.2.2' //FatJar
 }
 
@@ -15,7 +14,6 @@ plugins {
 
 //Specify the main class and project version
 mainClassName = 'ch.tiim.sco.MainWrapper'
-project.ext.dbLocation = 'wd/file.db'
 version = getVersionFromGit()
 
 //Min java 1.8 for javafx
@@ -44,7 +42,7 @@ dependencies {
 }
 
 // Remove the file "MainWrapper.java" from the normal compile
-// pipeline
+// pipeline because it must be compiled with java 5
 sourceSets {
     mwrapper {
         java {
@@ -58,10 +56,8 @@ sourceSets {
             exclude 'ch/scbirs/sco/MainWrapper.java'
         }
     }
-    generated {
-    }
 }
-compileJava.source sourceSets.generated.java, sourceSets.main.java
+//compileJava.source sourceSets.generated.java, sourceSets.main.java
 
 //Specify the content of the manifest
 jar {
@@ -87,43 +83,10 @@ compileMwrapperJava {
     targetCompatibility = JavaVersion.VERSION_1_5
 }
 
-//Force rebuild when deploy task in in the task graph
-jar {
-    outputs.upToDateWhen {
-        !gradle.taskGraph.hasTask(deploy)
-    }
-}
-
-launch4j {
-    mainClassName = project.mainClassName
-    icon = 'D:\\Dev\\#JProjects\\SwimCoachOrganizer\\res\\icon_win.ico'
-    jar = project.shadowJar.archivePath
-}
-
-createExeWithJar.dependsOn(shadowJar)
-
-remotes {
-    server {
-        if (project.hasProperty('ssh_host')) {
-            host = ssh_host
-            user = ssh_user
-            password = ssh_pwd
-            port = ssh_port.toInteger()
-        } else {
-            host = System.getenv('SSH_HOST')
-            user = System.getenv('SSH_USER')
-            password = System.getenv('SSH_PWD')
-            port = System.getenv('SSH_PORT').toInteger()
-        }
-        knownHosts = allowAnyHosts
-        retryCount = 3
-    }
-}
-
 ///////////////////////////////
 // TASKS
 
-
+// Writes build metadata for the updater to display the new version.
 task metadata << {
     def writer = new OutputStreamWriter(file('build/meta.xml').newOutputStream())
     def xml = new MarkupBuilder(writer)
@@ -133,6 +96,7 @@ task metadata << {
     }
 }
 
+//Builds a zip file that the updater needs to update
 //Zip all dependencies that are not the "updater"
 //into build/dist.zip
 task zipDeps(type: Zip, dependsOn: ['build', 'metadata']) {
@@ -148,6 +112,7 @@ task zipDeps(type: Zip, dependsOn: ['build', 'metadata']) {
     archiveName = 'dist.zip'
 }
 
+// Packages all necessary data for the Updater
 // Copy "dist.zip" and "Updater.jar" to the dist_location
 // or to "build/dist"
 // Write version of the project to "version.txt"
@@ -166,38 +131,6 @@ task updaterPackage(type: Copy, dependsOn: ['build', ':Updater:build', 'zipDeps'
     doLast {
         (new File(destinationDir, 'version.txt')).write(project.version)
         (new File(destinationDir, 'updaterVersion.txt')).write(project(':Updater').version)
-    }
-}
-
-task zipL4j(type: Zip, dependsOn: 'launch4j') {
-    from('build/launch4j') {
-        include 'lib/**'
-        include '*.exe'
-    }
-    destinationDir = file('build/launch4j')
-    archiveName "SwimCoachOrganizer-win-${project.version}.zip"
-}
-
-task deploy(type: Copy, dependsOn: ['zipL4j', 'distZip', 'distTar']) {
-    from('build/launch4j') {
-        include "*${project.version}.*"
-    }
-    from('build/distributions') {
-        include "*${project.version}.*"
-    }
-    destinationDir = file('build/deploy')
-    doFirst {
-        delete(destinationDir)
-        destinationDir.mkdirs()
-        file('build/deploy/version.txt').text = project.version
-    }
-    doLast {
-        ssh.run {
-            session(remotes.server) {
-                execute "mkdir -p ${project.version}"
-                put from: fileTree(dir: 'build/deploy', include: '*.*'), into: project.version
-            }
-        }
     }
 }
 

@@ -28,8 +28,8 @@ CREATE TABLE set_focus (
     notes TEXT
 );
 
-CREATE TABLE set_form (
-    form_id INTEGER PRIMARY KEY AUTO_INCREMENT,
+CREATE TABLE set_stroke (
+    stroke_id INTEGER PRIMARY KEY AUTO_INCREMENT,
     name TEXT,
     abbr TEXT,
     notes TEXT
@@ -44,12 +44,12 @@ CREATE TABLE sets (
     distance_f3 INTEGER NOT NULL,
     intensity INTEGER,
     focus_id INTEGER,
-    form_id INTEGER,
+    stroke_id INTEGER,
     notes TEXT,
     interval INTEGER,
     is_pause BOOLEAN NOT NULL,
     FOREIGN KEY(focus_id) REFERENCES public.set_focus(focus_id) ON DELETE RESTRICT ON UPDATE CASCADE,
-    FOREIGN KEY(form_id) REFERENCES public.set_form(form_id) ON DELETE RESTRICT ON UPDATE CASCADE
+    FOREIGN KEY(stroke_id) REFERENCES public.set_stroke(stroke_id) ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 CREATE TABLE swimmer (
