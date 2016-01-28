@@ -31,11 +31,15 @@ public class DialogListener {
             EventHandler<WorkerStateEvent> onSucceeded = event.getOnSucceeded();
             EventHandler<WorkerStateEvent> onFailed = event.getOnFailed();
             event.setOnSucceeded(event1 -> {
-                onSucceeded.handle(event1);
+                if (onSucceeded != null) {
+                    onSucceeded.handle(event1);
+                }
                 dialog.onSucceeded();
             });
             event.setOnFailed(event1 -> {
-                onFailed.handle(event1);
+                if (onFailed != null) {
+                    onFailed.handle(event1);
+                }
                 dialog.onFailed();
             });
             event.messageProperty().addListener((observable, oldValue, newValue) -> dialog.onMessageUpdate(newValue));
