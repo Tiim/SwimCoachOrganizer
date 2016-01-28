@@ -7,10 +7,7 @@ import ch.tiim.sco.event.ShowDocumentEvent;
 import ch.tiim.sco.gui.MainWindow;
 import ch.tiim.sco.gui.ViewLoader;
 import ch.tiim.sco.gui.alert.ExceptionAlert;
-import ch.tiim.sco.update.NewVersionEvent;
-import ch.tiim.sco.update.Version;
-import ch.tiim.sco.update.VersionCheckTask;
-import ch.tiim.sco.update.VersionChecker;
+import ch.tiim.sco.update.*;
 import ch.tiim.sco.util.async.DaemonFactory;
 import ch.tiim.sco.util.async.ExecutorEventListener;
 import com.google.common.eventbus.DeadEvent;
@@ -102,8 +99,7 @@ public class Main extends Application {
             alert.initModality(Modality.APPLICATION_MODAL);
             Optional<ButtonType> t = alert.showAndWait();
             if (t.get() == ButtonType.YES) {
-                //TODO: replace this url
-                getHostServices().showDocument("http://replace.this.url.ch/");
+                eventBus.post(new UpdatePerformer(eventBus));
             }
         });
     }

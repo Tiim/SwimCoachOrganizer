@@ -1,6 +1,9 @@
 package ch.tiim.sco.update;
 
 
+import ch.tiim.sco.gui.alert.ExceptionAlert;
+import com.google.common.eventbus.EventBus;
+import javafx.concurrent.Task;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -10,21 +13,30 @@ import java.io.IOException;
  * @author Tim
  * @since 07 - 2014
  */
-public class UpdatePerformer implements Runnable {
+public class UpdatePerformer extends Task<Void> {
     private static final Logger LOGGER = LogManager.getLogger(UpdatePerformer.class.getName());
+    private final EventBus eventBus;
+
+    public UpdatePerformer(EventBus eventBus) {
+
+        this.eventBus = eventBus;
+    }
 
     @Override
-    public void run() {
+    protected Void call() throws Exception {
         try {
             if (VersionChecker.isNewUpdaterVersionAvailable()) {
+                updateMessage("Updating to new installer");
                 LOGGER.info("Updating updater..");
                 updateUpdater();
             }
+            updateMessage("Launching installer, shutting down..");
             launchUpdater();
+            System.exit(0);
         } catch (final IOException e) {
-            LOGGER.warn("", e);
+            ExceptionAlert.showError(LOGGER, "Something went wrong while updating", e, eventBus);
         }
-        System.exit(0);
+        return null;
     }
 
     private void updateUpdater() throws IOException {
