@@ -37,6 +37,7 @@ public class AboutDialog extends DialogView {
         credits.add(new Credit("h2.png", "H2 Database", "http://www.h2database.com"));
         credits.add(new Credit("javafx.png", "JavaFX GUI Library", "http://www.javafx.com/"));
         credits.add(new Credit("log4j.jpg", "Logging framework: Log4J", "https://logging.apache.org/log4j/2.x/"));
+        credits.add(new Credit("apache-fop.jpg", "PDF Generation", "https://xmlgraphics.apache.org/fop/"));
         initCredits(credits);
         root.setMinHeight(Region.USE_COMPUTED_SIZE);
         root.setMinWidth(Region.USE_COMPUTED_SIZE);
