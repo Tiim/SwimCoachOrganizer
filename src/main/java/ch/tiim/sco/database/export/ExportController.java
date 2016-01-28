@@ -33,7 +33,10 @@ public class ExportController {
             EXPORTERS.put(Set.class, new SetExporter());
             EXPORTERS.put(SetFocus.class, new FocusExporter());
             EXPORTERS.put(SetStroke.class, new StrokeExporter());
-
+            EXPORTERS.put(Club.class, new ClubExporter());
+            EXPORTERS.put(Team.class, new TeamExporter());
+            EXPORTERS.put(Swimmer.class, new SwimmerExporter());
+            EXPORTERS.put(Result.class, new ResultExporter());
         } catch (ParserConfigurationException e) {
             LOGGER.error("Error while initializing ExportController", e);
         }

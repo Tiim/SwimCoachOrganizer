@@ -26,6 +26,7 @@ public class JDBCResult extends Table implements TableResult {
     private NamedParameterPreparedStatement update;
     private NamedParameterPreparedStatement delete;
     private NamedParameterPreparedStatement get;
+    private NamedParameterPreparedStatement getSwimmer;
 
     public JDBCResult(DatabaseController db) throws SQLException {
         super(db);
@@ -37,6 +38,7 @@ public class JDBCResult extends Table implements TableResult {
         delete = db.getPrepStmt(getSql("delete"));
         get = db.getPrepStmt(getSql("get"));
         update = db.getPrepStmt(getSql("update"));
+        getSwimmer = db.getPrepStmt(getSql("get_swimmer"));
     }
 
     //TODO: add test for null parameters
@@ -87,6 +89,14 @@ public class JDBCResult extends Table implements TableResult {
             l.add(getResult(rs));
         }
         return l;
+    }
+
+    @Override
+    public Swimmer getSwimmer(Result r) throws Exception {
+        getSwimmer.setInt("result_id", r.getId());
+        ResultSet rs = getSwimmer.executeQuery();
+        rs.next();
+        return JDBCSwimmer.getSwimmer(rs);
     }
 
     static Result getResult(ResultSet rs) throws SQLException {

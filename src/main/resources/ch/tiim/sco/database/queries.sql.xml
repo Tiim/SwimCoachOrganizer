@@ -281,5 +281,13 @@
             FROM result
             WHERE swimmer_id = :id
         </entry>
+        <entry name="get_swimmer">
+            SELECT swimmer.swimmer_id, swimmer.first_name, swimmer.last_name, swimmer.birthday, swimmer.address,
+            swimmer.phone_private, swimmer.phone_work, swimmer.phone_mobile, swimmer.email, swimmer.license,
+            swimmer.is_female, swimmer.notes
+            FROM result
+            INNER JOIN swimmer ON result.swimmer_id = swimmer.swimmer_id
+            WHERE result.result_id = :result_id
+        </entry>
     </module>
 </modules>
