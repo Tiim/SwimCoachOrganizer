@@ -5,6 +5,7 @@ import ch.tiim.sco.database.DatabaseController;
 import ch.tiim.sco.database.model.*;
 import ch.tiim.sco.gui.events.SetEvent;
 import ch.tiim.sco.gui.events.TrainingEvent;
+import ch.tiim.sco.print.PrintTask;
 import com.google.common.eventbus.Subscribe;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -13,7 +14,10 @@ import javafx.scene.Parent;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+
+import java.io.File;
 
 public class TrainingView extends MainView {
 
@@ -119,6 +123,19 @@ public class TrainingView extends MainView {
         Training item = trainings.getSelectionModel().getSelectedItem();
         if (item != null) {
             eventBus.post(new TrainingEvent.TrainingOpenEvent(item, mainStage));
+        }
+    }
+
+    @FXML
+    private void onPDF() {
+        Training item = trainings.getSelectionModel().getSelectedItem();
+        if (item != null) {
+            FileChooser fc = new FileChooser();
+            fc.setInitialFileName("Training.pdf");
+            File file = fc.showSaveDialog(mainStage);
+            if (file != null) {
+                eventBus.post(new PrintTask(item, file.toPath(), db));
+            }
         }
     }
 
