@@ -66,9 +66,9 @@ jar {
     doFirst {
         manifest {
             attributes([
-                    'Manifest-Version': '1.0',
-                    'Main-Class'      : project.mainClassName,
-                    'Class-Path'            : configurations.compile.collect { it.getName() }.join(' '),
+                    'Manifest-Version'      : '1.0',
+                    'Main-Class'            : project.mainClassName,
+                    'Class-Path'            : configurations.compile.collect { 'lib/' + it.getName() }.join(' '),
                     'Implementation-Title'  : 'Swim Coach Organizer',
                     'Implementation-Version': version
             ])
@@ -102,12 +102,16 @@ task metadata << {
 //Zip all dependencies that are not the "updater"
 //into build/dist.zip
 task zipDeps(type: Zip, dependsOn: ['build', 'metadata']) {
-    from({ project.configurations.runtime })
+    from({ project.configurations.runtime }) {
+        into('lib')
+    }
     from({ project.jar.archivePath })
     from(file('build/meta.xml'))
     subprojects.each {
         if (it.name != 'Updater') {
-            from({ it.jar.archivePath })
+            from({ it.jar.archivePath }) {
+                into('lib')
+            }
         }
     }
     destinationDir = file('build')
