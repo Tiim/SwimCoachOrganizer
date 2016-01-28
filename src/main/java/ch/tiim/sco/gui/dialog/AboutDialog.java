@@ -42,10 +42,6 @@ public class AboutDialog extends DialogView {
         initCredits(credits);
         root.setMinHeight(Region.USE_COMPUTED_SIZE);
         root.setMinWidth(Region.USE_COMPUTED_SIZE);
-
-        new Thread(() -> {
-            throw new RuntimeException("This is a test!");
-        }).start();
     }
 
     private void openDocument(String s) {
