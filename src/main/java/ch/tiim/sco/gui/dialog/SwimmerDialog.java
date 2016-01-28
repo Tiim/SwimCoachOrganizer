@@ -3,6 +3,7 @@ package ch.tiim.sco.gui.dialog;
 import ch.tiim.inject.Inject;
 import ch.tiim.sco.database.DatabaseController;
 import ch.tiim.sco.database.model.Swimmer;
+import ch.tiim.sco.gui.alert.ExceptionAlert;
 import ch.tiim.sco.gui.events.OpenEvent;
 import ch.tiim.sco.gui.events.SwimmerEvent;
 import javafx.event.ActionEvent;
@@ -83,7 +84,7 @@ public class SwimmerDialog extends DialogView {
                 db.getTblSwimmer().updateSwimmer(currentSwimmer);
             }
         } catch (Exception e) {
-            LOGGER.warn("Can't save swimmer", e);
+            new ExceptionAlert(LOGGER, "Can't save swimmer", e, eventBus).handle();
         }
         eventBus.post(new SwimmerEvent.SwimmerSaveEvent(currentSwimmer));
         close();

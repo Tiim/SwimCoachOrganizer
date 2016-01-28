@@ -3,6 +3,7 @@ package ch.tiim.sco;
 import ch.tiim.inject.Injector;
 import ch.tiim.sco.config.Config;
 import ch.tiim.sco.database.DatabaseController;
+import ch.tiim.sco.event.ShowDocumentEvent;
 import ch.tiim.sco.gui.MainWindow;
 import ch.tiim.sco.gui.ViewLoader;
 import ch.tiim.sco.update.NewVersionEvent;
@@ -71,6 +72,11 @@ public class Main extends Application {
     @Override
     public void stop() throws Exception {
 
+    }
+
+    @Subscribe
+    public void onShowDocument(ShowDocumentEvent event) {
+        getHostServices().showDocument(event.getDocument());
     }
 
     @Subscribe

@@ -3,6 +3,7 @@ package ch.tiim.sco.gui.main;
 import ch.tiim.inject.Inject;
 import ch.tiim.sco.database.DatabaseController;
 import ch.tiim.sco.database.model.*;
+import ch.tiim.sco.gui.alert.ExceptionAlert;
 import ch.tiim.sco.gui.events.SetEvent;
 import ch.tiim.sco.gui.events.TrainingEvent;
 import ch.tiim.sco.print.PrintTask;
@@ -112,7 +113,7 @@ public class TrainingView extends MainView {
             try {
                 db.getTblTraining().deleteTraining(item);
             } catch (Exception e) {
-                LOGGER.warn("Can't delete training", e);
+                new ExceptionAlert(LOGGER, "Can't delete training", e, eventBus).handle();
             }
             eventBus.post(new TrainingEvent.TrainingDeleteEvent(item));
         }

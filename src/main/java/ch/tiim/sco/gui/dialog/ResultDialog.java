@@ -6,6 +6,7 @@ import ch.tiim.sco.database.model.Course;
 import ch.tiim.sco.database.model.Result;
 import ch.tiim.sco.database.model.Stroke;
 import ch.tiim.sco.database.model.Swimmer;
+import ch.tiim.sco.gui.alert.ExceptionAlert;
 import ch.tiim.sco.gui.events.OpenEvent;
 import ch.tiim.sco.gui.events.ResultEvent;
 import ch.tiim.sco.util.DurationFormatter;
@@ -65,7 +66,7 @@ public class ResultDialog extends DialogView {
                 db.getTblResult().updateResult(currentResult);
             }
         } catch (Exception e) {
-            LOGGER.warn("Can't save result", e);
+            new ExceptionAlert(LOGGER, "Can't save result", e, eventBus).handle();
         }
         eventBus.post(new ResultEvent.ResultSaveEvent(currentResult, currentSwimmer));
         close();

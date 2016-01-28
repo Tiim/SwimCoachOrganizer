@@ -5,6 +5,7 @@ import ch.tiim.sco.database.DatabaseController;
 import ch.tiim.sco.database.model.Result;
 import ch.tiim.sco.database.model.Stroke;
 import ch.tiim.sco.database.model.Swimmer;
+import ch.tiim.sco.gui.alert.ExceptionAlert;
 import ch.tiim.sco.gui.events.ResultEvent;
 import ch.tiim.sco.lenex.ImportResultsTask;
 import ch.tiim.sco.lenex.LenexLoadTask;
@@ -77,7 +78,8 @@ public class ResultImportDialog extends DialogView {
             LenexLoadTask loadTask = new LenexLoadTask(path);
             loadTask.setOnSucceeded(event -> onLenexLoaded(loadTask.getValue()));
             loadTask.setOnFailed(event ->
-                    LOGGER.warn("Failed to load lenex file", event.getSource().getException()));
+                    new ExceptionAlert(LOGGER,
+                            "Failed to load lenex file", event.getSource().getException(), eventBus).handle());
             eventBus.post(loadTask);
         }
     }
@@ -93,7 +95,7 @@ public class ResultImportDialog extends DialogView {
         ImportResultsTask importTask = new ImportResultsTask(swimmers, lenex);
         importTask.setOnSucceeded(event -> onResultsLoaded(importTask.getValue()));
         importTask.setOnFailed(event ->
-                LOGGER.warn("Failed to load lenex file", event.getSource().getException()));
+                new ExceptionAlert(LOGGER, "Failed to load lenex file", event.getSource().getException(), eventBus).handle());
         eventBus.post(importTask);
     }
 

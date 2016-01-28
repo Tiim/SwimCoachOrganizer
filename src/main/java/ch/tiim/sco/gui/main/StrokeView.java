@@ -3,6 +3,7 @@ package ch.tiim.sco.gui.main;
 import ch.tiim.inject.Inject;
 import ch.tiim.sco.database.DatabaseController;
 import ch.tiim.sco.database.model.SetStroke;
+import ch.tiim.sco.gui.alert.ExceptionAlert;
 import ch.tiim.sco.gui.events.StrokeEvent;
 import com.google.common.eventbus.Subscribe;
 import javafx.collections.FXCollections;
@@ -50,7 +51,7 @@ public class StrokeView extends MainView {
         try {
             strokes.setItems(FXCollections.observableArrayList(db.getTblSetStroke().getAllStrokes()));
         } catch (Exception e) {
-            LOGGER.warn("Can't load strokes", e);
+            new ExceptionAlert(LOGGER, "Can't load strokes", e, eventBus).handle();
         }
     }
 
@@ -66,7 +67,7 @@ public class StrokeView extends MainView {
             try {
                 db.getTblSetStroke().deleteSetStroke(item);
             } catch (Exception e) {
-                LOGGER.warn("Can't delete focus", e);
+                new ExceptionAlert(LOGGER, "Can't delete focus", e, eventBus).handle();
             }
             eventBus.post(new StrokeEvent.StrokeDeleteEvent(item));
         }

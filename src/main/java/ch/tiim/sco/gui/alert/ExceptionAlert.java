@@ -1,0 +1,54 @@
+package ch.tiim.sco.gui.alert;
+
+import ch.tiim.sco.event.ShowDocumentEvent;
+import com.google.common.eventbus.EventBus;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.TextArea;
+import org.apache.logging.log4j.Logger;
+
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.Optional;
+
+public class ExceptionAlert extends Alert {
+    public static final ButtonType BUTTON_REPORT = new ButtonType("Report");
+
+    private EventBus eventBus;
+
+    public ExceptionAlert(Logger logger, String message, Throwable t, EventBus eventBus) {
+        super(AlertType.ERROR);
+        this.eventBus = eventBus;
+        logger.error(String.format("[ALERT] - %s", message), t);
+        getButtonTypes().setAll(BUTTON_REPORT, ButtonType.CLOSE);
+        setTitle("Error");
+        setHeaderText(String.format("%s %s", message, t.getMessage()));
+        setContentText("If you think this is a bug, feel free to report it.");
+
+        TextArea text = new TextArea(getStackTrace(t));
+        text.setEditable(false);
+        text.setWrapText(true);
+        text.setMaxWidth(Double.MAX_VALUE);
+        text.setMaxHeight(Double.MAX_VALUE);
+        getDialogPane().setExpandableContent(text);
+    }
+
+    private String getStackTrace(Throwable t) {
+        StringWriter sw = new StringWriter();
+        t.printStackTrace(new PrintWriter(sw));
+        return sw.toString();
+    }
+
+    /**
+     * @return true on button report, false otherwise
+     */
+    public boolean handle() {
+        Optional<ButtonType> buttonType = showAndWait();
+        if (buttonType.isPresent() && buttonType.get() == BUTTON_REPORT) {
+            eventBus.post(new ShowDocumentEvent("https://github.com/Tiim/SwimCoachOrganizer/issues"));
+            return true;
+        } else {
+            return false;
+        }
+    }
+}

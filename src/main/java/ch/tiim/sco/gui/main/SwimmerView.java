@@ -3,6 +3,7 @@ package ch.tiim.sco.gui.main;
 import ch.tiim.inject.Inject;
 import ch.tiim.sco.database.DatabaseController;
 import ch.tiim.sco.database.model.Swimmer;
+import ch.tiim.sco.gui.alert.ExceptionAlert;
 import ch.tiim.sco.gui.events.SwimmerEvent;
 import ch.tiim.sco.gui.util.ModelCell;
 import com.google.common.eventbus.Subscribe;
@@ -91,7 +92,7 @@ public class SwimmerView extends MainView {
         try {
             swimmers.getItems().setAll(db.getTblSwimmer().getAllSwimmers());
         } catch (Exception e) {
-            LOGGER.warn("Can't load swimmers", e);
+            new ExceptionAlert(LOGGER, "Can't load swimmers", e, eventBus).handle();
         }
     }
 
@@ -102,7 +103,7 @@ public class SwimmerView extends MainView {
             try {
                 db.getTblSwimmer().deleteSwimmer(sw);
             } catch (Exception e) {
-                LOGGER.warn("Can't delete swimmer", e);
+                new ExceptionAlert(LOGGER, "Can't delete swimmer", e, eventBus).handle();
             }
             eventBus.post(new SwimmerEvent.SwimmerDeleteEvent(sw));
         }

@@ -4,6 +4,7 @@ import ch.tiim.inject.Inject;
 import ch.tiim.sco.database.DatabaseController;
 import ch.tiim.sco.database.model.Swimmer;
 import ch.tiim.sco.database.model.Team;
+import ch.tiim.sco.gui.alert.ExceptionAlert;
 import ch.tiim.sco.gui.events.TeamEvent;
 import ch.tiim.sco.gui.util.ModelCell;
 import com.google.common.eventbus.Subscribe;
@@ -62,7 +63,7 @@ public class TeamView extends MainView {
             try {
                 swimmers.getItems().setAll(db.getTblTeamContent().getSwimmers(team));
             } catch (Exception e) {
-                LOGGER.warn("Can't load swimmers", e);
+                new ExceptionAlert(LOGGER, "Can't load swimmers", e, eventBus).handle();
             }
         }
     }
@@ -71,7 +72,7 @@ public class TeamView extends MainView {
         try {
             teams.getItems().setAll(db.getTblTeam().getAllTeams());
         } catch (Exception e) {
-            LOGGER.warn("Can't load teams");
+            new ExceptionAlert(LOGGER, "Can't load teams", e, eventBus).handle();
         }
     }
 
@@ -90,7 +91,7 @@ public class TeamView extends MainView {
             try {
                 db.getTblTeam().deleteTeam(team);
             } catch (Exception e) {
-                LOGGER.warn("Can't delete team");
+                new ExceptionAlert(LOGGER, "Can't delete team", e, eventBus).handle();
             }
             eventBus.post(new TeamEvent.TeamDeleteEvent(team));
         }

@@ -5,6 +5,7 @@ import ch.tiim.sco.database.DatabaseController;
 import ch.tiim.sco.database.model.Set;
 import ch.tiim.sco.database.model.SetFocus;
 import ch.tiim.sco.database.model.SetStroke;
+import ch.tiim.sco.gui.alert.ExceptionAlert;
 import ch.tiim.sco.gui.events.OpenEvent;
 import ch.tiim.sco.gui.events.SetEvent;
 import ch.tiim.sco.util.DurationFormatter;
@@ -58,7 +59,7 @@ public class SetDialog extends DialogView {
             focus.setItems(FXCollections.observableArrayList(db.getTblSetFocus().getAllFoci()));
             stroke.setItems(FXCollections.observableArrayList(db.getTblSetStroke().getAllStrokes()));
         } catch (Exception e) {
-            LOGGER.warn("Can't query database", e);
+            new ExceptionAlert(LOGGER, "Can't query database", e, eventBus).handle();
         }
     }
 

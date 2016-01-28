@@ -4,6 +4,7 @@ import ch.tiim.inject.Inject;
 import ch.tiim.sco.database.DatabaseController;
 import ch.tiim.sco.database.model.Club;
 import ch.tiim.sco.database.model.Team;
+import ch.tiim.sco.gui.alert.ExceptionAlert;
 import ch.tiim.sco.gui.events.ClubEvent;
 import ch.tiim.sco.gui.util.ModelCell;
 import com.google.common.eventbus.Subscribe;
@@ -66,7 +67,7 @@ public class ClubView extends MainView {
             try {
                 teams.getItems().setAll(db.getTblClubContent().getTeams(newValue));
             } catch (Exception e) {
-                LOGGER.warn("Can't load teams", e);
+                new ExceptionAlert(LOGGER, "Can't load teams", e, eventBus).handle();
             }
         }
     }
@@ -75,7 +76,7 @@ public class ClubView extends MainView {
         try {
             clubs.getItems().setAll(db.getTblClub().getAll());
         } catch (Exception e) {
-            LOGGER.warn("Can't load clubs", e);
+            new ExceptionAlert(LOGGER, "Can't load clubs", e, eventBus).handle();
         }
     }
 

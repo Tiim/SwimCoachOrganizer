@@ -4,6 +4,7 @@ import ch.tiim.inject.Inject;
 import ch.tiim.sco.database.DatabaseController;
 import ch.tiim.sco.database.model.Club;
 import ch.tiim.sco.database.model.Team;
+import ch.tiim.sco.gui.alert.ExceptionAlert;
 import ch.tiim.sco.gui.events.ClubEvent;
 import ch.tiim.sco.gui.events.OpenEvent;
 import ch.tiim.sco.lenex.model.Nation;
@@ -101,7 +102,7 @@ public class ClubDialog extends DialogView {
             }
             db.getTblClubContent().setTeams(currentClub, teams);
         } catch (Exception e) {
-            LOGGER.warn("Can't save club", e);
+            new ExceptionAlert(LOGGER, "Can't save club", e, eventBus).handle();
         }
         eventBus.post(new ClubEvent.ClubSaveEvent(currentClub));
         close();
@@ -137,7 +138,7 @@ public class ClubDialog extends DialogView {
                 notInClub = db.getTblTeam().getAllTeams();
             }
         } catch (Exception e) {
-            LOGGER.warn("Can't load teams", e);
+            new ExceptionAlert(LOGGER, "Can't load teams", e, eventBus).handle();
             return;
         }
         inClub.forEach(team -> selected.put(team, new SimpleBooleanProperty(true)));

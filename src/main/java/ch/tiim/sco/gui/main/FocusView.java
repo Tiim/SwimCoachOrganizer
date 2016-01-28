@@ -3,6 +3,7 @@ package ch.tiim.sco.gui.main;
 import ch.tiim.inject.Inject;
 import ch.tiim.sco.database.DatabaseController;
 import ch.tiim.sco.database.model.SetFocus;
+import ch.tiim.sco.gui.alert.ExceptionAlert;
 import ch.tiim.sco.gui.events.FocusEvent;
 import com.google.common.eventbus.Subscribe;
 import javafx.collections.FXCollections;
@@ -51,7 +52,7 @@ public class FocusView extends MainView {
         try {
             foci.setItems(FXCollections.observableArrayList(db.getTblSetFocus().getAllFoci()));
         } catch (Exception e) {
-            LOGGER.warn("Can't load focus", e);
+            new ExceptionAlert(LOGGER, "Can't load focus", e, eventBus).handle();
         }
     }
 
@@ -67,7 +68,7 @@ public class FocusView extends MainView {
             try {
                 db.getTblSetFocus().deleteSetFocus(item);
             } catch (Exception e) {
-                LOGGER.warn("Can't delete focus", e);
+                new ExceptionAlert(LOGGER, "Can't delete focus", e, eventBus).handle();
             }
             eventBus.post(new FocusEvent.FocusDeleteEvent(item));
         }

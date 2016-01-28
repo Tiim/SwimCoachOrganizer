@@ -3,6 +3,7 @@ package ch.tiim.sco.gui.main;
 import ch.tiim.inject.Inject;
 import ch.tiim.sco.database.DatabaseController;
 import ch.tiim.sco.database.model.Set;
+import ch.tiim.sco.gui.alert.ExceptionAlert;
 import ch.tiim.sco.gui.events.SetEvent;
 import ch.tiim.sco.gui.util.ModelCell;
 import com.google.common.eventbus.Subscribe;
@@ -13,12 +14,8 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 public class SetView extends MainView {
-    private static final Logger LOGGER = LogManager.getLogger(SetView.class.getName());
-
     @Inject(name = "main-stage")
     private Stage mainStage;
     @Inject(name = "db-controller")
@@ -71,7 +68,7 @@ public class SetView extends MainView {
         try {
             sets.getItems().setAll(db.getTblSet().getAllSets());
         } catch (Exception e) {
-            LOGGER.warn("Can't load sets.", e);
+            new ExceptionAlert(LOGGER, "Can't load sets.", e, eventBus).handle();
         }
     }
 
@@ -87,7 +84,7 @@ public class SetView extends MainView {
             try {
                 db.getTblSet().deleteSet(set);
             } catch (Exception e) {
-                LOGGER.warn("Can't delete set", e);
+                new ExceptionAlert(LOGGER, "Can't delete set", e, eventBus).handle();
             }
             eventBus.post(new SetEvent.SetDeleteEvent(set));
         }

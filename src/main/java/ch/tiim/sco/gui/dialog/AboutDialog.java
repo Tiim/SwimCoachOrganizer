@@ -2,6 +2,7 @@ package ch.tiim.sco.gui.dialog;
 
 import ch.tiim.inject.Inject;
 import ch.tiim.sco.Main;
+import ch.tiim.sco.gui.alert.ExceptionAlert;
 import ch.tiim.sco.gui.events.TextOpenEvent;
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
@@ -48,7 +49,7 @@ public class AboutDialog extends DialogView {
         try {
             str = Resources.toString(AboutDialog.class.getResource("about/" + s), Charsets.UTF_8);
         } catch (IOException e) {
-            LOGGER.warn("Can't read file from classpath", e);
+            new ExceptionAlert(LOGGER, "Can't read file from classpath", e, eventBus).handle();
             return;
         }
         eventBus.post(new TextOpenEvent(str, getStage()));

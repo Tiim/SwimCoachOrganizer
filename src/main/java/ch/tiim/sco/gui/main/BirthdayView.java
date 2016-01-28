@@ -3,6 +3,7 @@ package ch.tiim.sco.gui.main;
 import ch.tiim.inject.Inject;
 import ch.tiim.sco.database.DatabaseController;
 import ch.tiim.sco.database.model.Swimmer;
+import ch.tiim.sco.gui.alert.ExceptionAlert;
 import ch.tiim.sco.gui.events.SwimmerEvent;
 import ch.tiim.sco.gui.util.BaseCell;
 import ch.tiim.sco.util.BirthdayUtil;
@@ -62,7 +63,7 @@ public class BirthdayView extends MainView {
         try {
             s = db.getTblSwimmer().getAllSwimmers();
         } catch (Exception e) {
-            LOGGER.warn("Can't load swimmers", e);
+            new ExceptionAlert(LOGGER, "Can't load swimmers", e, eventBus).handle();
             return;
         }
         Collections.sort(s, (o1, o2) ->

@@ -4,6 +4,7 @@ import ch.tiim.inject.Inject;
 import ch.tiim.sco.database.DatabaseController;
 import ch.tiim.sco.database.model.Swimmer;
 import ch.tiim.sco.database.model.Team;
+import ch.tiim.sco.gui.alert.ExceptionAlert;
 import ch.tiim.sco.gui.events.OpenEvent;
 import ch.tiim.sco.gui.events.TeamEvent;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -77,7 +78,7 @@ public class TeamDialog extends DialogView {
             }
             db.getTblTeamContent().setSwimmers(currentTeam, swimmers);
         } catch (Exception e) {
-            LOGGER.warn("Can't save team", e);
+            new ExceptionAlert(LOGGER, "Can't save team", e, eventBus).handle();
         }
         close();
         eventBus.post(new TeamEvent.TeamSaveEvent(currentTeam));
@@ -103,7 +104,7 @@ public class TeamDialog extends DialogView {
                 notInTeam = db.getTblSwimmer().getAllSwimmers();
             }
         } catch (Exception e) {
-            LOGGER.warn("Can't load swimmers", e);
+            new ExceptionAlert(LOGGER, "Can't load swimmers", e, eventBus).handle();
             return;
         }
         inTeam.forEach(swimmer -> selected.put(swimmer, new SimpleBooleanProperty(true)));
