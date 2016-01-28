@@ -2,7 +2,6 @@ package ch.tiim.sco.gui;
 
 import ch.tiim.inject.Inject;
 import ch.tiim.sco.config.Config;
-import ch.tiim.sco.gui.dialog.DialogView;
 import ch.tiim.sco.gui.events.AboutEvent;
 import ch.tiim.sco.gui.main.*;
 import ch.tiim.sco.gui.util.DialogListener;
@@ -29,8 +28,6 @@ import java.util.Arrays;
 import java.util.List;
 
 public class MainWindow extends View {
-
-    private DialogView[] dialogViews;
 
     @Inject(name = "config")
     private Config config;

@@ -37,6 +37,19 @@ public class JDBCTrainingContentTest {
         db.getTblSet().addSet(s3.getSet());
     }
 
+    private IndexedSet iset(int index) {
+        return new IndexedSet(index,
+                new Set(
+                        "Set",
+                        "Content",
+                        1, 1, 400,
+                        50,
+                        null, null,
+                        "This is very slow",
+                        20, true
+                ));
+    }
+
     @After
     public void tearDown() throws Exception {
         db.close();
@@ -63,7 +76,7 @@ public class JDBCTrainingContentTest {
     public void testDeleteSet() throws Exception {
         db.getTblTrainingContent().addSet(t, s1.getSet(), s1.getIndex());
         db.getTblTrainingContent().addSet(t, s2.getSet(), s2.getIndex());
-        db.getTblTrainingContent().deleteSet(t, s1.getSet(), s1.getIndex());
+        db.getTblTrainingContent().deleteSet(t, s1.getIndex());
         List<IndexedSet> sets = db.getTblTrainingContent().getSets(t);
         assertEquals(1, sets.size());
         assertTrue(sets.contains(s2));
@@ -91,18 +104,5 @@ public class JDBCTrainingContentTest {
             LOGGER.warn(i2);
             throw e;
         }
-    }
-
-    private IndexedSet iset(int index) {
-        return new IndexedSet(index,
-                new Set(
-                        "Set",
-                        "Content",
-                        1, 1, 400,
-                        50,
-                        null, null,
-                        "This is very slow",
-                        20, true
-                ));
     }
 }

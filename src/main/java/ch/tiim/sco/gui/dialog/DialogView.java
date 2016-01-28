@@ -44,7 +44,7 @@ public abstract class DialogView extends View {
     }
 
     protected void onClose() {
-
+        //Nothing here
     }
 
     protected void close() {

@@ -1,5 +1,6 @@
 package ch.tiim.sco.update;
 
+import javax.annotation.Nonnull;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -68,17 +69,12 @@ public class Version implements Comparable {
         return s;
     }
 
-    public boolean isDeployed() {
-        return (patch != 0 || minor != 0 || major != 0) &&
-                !(patch == 1 && minor == 0 && major == 0 && gitHash != null);
-    }
-
     public boolean newerThan(Version other) {
         return compareTo(other) > 0;
     }
 
     @Override
-    public int compareTo(final Object o) {
+    public int compareTo(@Nonnull Object o) {
         if (!(o instanceof Version)) {
             return 0;
         }
@@ -94,5 +90,10 @@ public class Version implements Comparable {
             return patch - v.patch;
         }
         return 0;
+    }
+
+    public boolean isDeployed() {
+        return (patch != 0 || minor != 0 || major != 0) &&
+                !(patch == 1 && minor == 0 && major == 0 && gitHash != null);
     }
 }

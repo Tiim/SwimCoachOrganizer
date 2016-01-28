@@ -20,8 +20,8 @@ public class DurationFormatter {
      * but without leading zeroes and in the case of hours with additional digits.
      * the format is stripped to the smallest possible form.
      *
-     * @param d
-     * @return
+     * @param d Duration to format
+     * @return String that represents d in human readable format
      */
     public static String format(Duration d) {
         if (d == null || d.isZero()) {
@@ -65,17 +65,17 @@ public class DurationFormatter {
         if (!m.matches()) {
             throw new IllegalArgumentException(d + " can't be parsed");
         }
-        long duration = 0l;
-        String s = null;
+        long duration = 0L;
+        String s;
         boolean pos = m.group(1).isEmpty();
         if ((s = m.group(2)) != null) {
-            duration += Long.parseLong(s) * 60l * 60l * 1000l;
+            duration += Long.parseLong(s) * 60L * 60L * 1000L;
         }
         if ((s = m.group(3)) != null) {
-            duration += Long.parseLong(s) * 60l * 1000l;
+            duration += Long.parseLong(s) * 60L * 1000L;
         }
-        duration += Long.parseLong(m.group(4)) * 1000l;
-        duration += Long.parseLong(m.group(5)) * 10l;
+        duration += Long.parseLong(m.group(4)) * 1000L;
+        duration += Long.parseLong(m.group(5)) * 10L;
         return Duration.ofMillis((pos ? 1 : -1) * duration);
     }
 }

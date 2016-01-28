@@ -29,7 +29,7 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 public class Main extends Application {
     private static final Logger LOGGER = LogManager.getLogger(Main.class.getName());
 
-    private EventBus eventBus = new EventBus("Main");
+    private final EventBus eventBus = new EventBus("Main");
 
     public static void main(final String[] args) {
         launch(args);

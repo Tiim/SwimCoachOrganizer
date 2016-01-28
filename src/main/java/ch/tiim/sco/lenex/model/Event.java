@@ -3,6 +3,7 @@ package ch.tiim.sco.lenex.model;
 import ch.tiim.sco.database.model.Model;
 import ch.tiim.sco.lenex.adapder.LocalTimeAdapter;
 
+import javax.annotation.Nonnull;
 import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.LocalTime;
@@ -49,7 +50,7 @@ public class Event implements Model, Comparable<Event> {
     }
 
     @Override
-    public int compareTo(Event o) {
+    public int compareTo(@Nonnull Event o) {
         return daytime.compareTo(o.daytime);
     }
 

@@ -11,9 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ResultsData {
-    private List<Meet> meets;
+    private final List<Meet> meets;
 
-    public ResultsData(Lenex l) throws LenexException {
+    public ResultsData(Lenex l) {
         this.meets = l.meets.meets;
     }
 
@@ -56,22 +56,22 @@ public class ResultsData {
         return new Result(meet, date, swimTime, reactionTime, stroke, distance, c);
     }
 
-    private Session getSessionFromEventId(Meet m, int eventid) {
+    private Event getEventFromId(Meet m, int eventid) {
         for (Session s : m.sessions.sessions) {
             for (Event e : s.events.events) {
                 if (e.eventid == eventid) {
-                    return s;
+                    return e;
                 }
             }
         }
         return null;
     }
 
-    private Event getEventFromId(Meet m, int eventid) {
+    private Session getSessionFromEventId(Meet m, int eventid) {
         for (Session s : m.sessions.sessions) {
             for (Event e : s.events.events) {
                 if (e.eventid == eventid) {
-                    return e;
+                    return s;
                 }
             }
         }

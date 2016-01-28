@@ -33,9 +33,9 @@ import java.util.stream.Collectors;
 
 public class ResultImportDialog extends DialogView {
 
+    private final HashMap<Pair<Swimmer, Result>, BooleanProperty> selected = new HashMap<>();
     @Inject(name = "db-controller")
     private DatabaseController db;
-
     @FXML
     private BorderPane root;
     @FXML
@@ -53,8 +53,6 @@ public class ResultImportDialog extends DialogView {
     @FXML
     private TableColumn<Pair<Swimmer, Result>, Stroke> stroke;
 
-    private HashMap<Pair<Swimmer, Result>, BooleanProperty> selected = new HashMap<>();
-
     @FXML
     private void initialize() {
         isImport.setCellFactory(CheckBoxTableCell.forTableColumn(isImport));
@@ -68,7 +66,7 @@ public class ResultImportDialog extends DialogView {
     }
 
     private void pathChanged(String str) {
-        Path path = null;
+        Path path;
         try {
             path = Paths.get(str);
         } catch (InvalidPathException ignored) {

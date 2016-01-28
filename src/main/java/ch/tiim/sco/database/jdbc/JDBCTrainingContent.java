@@ -58,7 +58,7 @@ public class JDBCTrainingContent extends Table implements ch.tiim.sco.database.T
     }
 
     @Override
-    public void deleteSet(Training t, Set s, int index) throws SQLException {
+    public void deleteSet(Training t, int index) throws SQLException {
         delete.setInt("training_id", t.getId());
         delete.setInt("index", index);
         LOGGER.debug(MARKER_QUERRY, delete);

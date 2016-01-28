@@ -8,7 +8,7 @@ import java.io.InputStream;
 public abstract class MainView extends View {
 
     public void opened() {
-
+        //Nothing here
     }
 
     public InputStream getIcon() {

@@ -8,6 +8,8 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextArea;
 import org.apache.logging.log4j.Logger;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Optional;
@@ -15,15 +17,16 @@ import java.util.Optional;
 public class ExceptionAlert extends Alert {
     public static final ButtonType BUTTON_REPORT = new ButtonType("Report");
 
-    private EventBus eventBus;
+    private final EventBus eventBus;
 
-    private ExceptionAlert(Logger logger, String message, Throwable t, EventBus eventBus) {
+    private ExceptionAlert(@Nonnull Logger logger, @Nonnull String message,
+                           @Nullable Throwable t, @Nullable EventBus eventBus) {
         super(AlertType.ERROR);
         this.eventBus = eventBus;
         logger.error(String.format("[ALERT] - %s", message), t);
         getButtonTypes().setAll(BUTTON_REPORT, ButtonType.CLOSE);
         setTitle("Error");
-        setHeaderText(String.format("%s %s", message, t.getMessage()));
+        setHeaderText(String.format("%s: %s", message, t != null ? t.getMessage() : ""));
         if (t != null) {
             setContentText("If you think this is a bug, feel free to report it.");
             TextArea text = new TextArea(getStackTrace(t));
@@ -48,16 +51,11 @@ public class ExceptionAlert extends Alert {
         });
     }
 
-    /**
-     * @return true on button report, false otherwise
-     */
-    public boolean handle() {
+
+    public void handle() {
         Optional<ButtonType> buttonType = showAndWait();
         if (buttonType.isPresent() && buttonType.get() == BUTTON_REPORT) {
             eventBus.post(new ShowDocumentEvent("https://github.com/Tiim/SwimCoachOrganizer/issues"));
-            return true;
-        } else {
-            return false;
         }
     }
 }

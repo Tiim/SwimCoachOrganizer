@@ -11,8 +11,8 @@ public class ViewLoader {
         if (clazz == null) {
             throw new NullPointerException("View class is null");
         }
-        FXMLLoader loader = null;
-        T c = null;
+        FXMLLoader loader;
+        T c;
         try {
             loader = new FXMLLoader(clazz.getResource(clazz.getSimpleName() + ".fxml"));
             loader.load();

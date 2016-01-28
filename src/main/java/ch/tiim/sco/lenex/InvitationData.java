@@ -13,8 +13,14 @@ public class InvitationData {
 
     private final Lenex l;
 
-    public InvitationData(Lenex l) throws LenexException {
+    public InvitationData(Lenex l) {
         this.l = l;
+    }
+
+    public List<Event> getEvents(Session s) {
+        List<Event> events = s.events.events;
+        Collections.sort(events);
+        return events;
     }
 
     public List<Session> getSessions() {
@@ -24,11 +30,5 @@ public class InvitationData {
         }
         Collections.sort(sessions);
         return sessions;
-    }
-
-    public List<Event> getEvents(Session s) {
-        List<Event> events = s.events.events;
-        Collections.sort(events);
-        return events;
     }
 }

@@ -25,22 +25,20 @@ import java.util.stream.Collectors;
 
 public class TeamDialog extends DialogView {
 
+    private final HashMap<Swimmer, ObservableValue<Boolean>> selected = new HashMap<>();
     @Inject(name = "db-controller")
     private DatabaseController db;
-
     @FXML
     private VBox root;
     @FXML
     private TextField name;
     @FXML
     private ListView<Swimmer> swimmers;
-
-    private HashMap<Swimmer, ObservableValue<Boolean>> selected = new HashMap<>();
     private Team currentTeam;
 
     @FXML
     private void initialize() {
-        swimmers.setCellFactory(CheckBoxListCell.forListView(param -> selected.get(param), new StringConverter<Swimmer>() {
+        swimmers.setCellFactory(CheckBoxListCell.forListView(selected::get, new StringConverter<Swimmer>() {
             @Override
             public String toString(Swimmer object) {
                 return object.uiString();
@@ -92,8 +90,8 @@ public class TeamDialog extends DialogView {
 
     private void populate(Team team) {
         this.currentTeam = team;
-        List<Swimmer> inTeam = null;
-        List<Swimmer> notInTeam = null;
+        List<Swimmer> inTeam;
+        List<Swimmer> notInTeam;
         try {
             if (team != null) {
                 name.setText(team.getName());

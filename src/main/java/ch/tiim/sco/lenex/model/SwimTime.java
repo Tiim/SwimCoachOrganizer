@@ -3,10 +3,10 @@ package ch.tiim.sco.lenex.model;
 import java.time.Duration;
 
 public class SwimTime {
-    public int hour;
-    public int minute;
-    public int second;
-    public int hsec;
+    public final int hour;
+    public final int minute;
+    public final int second;
+    public final int hsec;
 
     public SwimTime(int hour, int minute, int second, int hsec) {
         this.hour = hour;
@@ -21,10 +21,10 @@ public class SwimTime {
     }
 
     public Duration asDuration() {
-        long milis = hour * 60l * 60l * 1000l;
-        milis += minute * 60l * 1000l;
-        milis += second * 1000l;
-        milis += hsec * 10l;
+        long milis = hour * 60L * 60L * 1000L;
+        milis += minute * 60L * 1000L;
+        milis += second * 1000L;
+        milis += hsec * 10L;
         return Duration.ofMillis(milis);
     }
 

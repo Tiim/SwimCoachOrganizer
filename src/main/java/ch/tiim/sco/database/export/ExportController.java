@@ -10,7 +10,6 @@ import org.w3c.dom.Element;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
@@ -28,23 +27,19 @@ public class ExportController {
     private static final HashMap<Class<? extends Model>, XMLExporter> EXPORTERS = new HashMap<>();
 
     static {
-        try {
-            EXPORTERS.put(Training.class, new TrainingExporter());
-            EXPORTERS.put(Set.class, new SetExporter());
-            EXPORTERS.put(SetFocus.class, new FocusExporter());
-            EXPORTERS.put(SetStroke.class, new StrokeExporter());
-            EXPORTERS.put(Club.class, new ClubExporter());
-            EXPORTERS.put(Team.class, new TeamExporter());
-            EXPORTERS.put(Swimmer.class, new SwimmerExporter());
-            EXPORTERS.put(Result.class, new ResultExporter());
-        } catch (ParserConfigurationException e) {
-            LOGGER.error("Error while initializing ExportController", e);
-        }
+        EXPORTERS.put(Training.class, new TrainingExporter());
+        EXPORTERS.put(Set.class, new SetExporter());
+        EXPORTERS.put(SetFocus.class, new FocusExporter());
+        EXPORTERS.put(SetStroke.class, new StrokeExporter());
+        EXPORTERS.put(Club.class, new ClubExporter());
+        EXPORTERS.put(Team.class, new TeamExporter());
+        EXPORTERS.put(Swimmer.class, new SwimmerExporter());
+        EXPORTERS.put(Result.class, new ResultExporter());
     }
 
     private final DatabaseController db;
-    private HashMap<Model, Integer> exported = new HashMap<>();
-    private Queue<Pair<Integer, Model>> data = new ArrayDeque<>();
+    private final HashMap<Model, Integer> exported = new HashMap<>();
+    private final Queue<Pair<Integer, Model>> data = new ArrayDeque<>();
     private int id = 1;
 
     public ExportController(DatabaseController db) {

@@ -4,6 +4,7 @@ import ch.tiim.sco.database.model.Model;
 import ch.tiim.sco.lenex.adapder.LocalDateAdapter;
 import ch.tiim.sco.lenex.adapder.LocalTimeAdapter;
 
+import javax.annotation.Nonnull;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -47,7 +48,7 @@ public class Session implements Model, Comparable<Session> {
     public LocalTime warmupuntil;
 
     @Override
-    public int compareTo(Session o) {
+    public int compareTo(@Nonnull Session o) {
         int comp = date.compareTo(o.date) * 10_000;
         if (daytime != null && o.daytime != null) {
             comp += daytime.compareTo(o.daytime);

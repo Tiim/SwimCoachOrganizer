@@ -1,5 +1,6 @@
 package ch.tiim.sco.util;
 
+import javax.annotation.Nonnull;
 import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,8 +14,8 @@ import java.io.InputStream;
  */
 public class ByteCountingInputStream extends FilterInputStream {
 
+    private final Updater updater;
     private long totalRead = 0;
-    private Updater updater;
 
     public ByteCountingInputStream(InputStream in, Updater u) {
         super(in);
@@ -30,7 +31,7 @@ public class ByteCountingInputStream extends FilterInputStream {
     }
 
     @Override
-    public int read(byte[] b) throws IOException {
+    public int read(@Nonnull byte[] b) throws IOException {
         int ret = super.read(b);
         totalRead += ret;
         updater.update(totalRead);
@@ -38,7 +39,7 @@ public class ByteCountingInputStream extends FilterInputStream {
     }
 
     @Override
-    public int read(byte[] b, int off, int len) throws IOException {
+    public int read(@Nonnull byte[] b, int off, int len) throws IOException {
         int ret = super.read(b, off, len);
         totalRead += ret;
         updater.update(totalRead);

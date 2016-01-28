@@ -18,17 +18,15 @@ import java.io.StringWriter;
 
 public class ConsoleView extends MainView {
 
+    private final NashornScriptEngine engine;
     @Inject(name = "db-controller")
     private DatabaseController db;
-
     @FXML
     private VBox root;
     @FXML
     private TextArea out;
     @FXML
     private TextArea in;
-
-    private NashornScriptEngine engine;
     private String lastCommand;
 
     public ConsoleView() {

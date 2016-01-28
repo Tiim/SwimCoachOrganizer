@@ -2,8 +2,8 @@ package ch.tiim.sco.update;
 
 public class NewVersionEvent {
 
-    private Version currentVersion;
-    private Version newVersion;
+    private final Version currentVersion;
+    private final Version newVersion;
 
     public NewVersionEvent(Version currentVersion, Version newVersion) {
         this.currentVersion = currentVersion;

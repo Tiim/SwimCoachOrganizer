@@ -8,7 +8,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
 
-import javax.xml.parsers.ParserConfigurationException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,7 +19,7 @@ public class TrainingExporter extends XMLExporter<Training> {
 
     private DatabaseController db;
 
-    public TrainingExporter() throws ParserConfigurationException {
+    public TrainingExporter() {
         super();
     }
 

@@ -38,7 +38,6 @@ public class DatabaseController implements Closeable {
 
     private final SqlLoader sqlLoader;
     private final Connection conn;
-    private final Path filePath;
     private boolean initialized = false;
 
     public DatabaseController(String file) throws SQLException {
@@ -50,12 +49,12 @@ public class DatabaseController implements Closeable {
         }
 
         boolean notExists;
+        Path filePath;
         if (!file.equals(":memory:")) {
             filePath = Paths.get(file + ".mv.db");
             notExists = !Files.exists(filePath);
         } else {
             file = "mem:";
-            filePath = null;
             notExists = true;
         }
 

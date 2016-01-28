@@ -26,9 +26,9 @@ import java.util.stream.Collectors;
 public class ClubDialog extends DialogView {
 
 
+    private final HashMap<Team, ObservableValue<Boolean>> selected = new HashMap<>();
     @Inject(name = "db-controller")
     private DatabaseController db;
-
     @FXML
     private Parent root;
     @FXML
@@ -47,8 +47,6 @@ public class ClubDialog extends DialogView {
     private Spinner<Integer> externid;
     @FXML
     private ListView<Team> teams;
-
-    private HashMap<Team, ObservableValue<Boolean>> selected = new HashMap<>();
     private Club currentClub;
 
     @FXML
@@ -58,7 +56,7 @@ public class ClubDialog extends DialogView {
         country.getItems().setAll(nations);
         externid.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, Integer.MAX_VALUE));
 
-        teams.setCellFactory(CheckBoxListCell.forListView(param -> selected.get(param), new StringConverter<Team>() {
+        teams.setCellFactory(CheckBoxListCell.forListView(selected::get, new StringConverter<Team>() {
             @Override
             public String toString(Team object) {
                 return object.uiString();

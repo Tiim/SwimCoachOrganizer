@@ -11,13 +11,11 @@ public class Config {
 
     private static final String CONFIG = "config.js";
 
-    private ScriptEngine engine;
-
     private JSObject config;
 
     public Config() throws ScriptException {
         ScriptEngineManager manager = new ScriptEngineManager();
-        engine = manager.getEngineByName("nashorn");
+        ScriptEngine engine = manager.getEngineByName("nashorn");
         engine.eval(new InputStreamReader(Config.class.getResourceAsStream(CONFIG)));
         config = (JSObject) engine.get("config");
     }

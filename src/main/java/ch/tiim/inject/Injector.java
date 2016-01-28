@@ -12,7 +12,7 @@ public class Injector {
     private static final Logger LOGGER = LogManager.getLogger(Injector.class.getName());
     private static final Injector INSTANCE = new Injector();
     private static final String INJECTED_CALLBACK = "injected";
-    private HashMap<String, Object> toInject = new HashMap<>();
+    private final HashMap<String, Object> toInject = new HashMap<>();
 
 
     private Injector() {
@@ -65,15 +65,6 @@ public class Injector {
         }
     }
 
-    private List<Class<?>> getSuperClasses(Class<?> clazz) {
-        List<Class<?>> res = new ArrayList<>();
-        do {
-            res.add(clazz);
-            clazz = clazz.getSuperclass();
-        } while (clazz != null && !clazz.getCanonicalName().equals("java.lang.Object"));
-        return res;
-    }
-
     private void callMethod(Object o) {
         Class<?> clazz = o.getClass();
         try {
@@ -89,6 +80,15 @@ public class Injector {
             }
         } catch (NoSuchMethodException ignored) {
         }
+    }
+
+    private List<Class<?>> getSuperClasses(Class<?> clazz) {
+        List<Class<?>> res = new ArrayList<>();
+        do {
+            res.add(clazz);
+            clazz = clazz.getSuperclass();
+        } while (clazz != null && !clazz.getCanonicalName().equals("java.lang.Object"));
+        return res;
     }
 
     public static Injector getInstance() {
