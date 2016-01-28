@@ -1,28 +1,32 @@
 package ch.tiim.sco.gui;
 
+import ch.tiim.sco.util.OutOfCoffeeException;
 import javafx.fxml.FXMLLoader;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+
+import javax.annotation.Nonnull;
 
 public class ViewLoader {
-    private static final Logger LOGGER = LogManager.getLogger(ViewLoader.class);
 
-    public static <T extends View> T load(Class<T> clazz) {
-        if (clazz == null) {
-            throw new NullPointerException("View class is null");
-        }
-        FXMLLoader loader;
+    /**
+     * Loads a .fxml file and returns the controller that is associated with it.
+     * The .fxml file must be in the same package as the class and must have the same name as the class
+     *
+     * @param clazz the class of the controller
+     * @param <T>   the type of the controller
+     * @return the controller, loaded from the .fxml
+     */
+    @Nonnull
+    public static <T extends View> T load(@Nonnull Class<T> clazz) {
         T c;
         try {
-            loader = new FXMLLoader(clazz.getResource(clazz.getSimpleName() + ".fxml"));
+            FXMLLoader loader = new FXMLLoader(clazz.getResource(clazz.getSimpleName() + ".fxml"));
             loader.load();
             c = loader.getController();
             if (c == null) {
-                LOGGER.warn("No controller for " + clazz.getSimpleName() + ".fxml");
+                throw new OutOfCoffeeException("No controller for " + clazz.getSimpleName() + ".fxml");
             }
         } catch (Exception e) {
-            LOGGER.error("Can't load fxml: " + clazz.getSimpleName() + ".fxml", e);
-            return null;
+            throw new RuntimeException("Can't load fxml: " + clazz.getSimpleName() + ".fxml", e);
         }
         return c;
     }
