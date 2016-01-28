@@ -89,6 +89,9 @@ public class ConsoleView extends MainView {
             case "$q":
                 eval("db.debugQuery(__arg__);");
                 break;
+            case "$i":
+                eval("obj(__arg__);");
+                break;
             default:
                 eval("\"Unknown command \" + __cmd__");
                 break;
