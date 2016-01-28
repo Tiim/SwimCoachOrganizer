@@ -6,6 +6,8 @@ import ch.tiim.sco.gui.dialog.TaskDialog;
 import ch.tiim.sco.gui.events.OpenEvent;
 import com.google.common.eventbus.Subscribe;
 import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.EventHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -26,8 +28,16 @@ public class DialogListener {
     public void onTask(Task<?> event) {
         TaskDialog dialog = ViewLoader.load(TaskDialog.class);
         if (dialog != null) {
-            event.setOnFailed(it -> dialog.onFailed());
-            event.setOnSucceeded(it -> dialog.onSucceeded());
+            EventHandler<WorkerStateEvent> onSucceeded = event.getOnSucceeded();
+            EventHandler<WorkerStateEvent> onFailed = event.getOnFailed();
+            event.setOnSucceeded(event1 -> {
+                onSucceeded.handle(event1);
+                dialog.onSucceeded();
+            });
+            event.setOnFailed(event1 -> {
+                onFailed.handle(event1);
+                dialog.onFailed();
+            });
             event.messageProperty().addListener((observable, oldValue, newValue) -> dialog.onMessageUpdate(newValue));
             event.progressProperty().addListener((observable, oldValue, newValue) ->
                     dialog.onProgressUpdate(newValue.doubleValue()));
