@@ -22,8 +22,12 @@ public abstract class DialogView extends View {
             stage = new Stage();
             stage.setTitle(getName());
             stage.setScene(scene);
-            stage.initModality(Modality.WINDOW_MODAL);
-            stage.initOwner(parent);
+            if (parent != null) {
+                stage.initModality(Modality.WINDOW_MODAL);
+                stage.initOwner(parent);
+            } else {
+                stage.initModality(Modality.APPLICATION_MODAL);
+            }
             stage.setOnCloseRequest(e -> onClosePrivate());
         }
         stage.show();
