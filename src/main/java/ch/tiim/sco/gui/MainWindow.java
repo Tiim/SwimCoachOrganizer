@@ -7,6 +7,7 @@ import ch.tiim.sco.gui.events.AboutEvent;
 import ch.tiim.sco.gui.main.*;
 import ch.tiim.sco.gui.util.DialogListener;
 import ch.tiim.sco.update.Version;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -53,6 +54,10 @@ public class MainWindow extends View {
         mainStage.setScene(mainScene);
         mainStage.setMinWidth(config.getInt("config.window.x"));
         mainStage.setMinHeight(config.getInt("config.window.y"));
+
+        //Wait until the stage got resized. Otherwise
+        //the split plane has not the right ratio.
+        Platform.runLater(() -> ((Button) toolBar.getItems().get(0)).getOnAction().handle(null));
     }
 
     private void initDialogs() {
