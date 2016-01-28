@@ -68,7 +68,7 @@ public class SetView extends MainView {
         try {
             sets.getItems().setAll(db.getTblSet().getAllSets());
         } catch (Exception e) {
-            new ExceptionAlert(LOGGER, "Can't load sets.", e, eventBus).handle();
+            ExceptionAlert.showError(LOGGER, "Can't load sets.", e, eventBus);
         }
     }
 
@@ -84,7 +84,7 @@ public class SetView extends MainView {
             try {
                 db.getTblSet().deleteSet(set);
             } catch (Exception e) {
-                new ExceptionAlert(LOGGER, "Can't delete set", e, eventBus).handle();
+                ExceptionAlert.showError(LOGGER, "Can't delete set", e, eventBus);
             }
             eventBus.post(new SetEvent.SetDeleteEvent(set));
         }

@@ -37,10 +37,11 @@ public class LenexParser {
                 is = new FileInputStream(p.toFile());
                 updater.setMax(p.toFile().length());
             } else {
-                LOGGER.warn(p.toString() + " is not a .lef or .lxf file");
+                String msg = p.toString() + " is not a .lef or .lxf file";
                 if (!Files.exists(p)) {
-                    LOGGER.warn("It doesn't even exit");
+                    msg += "It doesn't even exit";
                 }
+                throw new IOException(msg);
             }
 
             ByteCountingInputStream bc = new ByteCountingInputStream(is, updater);
@@ -49,14 +50,12 @@ public class LenexParser {
             Unmarshaller unmarshaller = context.createUnmarshaller();
             return (Lenex) unmarshaller.unmarshal(bc);
         } catch (JAXBException e) {
-            System.err.println(e.getMessage());
-            e.printStackTrace();
+            throw new IOException("Can't read xml file: " + e.getMessage(), e);
         } finally {
             //noinspection EmptyTryBlock
             try (InputStream iss = is) {
                 // input stream gets closed.
             }
         }
-        return null;
     }
 }

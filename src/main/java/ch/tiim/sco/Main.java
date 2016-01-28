@@ -6,6 +6,7 @@ import ch.tiim.sco.database.DatabaseController;
 import ch.tiim.sco.event.ShowDocumentEvent;
 import ch.tiim.sco.gui.MainWindow;
 import ch.tiim.sco.gui.ViewLoader;
+import ch.tiim.sco.gui.alert.ExceptionAlert;
 import ch.tiim.sco.update.NewVersionEvent;
 import ch.tiim.sco.update.Version;
 import ch.tiim.sco.update.VersionCheckTask;
@@ -43,6 +44,17 @@ public class Main extends Application {
 
         eventBus.register(listener);
         eventBus.register(this);
+
+        Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
+            try {
+                ExceptionAlert.showError(LOGGER,
+                        String.format("Uncaught exception in thread: %s.\nThis is a bug! Please report it.", t.getName()),
+                        e, eventBus);
+            } catch (Throwable ex) {
+                ex.printStackTrace();
+                throw ex;
+            }
+        });
 
         DatabaseController db = new DatabaseController("./file.db");
         db.initializeDefaultValues();

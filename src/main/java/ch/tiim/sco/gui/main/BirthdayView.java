@@ -63,7 +63,7 @@ public class BirthdayView extends MainView {
         try {
             s = db.getTblSwimmer().getAllSwimmers();
         } catch (Exception e) {
-            new ExceptionAlert(LOGGER, "Can't load swimmers", e, eventBus).handle();
+            ExceptionAlert.showError(LOGGER, "Can't load swimmers", e, eventBus);
             return;
         }
         Collections.sort(s, (o1, o2) ->

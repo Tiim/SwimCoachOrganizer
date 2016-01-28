@@ -67,7 +67,7 @@ public class ClubView extends MainView {
             try {
                 teams.getItems().setAll(db.getTblClubContent().getTeams(newValue));
             } catch (Exception e) {
-                new ExceptionAlert(LOGGER, "Can't load teams", e, eventBus).handle();
+                ExceptionAlert.showError(LOGGER, "Can't load teams", e, eventBus);
             }
         }
     }
@@ -76,7 +76,7 @@ public class ClubView extends MainView {
         try {
             clubs.getItems().setAll(db.getTblClub().getAll());
         } catch (Exception e) {
-            new ExceptionAlert(LOGGER, "Can't load clubs", e, eventBus).handle();
+            ExceptionAlert.showError(LOGGER, "Can't load clubs", e, eventBus);
         }
     }
 

@@ -78,7 +78,7 @@ public class TeamDialog extends DialogView {
             }
             db.getTblTeamContent().setSwimmers(currentTeam, swimmers);
         } catch (Exception e) {
-            new ExceptionAlert(LOGGER, "Can't save team", e, eventBus).handle();
+            ExceptionAlert.showError(LOGGER, "Can't save team", e, eventBus);
         }
         close();
         eventBus.post(new TeamEvent.TeamSaveEvent(currentTeam));
@@ -104,7 +104,7 @@ public class TeamDialog extends DialogView {
                 notInTeam = db.getTblSwimmer().getAllSwimmers();
             }
         } catch (Exception e) {
-            new ExceptionAlert(LOGGER, "Can't load swimmers", e, eventBus).handle();
+            ExceptionAlert.showError(LOGGER, "Can't load swimmers", e, eventBus);
             return;
         }
         inTeam.forEach(swimmer -> selected.put(swimmer, new SimpleBooleanProperty(true)));

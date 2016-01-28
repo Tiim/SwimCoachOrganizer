@@ -52,7 +52,7 @@ public class FocusView extends MainView {
         try {
             foci.setItems(FXCollections.observableArrayList(db.getTblSetFocus().getAllFoci()));
         } catch (Exception e) {
-            new ExceptionAlert(LOGGER, "Can't load focus", e, eventBus).handle();
+            ExceptionAlert.showError(LOGGER, "Can't load focus", e, eventBus);
         }
     }
 
@@ -68,7 +68,7 @@ public class FocusView extends MainView {
             try {
                 db.getTblSetFocus().deleteSetFocus(item);
             } catch (Exception e) {
-                new ExceptionAlert(LOGGER, "Can't delete focus", e, eventBus).handle();
+                ExceptionAlert.showError(LOGGER, "Can't delete focus", e, eventBus);
             }
             eventBus.post(new FocusEvent.FocusDeleteEvent(item));
         }

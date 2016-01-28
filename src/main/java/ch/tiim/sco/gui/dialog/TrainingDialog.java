@@ -124,7 +124,7 @@ public class TrainingDialog extends DialogView {
             }
             db.getTblTrainingContent().setSets(currentTraining, training.getItems());
         } catch (Exception e) {
-            new ExceptionAlert(LOGGER, "can't save training", e, eventBus).handle();
+            ExceptionAlert.showError(LOGGER, "can't save training", e, eventBus);
         }
         close();
         eventBus.post(new TrainingEvent.TrainingSaveEvent(currentTraining));
@@ -155,7 +155,7 @@ public class TrainingDialog extends DialogView {
                 List<IndexedSet> sets = db.getTblTrainingContent().getSets(tr);
                 training.getItems().setAll(sets);
             } catch (Exception e) {
-                new ExceptionAlert(LOGGER, "Can't load sets for training", e, eventBus).handle();
+                ExceptionAlert.showError(LOGGER, "Can't load sets for training", e, eventBus);
             }
         }
     }
@@ -164,7 +164,7 @@ public class TrainingDialog extends DialogView {
         try {
             sets.getItems().setAll(db.getTblSet().getAllSets());
         } catch (Exception e) {
-            new ExceptionAlert(LOGGER, "Can't load sets", e, eventBus).handle();
+            ExceptionAlert.showError(LOGGER, "Can't load sets", e, eventBus);
         }
     }
 

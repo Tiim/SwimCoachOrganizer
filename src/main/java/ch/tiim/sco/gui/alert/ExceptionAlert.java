@@ -2,6 +2,7 @@ package ch.tiim.sco.gui.alert;
 
 import ch.tiim.sco.event.ShowDocumentEvent;
 import com.google.common.eventbus.EventBus;
+import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextArea;
@@ -16,27 +17,35 @@ public class ExceptionAlert extends Alert {
 
     private EventBus eventBus;
 
-    public ExceptionAlert(Logger logger, String message, Throwable t, EventBus eventBus) {
+    private ExceptionAlert(Logger logger, String message, Throwable t, EventBus eventBus) {
         super(AlertType.ERROR);
         this.eventBus = eventBus;
         logger.error(String.format("[ALERT] - %s", message), t);
         getButtonTypes().setAll(BUTTON_REPORT, ButtonType.CLOSE);
         setTitle("Error");
         setHeaderText(String.format("%s %s", message, t.getMessage()));
-        setContentText("If you think this is a bug, feel free to report it.");
-
-        TextArea text = new TextArea(getStackTrace(t));
-        text.setEditable(false);
-        text.setWrapText(true);
-        text.setMaxWidth(Double.MAX_VALUE);
-        text.setMaxHeight(Double.MAX_VALUE);
-        getDialogPane().setExpandableContent(text);
+        if (t != null) {
+            setContentText("If you think this is a bug, feel free to report it.");
+            TextArea text = new TextArea(getStackTrace(t));
+            text.setEditable(false);
+            text.setWrapText(true);
+            text.setMaxWidth(Double.MAX_VALUE);
+            text.setMaxHeight(Double.MAX_VALUE);
+            getDialogPane().setExpandableContent(text);
+        }
     }
 
     private String getStackTrace(Throwable t) {
         StringWriter sw = new StringWriter();
         t.printStackTrace(new PrintWriter(sw));
         return sw.toString();
+    }
+
+    public static void showError(Logger logger, String message, Throwable t, EventBus eventBus) {
+        Platform.runLater(() -> {
+            ExceptionAlert alert = new ExceptionAlert(logger, message, t, eventBus);
+            alert.handle();
+        });
     }
 
     /**
