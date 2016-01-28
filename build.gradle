@@ -37,6 +37,8 @@ dependencies {
     //Guava
     compile group: 'com.google.guava', name: 'guava', version: '12.+'
 
+    compile 'org.apache.xmlgraphics:fop:2.1'
+
     //JUnit
     testCompile group: 'junit', name: 'junit', version: '4.+'
 }
