@@ -7,9 +7,13 @@ import ch.tiim.sco.event.ShowDocumentEvent;
 import ch.tiim.sco.gui.MainWindow;
 import ch.tiim.sco.gui.ViewLoader;
 import ch.tiim.sco.gui.alert.ExceptionAlert;
-import ch.tiim.sco.update.*;
+import ch.tiim.sco.update.NewVersionEvent;
+import ch.tiim.sco.update.UpdatePerformer;
+import ch.tiim.sco.update.VersionCheckTask;
+import ch.tiim.sco.update.VersionChecker;
 import ch.tiim.sco.util.async.DaemonFactory;
 import ch.tiim.sco.util.async.ExecutorEventListener;
+import com.github.zafarkhaja.semver.Version;
 import com.google.common.eventbus.DeadEvent;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
@@ -65,7 +69,7 @@ public class Main extends Application {
 
         initRootLayout();
         if (getParameters().getNamed().containsKey("version")) {
-            VersionChecker.overrideCurrentVersion(new Version(
+            VersionChecker.overrideCurrentVersion(Version.valueOf(
                     getParameters().getNamed().get("version")
             ));
         }

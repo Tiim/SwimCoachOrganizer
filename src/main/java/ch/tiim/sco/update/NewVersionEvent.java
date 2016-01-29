@@ -1,5 +1,7 @@
 package ch.tiim.sco.update;
 
+import com.github.zafarkhaja.semver.Version;
+
 public class NewVersionEvent {
 
     private final Version currentVersion;

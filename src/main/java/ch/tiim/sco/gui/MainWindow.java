@@ -5,7 +5,7 @@ import ch.tiim.sco.config.Config;
 import ch.tiim.sco.gui.events.AboutEvent;
 import ch.tiim.sco.gui.main.*;
 import ch.tiim.sco.gui.util.DialogListener;
-import ch.tiim.sco.update.Version;
+import com.github.zafarkhaja.semver.Version;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -78,7 +78,7 @@ public class MainWindow extends View {
                 ViewLoader.load(ResultView.class)
         ));
 
-        if (!version.isDeployed()) {
+        if (version.equals(Version.forIntegers(0))) {
             views.add(null);
             views.add(ViewLoader.load(ConsoleView.class));
         }

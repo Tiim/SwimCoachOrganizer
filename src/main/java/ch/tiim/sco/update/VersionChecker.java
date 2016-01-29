@@ -1,6 +1,7 @@
 package ch.tiim.sco.update;
 
 
+import com.github.zafarkhaja.semver.Version;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -27,11 +28,11 @@ public final class VersionChecker {
 
     public static boolean isNewUpdaterVersionAvailable() {
         try {
-            final Version remote = new Version(Constants.downloadString(Constants.REMOTE_UPDATER_VERSION_URL));
+            final Version remote = Version.valueOf(Constants.downloadString(Constants.REMOTE_UPDATER_VERSION_URL));
             if (!Files.exists(Paths.get(Constants.LOCAL_UPDATER_VERSION_URL))) {
                 return true;
             }
-            final Version local = new Version(Constants.readString(Constants.LOCAL_UPDATER_VERSION_URL));
+            final Version local = Version.valueOf(Constants.readString(Constants.LOCAL_UPDATER_VERSION_URL));
             return local.compareTo(remote) < 0;
         } catch (final IOException | IllegalArgumentException e) {
             LOGGER.warn("", e);
@@ -43,7 +44,7 @@ public final class VersionChecker {
         final Version current = getCurrentVersion();
         final Version remote = getRemoteVersion();
 
-        return current.isDeployed() && remote.isDeployed() && remote.newerThan(current);
+        return remote.greaterThan(current) && !current.equals(Version.forIntegers(0));
 
     }
 
@@ -53,9 +54,9 @@ public final class VersionChecker {
         }
         final String version = VersionChecker.class.getPackage().getImplementationVersion();
         if (version != null) {
-            currentVersion = new Version(version);
+            currentVersion = Version.valueOf(version);
         } else {
-            currentVersion = new Version();
+            currentVersion = Version.forIntegers(0);
         }
         return currentVersion;
     }
@@ -71,10 +72,10 @@ public final class VersionChecker {
     public static void reloadRemoteVersion() {
         Version v;
         try {
-            v = new Version(Constants.downloadString(Constants.REMOTE_PROGRAM_VERSION_URL));
-        } catch (final IOException e) {
+            v = Version.valueOf(Constants.downloadString(Constants.REMOTE_PROGRAM_VERSION_URL));
+        } catch (Exception e) {
             LOGGER.warn("", e);
-            v = new Version();
+            v = Version.forIntegers(0);
         }
         remoteVersion = v;
     }
