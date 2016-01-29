@@ -23,7 +23,6 @@ public class ExceptionAlert extends Alert {
                            @Nullable Throwable t, @Nullable EventBus eventBus) {
         super(AlertType.ERROR);
         this.eventBus = eventBus;
-        logger.error(String.format("[ALERT] - %s", message), t);
         getButtonTypes().setAll(BUTTON_REPORT, ButtonType.CLOSE);
         setTitle("Error");
         setHeaderText(String.format("%s: %s", message, t != null ? t.getMessage() : ""));
@@ -36,6 +35,7 @@ public class ExceptionAlert extends Alert {
             text.setMaxHeight(Double.MAX_VALUE);
             getDialogPane().setExpandableContent(text);
         }
+        logger.info("[ALERT] - displaying...");
     }
 
     private String getStackTrace(Throwable t) {
@@ -45,6 +45,7 @@ public class ExceptionAlert extends Alert {
     }
 
     public static void showError(Logger logger, String message, Throwable t, EventBus eventBus) {
+        logger.error(String.format("[ALERT] -> %s", message), t);
         Platform.runLater(() -> {
             ExceptionAlert alert = new ExceptionAlert(logger, message, t, eventBus);
             alert.handle();
