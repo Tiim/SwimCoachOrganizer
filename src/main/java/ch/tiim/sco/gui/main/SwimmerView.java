@@ -3,14 +3,18 @@ package ch.tiim.sco.gui.main;
 import ch.tiim.inject.Inject;
 import ch.tiim.sco.database.DatabaseController;
 import ch.tiim.sco.database.model.Swimmer;
+import ch.tiim.sco.event.EmailEvent;
 import ch.tiim.sco.gui.alert.ExceptionAlert;
 import ch.tiim.sco.gui.events.SwimmerEvent;
 import ch.tiim.sco.gui.util.ModelCell;
 import com.google.common.eventbus.Subscribe;
+import javafx.application.HostServices;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+
+import java.util.Collections;
 
 public class SwimmerView extends MainView {
 
@@ -18,6 +22,8 @@ public class SwimmerView extends MainView {
     private DatabaseController db;
     @Inject(name = "main-stage")
     private Stage mainStage;
+    @Inject(name = "host")
+    private HostServices host;
 
     @FXML
     private SplitPane root;
@@ -26,7 +32,7 @@ public class SwimmerView extends MainView {
     @FXML
     private TextField firstName;
     @FXML
-    private TextField email;
+    private Hyperlink email;
     @FXML
     private TextField lastName;
     @FXML
@@ -120,6 +126,16 @@ public class SwimmerView extends MainView {
     @FXML
     private void onNew() {
         eventBus.post(new SwimmerEvent.SwimmerOpenEvent(null, mainStage));
+    }
+
+    @FXML
+    private void onEmail() {
+        Swimmer sw = swimmers.getSelectionModel().getSelectedItem();
+        if (sw != null) {
+            EmailEvent event = new EmailEvent(Collections.singletonList(sw));
+            event.setOnSucceeded(event1 -> host.showDocument(event.getValue()));
+            eventBus.post(event);
+        }
     }
 
     @Subscribe

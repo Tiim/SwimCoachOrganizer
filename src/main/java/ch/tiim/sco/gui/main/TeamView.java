@@ -4,10 +4,12 @@ import ch.tiim.inject.Inject;
 import ch.tiim.sco.database.DatabaseController;
 import ch.tiim.sco.database.model.Swimmer;
 import ch.tiim.sco.database.model.Team;
+import ch.tiim.sco.event.EmailEvent;
 import ch.tiim.sco.gui.alert.ExceptionAlert;
 import ch.tiim.sco.gui.events.TeamEvent;
 import ch.tiim.sco.gui.util.ModelCell;
 import com.google.common.eventbus.Subscribe;
+import javafx.application.HostServices;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -23,6 +25,8 @@ public class TeamView extends MainView {
     private Stage mainStage;
     @Inject(name = "db-controller")
     private DatabaseController db;
+    @Inject(name = "host")
+    private HostServices host;
 
     @FXML
     private SplitPane root;
@@ -100,6 +104,20 @@ public class TeamView extends MainView {
     @FXML
     private void onNew() {
         eventBus.post(new TeamEvent.TeamOpenEvent(null, mainStage));
+    }
+
+    @FXML
+    private void onEmail() {
+        Team t = teams.getSelectionModel().getSelectedItem();
+        try {
+            if (t != null) {
+                EmailEvent event = new EmailEvent(db.getTblTeamContent().getSwimmers(t));
+                event.setOnSucceeded(event1 -> host.showDocument(event.getValue()));
+                eventBus.post(event);
+            }
+        } catch (Exception e) {
+            ExceptionAlert.showError(LOGGER, "Can't load swimmers", e, eventBus);
+        }
     }
 
     @Subscribe

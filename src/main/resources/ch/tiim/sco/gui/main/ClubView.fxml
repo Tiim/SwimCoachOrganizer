@@ -33,6 +33,8 @@
               </GridPane>
                 <HBox alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity">
                     <children>
+                        <Button mnemonicParsing="false" onAction="#onEmail" text="E-Mail"/>
+                        <Pane HBox.hgrow="ALWAYS"/>
                         <Button mnemonicParsing="false" onAction="#onEdit" text="Edit" />
                         <Button mnemonicParsing="false" onAction="#onDelete" text="Delete" />
                         <Button mnemonicParsing="false" onAction="#onNew" text="New" />

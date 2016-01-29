@@ -1,11 +1,11 @@
 package ch.tiim.sco.gui.dialog;
 
 import ch.tiim.inject.Inject;
-import ch.tiim.sco.Main;
 import ch.tiim.sco.gui.alert.ExceptionAlert;
 import ch.tiim.sco.gui.events.TextOpenEvent;
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
+import javafx.application.HostServices;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
@@ -23,8 +23,8 @@ import java.util.List;
 
 public class AboutDialog extends DialogView {
 
-    @Inject(name = "app")
-    private Main application;
+    @Inject(name = "host")
+    private HostServices host;
 
     @FXML
     private BorderPane root;
@@ -76,7 +76,7 @@ public class AboutDialog extends DialogView {
     }
 
     private void openLink(String url) {
-        application.getHostServices().showDocument(url);
+        host.showDocument(url);
     }
 
     @Override

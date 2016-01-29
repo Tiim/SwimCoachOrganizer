@@ -3,16 +3,22 @@ package ch.tiim.sco.gui.main;
 import ch.tiim.inject.Inject;
 import ch.tiim.sco.database.DatabaseController;
 import ch.tiim.sco.database.model.Club;
+import ch.tiim.sco.database.model.Swimmer;
 import ch.tiim.sco.database.model.Team;
+import ch.tiim.sco.event.EmailEvent;
 import ch.tiim.sco.gui.alert.ExceptionAlert;
 import ch.tiim.sco.gui.events.ClubEvent;
 import ch.tiim.sco.gui.util.ModelCell;
 import com.google.common.eventbus.Subscribe;
+import javafx.application.HostServices;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ClubView extends MainView {
 
@@ -20,6 +26,8 @@ public class ClubView extends MainView {
     private Stage mainStage;
     @Inject(name = "db-controller")
     private DatabaseController db;
+    @Inject(name = "host")
+    private HostServices host;
 
     @FXML
     private Parent root;
@@ -104,6 +112,25 @@ public class ClubView extends MainView {
     @FXML
     private void onNew() {
         eventBus.post(new ClubEvent.ClubOpenEvent(null, mainStage));
+    }
+
+    @FXML
+    private void onEmail() {
+        try {
+            Club c = clubs.getSelectionModel().getSelectedItem();
+            if (c != null) {
+                List<Team> teams = db.getTblClubContent().getTeams(c);
+                List<Swimmer> swimmers = new ArrayList<>();
+                for (Team t : teams) {
+                    swimmers.addAll(db.getTblTeamContent().getSwimmers(t));
+                }
+                EmailEvent event = new EmailEvent(swimmers);
+                event.setOnSucceeded(event1 -> host.showDocument(event.getValue()));
+                eventBus.post(event);
+            }
+        } catch (Exception e) {
+            ExceptionAlert.showError(LOGGER, "Can't load members of club", e, eventBus);
+        }
     }
 
     @Subscribe

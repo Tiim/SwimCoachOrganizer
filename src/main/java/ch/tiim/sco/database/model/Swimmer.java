@@ -20,6 +20,21 @@ public class Swimmer implements Model {
     public Swimmer() {
     }
 
+    public Swimmer(Swimmer s) {
+        this(s.id,
+                s.firstName,
+                s.lastName,
+                s.birthDay,
+                s.address,
+                s.phonePrivate,
+                s.phoneWork,
+                s.phoneMobile,
+                s.email,
+                s.license,
+                s.isFemale,
+                s.notes);
+    }
+
     public Swimmer(int id, String firstName, String lastName, LocalDate birthDay, String address, String phonePrivate, String phoneWork, String phoneMobile, String email, String license, boolean isFemale, String notes) {
         this(firstName, lastName, birthDay, address, phonePrivate, phoneWork, phoneMobile, email, license, isFemale, notes);
         this.id = id;
@@ -45,24 +60,6 @@ public class Swimmer implements Model {
     }
 
     @Override
-    public String toString() {
-        return "Swimmer{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", birthDay=" + birthDay +
-                ", address='" + address + '\'' +
-                ", phonePrivate='" + phonePrivate + '\'' +
-                ", phoneWork='" + phoneWork + '\'' +
-                ", phoneMobile='" + phoneMobile + '\'' +
-                ", email='" + email + '\'' +
-                ", license='" + license + '\'' +
-                ", isFemale=" + isFemale +
-                ", notes='" + notes + '\'' +
-                '}';
-    }
-
-    @Override
     public int hashCode() {
         return Objects.hash(id, firstName, lastName, birthDay, address, phonePrivate, phoneWork, phoneMobile, email,
                 license, isFemale, notes);
@@ -85,6 +82,24 @@ public class Swimmer implements Model {
                 Objects.equals(this.license, that.license) &&
                 Objects.equals(this.isFemale, that.isFemale) &&
                 Objects.equals(this.notes, that.notes);
+    }
+
+    @Override
+    public String toString() {
+        return "Swimmer{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", birthDay=" + birthDay +
+                ", address='" + address + '\'' +
+                ", phonePrivate='" + phonePrivate + '\'' +
+                ", phoneWork='" + phoneWork + '\'' +
+                ", phoneMobile='" + phoneMobile + '\'' +
+                ", email='" + email + '\'' +
+                ", license='" + license + '\'' +
+                ", isFemale=" + isFemale +
+                ", notes='" + notes + '\'' +
+                '}';
     }
 
     public String getAddress() {

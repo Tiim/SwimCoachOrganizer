@@ -52,7 +52,7 @@ public class Main extends Application {
                         String.format("Uncaught exception in thread: %s.\nThis is a bug! Please report it.", t.getName()),
                         e, eventBus);
             } catch (Throwable ex) {
-                ex.printStackTrace();
+                LOGGER.error(ex, ex);
                 throw ex;
             }
         });
@@ -60,6 +60,7 @@ public class Main extends Application {
         DatabaseController db = new DatabaseController("./file.db");
         db.initializeDefaultValues();
 
+        Injector.getInstance().addInjectable(getHostServices(), "host");
         Injector.getInstance().addInjectable(new Config(), "config");
         Injector.getInstance().addInjectable(db, "db-controller");
         Injector.getInstance().addInjectable(primaryStage, "main-stage");
