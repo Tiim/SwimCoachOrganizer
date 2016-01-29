@@ -81,7 +81,7 @@ public class ClubView extends MainView {
     }
 
     @FXML
-    void onDelete() {
+    private void onDelete() {
         Club club = clubs.getSelectionModel().getSelectedItem();
         if (club != null) {
             try {
@@ -94,7 +94,7 @@ public class ClubView extends MainView {
     }
 
     @FXML
-    void onEdit() {
+    private void onEdit() {
         Club club = clubs.getSelectionModel().getSelectedItem();
         if (club != null) {
             eventBus.post(new ClubEvent.ClubOpenEvent(club, mainStage));
@@ -102,7 +102,7 @@ public class ClubView extends MainView {
     }
 
     @FXML
-    void onNew() {
+    private void onNew() {
         eventBus.post(new ClubEvent.ClubOpenEvent(null, mainStage));
     }
 

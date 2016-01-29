@@ -43,12 +43,12 @@ public class FocusDialog extends DialogView {
     }
 
     @FXML
-    void onCancel() {
+    private void onCancel() {
         close();
     }
 
     @FXML
-    void onSave() {
+    private void onSave() {
         boolean isNew = false;
         if (currentFocus == null) {
             isNew = true;

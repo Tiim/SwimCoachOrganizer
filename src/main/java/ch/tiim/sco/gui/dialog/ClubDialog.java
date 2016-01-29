@@ -70,12 +70,12 @@ public class ClubDialog extends DialogView {
     }
 
     @FXML
-    void onCancel() {
+    private void onCancel() {
         close();
     }
 
     @FXML
-    void onSave() {
+    private void onSave() {
         List<Team> teams = selected.keySet().stream()
                 .filter(team -> selected.get(team).getValue())
                 .collect(Collectors.toList());

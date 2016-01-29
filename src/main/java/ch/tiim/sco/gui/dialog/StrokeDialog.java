@@ -43,12 +43,12 @@ public class StrokeDialog extends DialogView {
     }
 
     @FXML
-    void onCancel() {
+    private void onCancel() {
         close();
     }
 
     @FXML
-    void onSave() {
+    private void onSave() {
         boolean isNew = false;
         if (currentStroke == null) {
             isNew = true;
