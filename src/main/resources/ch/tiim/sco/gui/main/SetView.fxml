@@ -7,15 +7,6 @@
     <items>
         <ListView fx:id="sets" prefHeight="200.0" prefWidth="200.0"/>
         <BorderPane prefHeight="200.0" prefWidth="200.0">
-            <bottom>
-                <HBox alignment="CENTER_RIGHT" BorderPane.alignment="CENTER">
-                    <children>
-                        <Button mnemonicParsing="false" onAction="#onEdit" text="Edit"/>
-                        <Button mnemonicParsing="false" onAction="#onDelete" text="Delete"/>
-                        <Button mnemonicParsing="false" onAction="#onNew" text="New"/>
-                    </children>
-                </HBox>
-            </bottom>
             <center>
                 <GridPane BorderPane.alignment="CENTER">
                     <columnConstraints>

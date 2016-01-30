@@ -6,13 +6,13 @@ import ch.tiim.sco.database.model.Set;
 import ch.tiim.sco.gui.alert.ExceptionAlert;
 import ch.tiim.sco.gui.events.SetEvent;
 import ch.tiim.sco.gui.util.ModelCell;
+import ch.tiim.sco.util.OutOfCoffeeException;
 import com.google.common.eventbus.Subscribe;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,12 +46,29 @@ public class SetView extends MainView {
     @FXML
     private TextArea notes;
 
+
+    private BooleanProperty isSelected = new SimpleBooleanProperty(false);
+
     @FXML
     private void initialize() {
+        initMenu();
         sets.setCellFactory(param -> new ModelCell<>());
         sets.getSelectionModel().selectedItemProperty()
                 .addListener((observable, oldValue, newValue) -> onSelected(newValue));
+        isSelected.bind(sets.getSelectionModel().selectedItemProperty().isNotNull());
         populate();
+    }
+
+    private void initMenu() {
+        getMenu().getItems().setAll(
+                createItem("Export Set", isSelected, event -> {
+                    throw new OutOfCoffeeException("Not implemented");
+                }),
+                new SeparatorMenuItem(),
+                createItem("New Set", null, event1 -> onNew()),
+                createItem("Edit Set", isSelected, event2 -> onEdit()),
+                createItem("Delete Set", isSelected, event3 -> onEdit())
+        );
     }
 
     private void onSelected(Set set) {
@@ -75,12 +92,17 @@ public class SetView extends MainView {
         }
     }
 
-    @FXML
     private void onNew() {
         eventBus.post(new SetEvent.SetOpenEvent(null, mainStage));
     }
 
-    @FXML
+    private void onEdit() {
+        Set set = sets.getSelectionModel().getSelectedItem();
+        if (set != null) {
+            eventBus.post(new SetEvent.SetOpenEvent(set, mainStage));
+        }
+    }
+
     private void onDelete() {
         Set set = sets.getSelectionModel().getSelectedItem();
         if (set != null) {
@@ -90,14 +112,6 @@ public class SetView extends MainView {
                 ExceptionAlert.showError(LOGGER, "Can't delete set", e, eventBus);
             }
             eventBus.post(new SetEvent.SetDeleteEvent(set));
-        }
-    }
-
-    @FXML
-    private void onEdit() {
-        Set set = sets.getSelectionModel().getSelectedItem();
-        if (set != null) {
-            eventBus.post(new SetEvent.SetOpenEvent(set, mainStage));
         }
     }
 

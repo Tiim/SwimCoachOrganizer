@@ -5,12 +5,16 @@ import ch.tiim.sco.database.DatabaseController;
 import ch.tiim.sco.database.model.SetFocus;
 import ch.tiim.sco.gui.alert.ExceptionAlert;
 import ch.tiim.sco.gui.events.FocusEvent;
+import ch.tiim.sco.util.OutOfCoffeeException;
 import com.google.common.eventbus.Subscribe;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
@@ -23,6 +27,7 @@ public class FocusView extends MainView {
     @Inject(name = "main-stage")
     private Stage mainStage;
 
+    private BooleanProperty isSelected = new SimpleBooleanProperty(false);
 
     @FXML
     private Parent root;
@@ -37,9 +42,23 @@ public class FocusView extends MainView {
 
     @FXML
     private void initialize() {
+        initMenu();
         foci.getSelectionModel().selectedItemProperty()
                 .addListener((observable, oldValue, newValue) -> onSelect(newValue));
+        isSelected.bind(foci.getSelectionModel().selectedItemProperty().isNotNull());
         populate();
+    }
+
+    private void initMenu() {
+        getMenu().getItems().addAll(
+                createItem("Export Focus", isSelected, event -> {
+                    throw new OutOfCoffeeException("Not implemented");
+                }),
+                new SeparatorMenuItem(),
+                createItem("New Focus", null, event -> onNew()),
+                createItem("Edit Focus", isSelected, event1 -> onEdit()),
+                createItem("Delete Focus", isSelected, event2 -> onDelete())
+        );
     }
 
     private void onSelect(SetFocus focus) {
@@ -58,12 +77,17 @@ public class FocusView extends MainView {
         }
     }
 
-    @FXML
     private void onNew() {
         eventBus.post(new FocusEvent.FocusOpenEvent(null, mainStage));
     }
 
-    @FXML
+    private void onEdit() {
+        SetFocus item = foci.getSelectionModel().getSelectedItem();
+        if (item != null) {
+            eventBus.post(new FocusEvent.FocusOpenEvent(item, mainStage));
+        }
+    }
+
     private void onDelete() {
         SetFocus item = foci.getSelectionModel().getSelectedItem();
         if (item != null) {
@@ -73,14 +97,6 @@ public class FocusView extends MainView {
                 ExceptionAlert.showError(LOGGER, "Can't delete focus", e, eventBus);
             }
             eventBus.post(new FocusEvent.FocusDeleteEvent(item));
-        }
-    }
-
-    @FXML
-    private void onEdit() {
-        SetFocus item = foci.getSelectionModel().getSelectedItem();
-        if (item != null) {
-            eventBus.post(new FocusEvent.FocusOpenEvent(item, mainStage));
         }
     }
 

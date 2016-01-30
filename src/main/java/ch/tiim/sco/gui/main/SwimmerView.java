@@ -7,8 +7,11 @@ import ch.tiim.sco.event.EmailEvent;
 import ch.tiim.sco.gui.alert.ExceptionAlert;
 import ch.tiim.sco.gui.events.SwimmerEvent;
 import ch.tiim.sco.gui.util.ModelCell;
+import ch.tiim.sco.util.OutOfCoffeeException;
 import com.google.common.eventbus.Subscribe;
 import javafx.application.HostServices;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
@@ -60,12 +63,30 @@ public class SwimmerView extends MainView {
     @FXML
     private TextArea notes;
 
+    private BooleanProperty isSelected = new SimpleBooleanProperty(false);
+
     @FXML
     private void initialize() {
+        initMenu();
         swimmers.setCellFactory(param -> new ModelCell<>());
         swimmers.getSelectionModel().selectedItemProperty()
                 .addListener((observable, oldValue, newValue) -> selected(newValue));
+        isSelected.bind(swimmers.getSelectionModel().selectedItemProperty().isNotNull());
         populate();
+    }
+
+    private void initMenu() {
+        getMenu().getItems().addAll(
+                createItem("Export Swimmer", isSelected, event -> {
+                    throw new OutOfCoffeeException("Not implemented yet");
+                }),
+                new SeparatorMenuItem(),
+                createItem("Send E-Mail", isSelected, event1 -> onEmail()),
+                new SeparatorMenuItem(),
+                createItem("New Swimmer", null, event2 -> onNew()),
+                createItem("Edit Swimmer", isSelected, event3 -> onEdit()),
+                createItem("Delete Swimmer", isSelected, event4 -> onDelete())
+        );
     }
 
     private void selected(Swimmer swimmer) {
@@ -105,6 +126,26 @@ public class SwimmerView extends MainView {
     }
 
     @FXML
+    private void onEmail() {
+        Swimmer sw = swimmers.getSelectionModel().getSelectedItem();
+        if (sw != null) {
+            EmailEvent event = new EmailEvent(Collections.singletonList(sw));
+            event.setOnSucceeded(event1 -> host.showDocument(event.getValue()));
+            eventBus.post(event);
+        }
+    }
+
+    private void onNew() {
+        eventBus.post(new SwimmerEvent.SwimmerOpenEvent(null, mainStage));
+    }
+
+    private void onEdit() {
+        Swimmer sw = swimmers.getSelectionModel().getSelectedItem();
+        if (sw != null) {
+            eventBus.post(new SwimmerEvent.SwimmerOpenEvent(sw, mainStage));
+        }
+    }
+
     private void onDelete() {
         Swimmer sw = swimmers.getSelectionModel().getSelectedItem();
         if (sw != null) {
@@ -114,29 +155,6 @@ public class SwimmerView extends MainView {
                 ExceptionAlert.showError(LOGGER, "Can't delete swimmer", e, eventBus);
             }
             eventBus.post(new SwimmerEvent.SwimmerDeleteEvent(sw));
-        }
-    }
-
-    @FXML
-    private void onEdit() {
-        Swimmer sw = swimmers.getSelectionModel().getSelectedItem();
-        if (sw != null) {
-            eventBus.post(new SwimmerEvent.SwimmerOpenEvent(sw, mainStage));
-        }
-    }
-
-    @FXML
-    private void onNew() {
-        eventBus.post(new SwimmerEvent.SwimmerOpenEvent(null, mainStage));
-    }
-
-    @FXML
-    private void onEmail() {
-        Swimmer sw = swimmers.getSelectionModel().getSelectedItem();
-        if (sw != null) {
-            EmailEvent event = new EmailEvent(Collections.singletonList(sw));
-            event.setOnSucceeded(event1 -> host.showDocument(event.getValue()));
-            eventBus.post(event);
         }
     }
 

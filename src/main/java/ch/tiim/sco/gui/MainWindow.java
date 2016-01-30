@@ -8,19 +8,12 @@ import ch.tiim.sco.gui.util.DialogListener;
 import com.github.zafarkhaja.semver.Version;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Separator;
-import javafx.scene.control.ToolBar;
-import javafx.scene.control.Tooltip;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -40,6 +33,10 @@ public class MainWindow extends View {
     private BorderPane root;
     @FXML
     private ToolBar toolBar;
+    @FXML
+    private MenuBar menu;
+
+    private Menu lastMenu;
 
     @FXML
     private void initialize() {
@@ -93,28 +90,21 @@ public class MainWindow extends View {
                 toolBar.getItems().add(b);
                 b.setOnAction(event -> {
                     root.setCenter(v.getRoot());
+                    this.menu.getMenus().set(1, v.getMenu());
                     v.opened();
                 });
             }
         }
-        toolBar.getItems().addAll(getSpacer(), getBtnAbout());
     }
 
-    private Node getSpacer() {
-        Region spacer = new Region();
-        HBox.setHgrow(spacer, Priority.ALWAYS);
-        spacer.setMinWidth(Region.USE_PREF_SIZE);
-        return spacer;
+    @FXML
+    private void onAbout() {
+        eventBus.post(new AboutEvent(mainStage));
     }
 
-    private Node getBtnAbout() {
-        Button btnAbout = new Button(null,
-                new ImageView(new Image(
-                        MainWindow.class.getResourceAsStream("AboutDialog.png"), 32, 32, true, true
-                ))
-        );
-        btnAbout.setOnAction(event -> eventBus.post(new AboutEvent(mainStage)));
-        return btnAbout;
+    @FXML
+    private void onClose() {
+        mainStage.close();
     }
 
     public void show() {
