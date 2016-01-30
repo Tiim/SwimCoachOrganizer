@@ -9,12 +9,16 @@ import ch.tiim.sco.event.EmailEvent;
 import ch.tiim.sco.gui.alert.ExceptionAlert;
 import ch.tiim.sco.gui.events.ClubEvent;
 import ch.tiim.sco.gui.util.ModelCell;
+import ch.tiim.sco.util.OutOfCoffeeException;
 import com.google.common.eventbus.Subscribe;
 import javafx.application.HostServices;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.SeparatorMenuItem;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -52,14 +56,31 @@ public class ClubView extends MainView {
     @FXML
     private ListView<Team> teams;
 
+    private BooleanProperty isSelected = new SimpleBooleanProperty(false);
 
     @FXML
     private void initialize() {
+        initMenu();
         clubs.setCellFactory(param -> new ModelCell<>());
         clubs.getSelectionModel().selectedItemProperty()
                 .addListener((observable, oldValue, newValue) -> selected(newValue));
         teams.setCellFactory(param -> new ModelCell<>());
+        isSelected.bind(clubs.getSelectionModel().selectedItemProperty().isNotNull());
         populate();
+    }
+
+    private void initMenu() {
+        getMenu().getItems().addAll(
+                createItem("Export Club", isSelected, event -> {
+                    throw new OutOfCoffeeException("Not implemented yet");
+                }),
+                new SeparatorMenuItem(),
+                createItem("Send E-Mail To Club Members", isSelected, event4 -> onEmail()),
+                new SeparatorMenuItem(),
+                createItem("New Club", null, event1 -> onNew()),
+                createItem("Edit Club", isSelected, event2 -> onEdit()),
+                createItem("Delete Club", isSelected, event3 -> onDelete())
+        );
     }
 
     private void selected(Club newValue) {
@@ -88,33 +109,6 @@ public class ClubView extends MainView {
         }
     }
 
-    @FXML
-    private void onDelete() {
-        Club club = clubs.getSelectionModel().getSelectedItem();
-        if (club != null) {
-            try {
-                db.getTblClub().deleteClub(club);
-            } catch (Exception e) {
-                LOGGER.warn("Can't delete club");
-            }
-            eventBus.post(new ClubEvent.ClubDeleteEvent(club));
-        }
-    }
-
-    @FXML
-    private void onEdit() {
-        Club club = clubs.getSelectionModel().getSelectedItem();
-        if (club != null) {
-            eventBus.post(new ClubEvent.ClubOpenEvent(club, mainStage));
-        }
-    }
-
-    @FXML
-    private void onNew() {
-        eventBus.post(new ClubEvent.ClubOpenEvent(null, mainStage));
-    }
-
-    @FXML
     private void onEmail() {
         try {
             Club c = clubs.getSelectionModel().getSelectedItem();
@@ -130,6 +124,29 @@ public class ClubView extends MainView {
             }
         } catch (Exception e) {
             ExceptionAlert.showError(LOGGER, "Can't load members of club", e, eventBus);
+        }
+    }
+
+    private void onNew() {
+        eventBus.post(new ClubEvent.ClubOpenEvent(null, mainStage));
+    }
+
+    private void onEdit() {
+        Club club = clubs.getSelectionModel().getSelectedItem();
+        if (club != null) {
+            eventBus.post(new ClubEvent.ClubOpenEvent(club, mainStage));
+        }
+    }
+
+    private void onDelete() {
+        Club club = clubs.getSelectionModel().getSelectedItem();
+        if (club != null) {
+            try {
+                db.getTblClub().deleteClub(club);
+            } catch (Exception e) {
+                LOGGER.warn("Can't delete club");
+            }
+            eventBus.post(new ClubEvent.ClubDeleteEvent(club));
         }
     }
 

@@ -8,12 +8,16 @@ import ch.tiim.sco.gui.alert.ExceptionAlert;
 import ch.tiim.sco.gui.events.ResultEvent;
 import ch.tiim.sco.gui.util.DurationTableCell;
 import ch.tiim.sco.gui.util.ModelCell;
+import ch.tiim.sco.util.OutOfCoffeeException;
 import com.google.common.eventbus.Subscribe;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.ListView;
+import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
@@ -22,11 +26,12 @@ import java.time.Duration;
 
 public class ResultView extends MainView {
 
+    BooleanProperty isSwimmerSelected = new SimpleBooleanProperty(false);
+    BooleanProperty isResultSelected = new SimpleBooleanProperty(false);
     @Inject(name = "db-controller")
     private DatabaseController db;
     @Inject(name = "main-stage")
     private Stage mainStage;
-
     @FXML
     private Parent root;
     @FXML
@@ -50,6 +55,7 @@ public class ResultView extends MainView {
 
     @FXML
     private void initialize() {
+        initMenu();
         swimmers.setCellFactory(param1 -> new ModelCell<>());
         swimmers.getSelectionModel().selectedItemProperty()
                 .addListener((observable, oldValue, newValue) -> selected(newValue));
@@ -63,7 +69,22 @@ public class ResultView extends MainView {
                 new SimpleObjectProperty<>(param.getValue().getReactionTime()));
         time.setCellFactory(param -> new DurationTableCell());
         reactionTime.setCellFactory(param -> new DurationTableCell());
+        isSwimmerSelected.bind(swimmers.getSelectionModel().selectedItemProperty().isNotNull());
+        isResultSelected.bind(results.getSelectionModel().selectedItemProperty().isNotNull());
         populate();
+    }
+
+    private void initMenu() {
+        getMenu().getItems().addAll(
+                createItem("Export Results", isSwimmerSelected, event -> {
+                    throw new OutOfCoffeeException("Not implemented yet");
+                }),
+                createItem("Import Results From LENEX", null, event1 -> onImport()),
+                new SeparatorMenuItem(),
+                createItem("New Result", null, event2 -> onNew()),
+                createItem("Edit Result", isResultSelected, event3 -> onEdit()),
+                createItem("Delete Reuslt", isResultSelected, event4 -> onDelete())
+        );
     }
 
     private void selected(Swimmer swimmer) {
@@ -84,7 +105,25 @@ public class ResultView extends MainView {
         }
     }
 
-    @FXML
+    private void onImport() {
+        eventBus.post(new ResultEvent.ResultImportEvent(mainStage));
+    }
+
+    private void onNew() {
+        Swimmer swimmer = swimmers.getSelectionModel().getSelectedItem();
+        if (swimmer != null) {
+            eventBus.post(new ResultEvent.ResultOpenEvent(null, swimmer, mainStage));
+        }
+    }
+
+    private void onEdit() {
+        Swimmer swimmer = swimmers.getSelectionModel().getSelectedItem();
+        Result res = results.getSelectionModel().getSelectedItem();
+        if (res != null && swimmer != null) {
+            eventBus.post(new ResultEvent.ResultOpenEvent(res, swimmer, mainStage));
+        }
+    }
+
     private void onDelete() {
         Swimmer swimmer = swimmers.getSelectionModel().getSelectedItem();
         Result res = results.getSelectionModel().getSelectedItem();
@@ -96,28 +135,6 @@ public class ResultView extends MainView {
             }
             eventBus.post(new ResultEvent.ResultDeleteEvent(res, swimmer));
         }
-    }
-
-    @FXML
-    private void onEdit() {
-        Swimmer swimmer = swimmers.getSelectionModel().getSelectedItem();
-        Result res = results.getSelectionModel().getSelectedItem();
-        if (res != null && swimmer != null) {
-            eventBus.post(new ResultEvent.ResultOpenEvent(res, swimmer, mainStage));
-        }
-    }
-
-    @FXML
-    private void onNew() {
-        Swimmer swimmer = swimmers.getSelectionModel().getSelectedItem();
-        if (swimmer != null) {
-            eventBus.post(new ResultEvent.ResultOpenEvent(null, swimmer, mainStage));
-        }
-    }
-
-    @FXML
-    private void onImport() {
-        eventBus.post(new ResultEvent.ResultImportEvent(mainStage));
     }
 
     @Subscribe

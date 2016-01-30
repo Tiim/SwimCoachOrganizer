@@ -89,8 +89,8 @@ public class TrainingView extends MainView {
                 createItem("Export to PDF", isSelected, event -> onPDF()),
                 new SeparatorMenuItem(),
                 createItem("New Training", null, event -> onNew()),
-                createItem("Delete Selected Training", isSelected, event -> onDelete()),
-                createItem("Edit Selected Training", isSelected, event -> onEdit())
+                createItem("Edit Selected Training", isSelected, event -> onEdit()),
+                createItem("Delete Selected Training", isSelected, event -> onDelete())
         );
     }
 
@@ -137,6 +137,13 @@ public class TrainingView extends MainView {
         eventBus.post(new TrainingEvent.TrainingOpenEvent(null, mainStage));
     }
 
+    private void onEdit() {
+        Training item = trainings.getSelectionModel().getSelectedItem();
+        if (item != null) {
+            eventBus.post(new TrainingEvent.TrainingOpenEvent(item, mainStage));
+        }
+    }
+
     private void onDelete() {
         Training item = trainings.getSelectionModel().getSelectedItem();
         if (item != null) {
@@ -146,13 +153,6 @@ public class TrainingView extends MainView {
                 ExceptionAlert.showError(LOGGER, "Can't delete training", e, eventBus);
             }
             eventBus.post(new TrainingEvent.TrainingDeleteEvent(item));
-        }
-    }
-
-    private void onEdit() {
-        Training item = trainings.getSelectionModel().getSelectedItem();
-        if (item != null) {
-            eventBus.post(new TrainingEvent.TrainingOpenEvent(item, mainStage));
         }
     }
 

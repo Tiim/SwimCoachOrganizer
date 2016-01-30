@@ -57,13 +57,6 @@
                         <Hyperlink fx:id="email" onAction="#onEmail" GridPane.columnIndex="1"/>
                     </children>
                 </GridPane>
-                <HBox alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity">
-                    <children>
-                        <Button mnemonicParsing="false" onAction="#onEdit" text="Edit"/>
-                        <Button mnemonicParsing="false" onAction="#onDelete" text="Delete"/>
-                        <Button mnemonicParsing="false" onAction="#onNew" text="New"/>
-                    </children>
-                </HBox>
             </children>
         </VBox>
     </items>

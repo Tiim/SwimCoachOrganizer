@@ -31,15 +31,6 @@
                       <ListView fx:id="teams" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.vgrow="ALWAYS" />
                   </children>
               </GridPane>
-                <HBox alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity">
-                    <children>
-                        <Button mnemonicParsing="false" onAction="#onEmail" text="E-Mail"/>
-                        <Pane HBox.hgrow="ALWAYS"/>
-                        <Button mnemonicParsing="false" onAction="#onEdit" text="Edit" />
-                        <Button mnemonicParsing="false" onAction="#onDelete" text="Delete" />
-                        <Button mnemonicParsing="false" onAction="#onNew" text="New" />
-                    </children>
-                </HBox>
          </children>
       </VBox>
     </items>
