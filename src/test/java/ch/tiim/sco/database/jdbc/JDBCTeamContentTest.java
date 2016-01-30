@@ -3,11 +3,11 @@ package ch.tiim.sco.database.jdbc;
 import ch.tiim.sco.database.DatabaseController;
 import ch.tiim.sco.database.model.Swimmer;
 import ch.tiim.sco.database.model.Team;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 public class JDBCTeamContentTest {
-    private static final Logger LOGGER = LogManager.getLogger(JDBCTeamContentTest.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(JDBCTeamContentTest.class);
     private DatabaseController db;
     private Team team1;
     private Team team2;

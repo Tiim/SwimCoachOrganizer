@@ -47,10 +47,10 @@ public class MainWindow extends View {
         initToolbar();
 
         Scene mainScene = new Scene(root);
-        mainStage.setTitle(config.getString("config.window.name") + " " + version);
+        mainStage.setTitle(config.getString("window.name") + " " + version);
         mainStage.setScene(mainScene);
-        mainStage.setMinWidth(config.getInt("config.window.x"));
-        mainStage.setMinHeight(config.getInt("config.window.y"));
+        mainStage.setMinWidth(config.getInt("window.x"));
+        mainStage.setMinHeight(config.getInt("window.y"));
 
         //Wait until the stage got resized. Otherwise
         //the split plane has not the right ratio.

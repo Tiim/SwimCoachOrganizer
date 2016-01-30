@@ -14,9 +14,11 @@ import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ResultDialog extends DialogView {
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(ResultDialog.class);
     @Inject(name = "db-controller")
     private DatabaseController db;
 

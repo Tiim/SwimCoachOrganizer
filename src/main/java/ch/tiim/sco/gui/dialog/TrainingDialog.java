@@ -19,11 +19,13 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 public class TrainingDialog extends DialogView {
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(TrainingDialog.class);
     @Inject(name = "db-controller")
     private DatabaseController db;
 

@@ -17,11 +17,13 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 
 public class TrainingView extends MainView {
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(TrainingView.class);
     @Inject(name = "main-stage")
     private Stage mainStage;
     @Inject(name = "db-controller")

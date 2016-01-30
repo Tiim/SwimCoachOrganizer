@@ -5,8 +5,8 @@ import ch.tiim.sco.database.DatabaseController;
 import ch.tiim.sco.database.model.Set;
 import ch.tiim.sco.database.model.SetFocus;
 import ch.tiim.sco.database.model.SetStroke;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,7 +15,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class JDBCSets extends Table implements ch.tiim.sco.database.TableSets {
-    private static final Logger LOGGER = LogManager.getLogger(JDBCSets.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(JDBCSets.class);
 
     private NamedParameterPreparedStatement add;
     private NamedParameterPreparedStatement update;
@@ -55,7 +55,7 @@ public class JDBCSets extends Table implements ch.tiim.sco.database.TableSets {
         add.setString("notes", set.getNotes());
         add.setInt("interval", set.getInterval());
         add.setBoolean("is_pause", set.isPause());
-        LOGGER.debug(MARKER_QUERRY, add);
+        LOGGER.debug(MARKER_QUERRY, add.toString());
         testUpdate(add);
         set.setId(getGenKey(add));
     }
@@ -82,21 +82,21 @@ public class JDBCSets extends Table implements ch.tiim.sco.database.TableSets {
         update.setInt("interval", set.getInterval());
         update.setBoolean("is_pause", set.isPause());
         update.setInt("id", set.getId());
-        LOGGER.debug(MARKER_QUERRY, update);
+        LOGGER.debug(MARKER_QUERRY, update.toString());
         testUpdate(update);
     }
 
     @Override
     public void deleteSet(Set set) throws SQLException {
         delete.setInt("id", set.getId());
-        LOGGER.debug(MARKER_QUERRY, delete);
+        LOGGER.debug(MARKER_QUERRY, delete.toString());
         testUpdate(delete);
     }
 
     @Override
     public List<Set> getAllSets() throws SQLException {
         ResultSet rs = getAll.executeQuery();
-        LOGGER.debug(MARKER_QUERRY, getAll);
+        LOGGER.debug(MARKER_QUERRY, getAll.toString());
         List<Set> l = new LinkedList<>();
         while (rs.next()) {
             l.add(getSet(rs));

@@ -14,11 +14,13 @@ import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 
 public class SetDialog extends DialogView {
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(SetDialog.class);
     private Set currentSet;
 
     @FXML

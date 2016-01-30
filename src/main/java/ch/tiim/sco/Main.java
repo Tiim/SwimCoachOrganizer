@@ -23,19 +23,20 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Optional;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 
 public class Main extends Application {
-    private static final Logger LOGGER = LogManager.getLogger(Main.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(Application.class);
 
     private final EventBus eventBus = new EventBus("Main");
 
     public static void main(final String[] args) {
+        LOGGER.trace("Starting up");
         launch(args);
     }
 
@@ -52,7 +53,7 @@ public class Main extends Application {
                         String.format("Uncaught exception in thread: %s.\nThis is a bug! Please report it.", t.getName()),
                         e, eventBus);
             } catch (Throwable ex) {
-                LOGGER.error(ex, ex);
+                LOGGER.error(ex.getMessage(), ex);
                 throw ex;
             }
         });
@@ -61,7 +62,7 @@ public class Main extends Application {
         db.initializeDefaultValues();
 
         Injector.getInstance().addInjectable(getHostServices(), "host");
-        Injector.getInstance().addInjectable(new Config(), "config");
+        Injector.getInstance().addInjectable(Config.INSTANCE, "config");
         Injector.getInstance().addInjectable(db, "db-controller");
         Injector.getInstance().addInjectable(primaryStage, "main-stage");
         Injector.getInstance().addInjectable(this, "app");

@@ -4,8 +4,8 @@ import ch.tiim.jdbc.namedparameters.NamedParameterPreparedStatement;
 import ch.tiim.sco.database.DatabaseController;
 import ch.tiim.sco.database.TableSwimmer;
 import ch.tiim.sco.database.model.Swimmer;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JDBCSwimmer extends Table implements TableSwimmer {
-    private static final Logger LOGGER = LogManager.getLogger(JDBCSwimmer.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(JDBCSwimmer.class);
 
     private NamedParameterPreparedStatement add;
     private NamedParameterPreparedStatement delete;
@@ -49,7 +49,7 @@ public class JDBCSwimmer extends Table implements TableSwimmer {
         add.setString("license", m.getLicense());
         add.setBoolean("is_female", m.isFemale());
         add.setString("notes", m.getNotes());
-        LOGGER.debug(MARKER_QUERRY, add);
+        LOGGER.debug(MARKER_QUERRY, add.toString());
         testUpdate(add);
         m.setId(getGenKey(add));
     }
@@ -57,7 +57,7 @@ public class JDBCSwimmer extends Table implements TableSwimmer {
     @Override
     public void deleteSwimmer(Swimmer m) throws SQLException {
         delete.setInt("id", m.getId());
-        LOGGER.debug(MARKER_QUERRY, delete);
+        LOGGER.debug(MARKER_QUERRY, delete.toString());
         testUpdate(delete);
     }
 
@@ -75,7 +75,7 @@ public class JDBCSwimmer extends Table implements TableSwimmer {
         update.setBoolean("is_female", m.isFemale());
         update.setString("notes", m.getNotes());
         update.setInt("id", m.getId());
-        LOGGER.debug(MARKER_QUERRY, update);
+        LOGGER.debug(MARKER_QUERRY, update.toString());
         testUpdate(update);
     }
 
@@ -83,7 +83,7 @@ public class JDBCSwimmer extends Table implements TableSwimmer {
     public List<Swimmer> getSwimmersWithBirthdayBetween(LocalDate begin, LocalDate end) throws SQLException {
         getBetween.setString("before", begin.toString());
         getBetween.setString("after", end.toString());
-        LOGGER.debug(MARKER_QUERRY, getBetween);
+        LOGGER.debug(MARKER_QUERRY, getBetween.toString());
         ResultSet rs = getBetween.executeQuery();
         List<Swimmer> l = new ArrayList<>();
         while (rs.next()) {
@@ -95,7 +95,7 @@ public class JDBCSwimmer extends Table implements TableSwimmer {
     @Override
     public List<Swimmer> getAllSwimmers() throws SQLException {
         ResultSet rs = getAll.executeQuery();
-        LOGGER.debug(MARKER_QUERRY, getAll);
+        LOGGER.debug(MARKER_QUERRY, getAll.toString());
         List<Swimmer> l = new ArrayList<>();
         while (rs.next()) {
             l.add(getSwimmer(rs));

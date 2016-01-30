@@ -1,7 +1,7 @@
 package ch.tiim.inject;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
  * This class is used to register objects to be injected into classes
  */
 public class Injector {
-    private static final Logger LOGGER = LogManager.getLogger(Injector.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(Injector.class);
     private static final Injector INSTANCE = new Injector();
     private static final String INJECTED_CALLBACK = "injected";
     private final HashMap<String, Object> toInject = new HashMap<>();

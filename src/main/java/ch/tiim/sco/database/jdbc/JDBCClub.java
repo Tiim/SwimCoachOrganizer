@@ -3,8 +3,8 @@ package ch.tiim.sco.database.jdbc;
 import ch.tiim.jdbc.namedparameters.NamedParameterPreparedStatement;
 import ch.tiim.sco.database.DatabaseController;
 import ch.tiim.sco.database.model.Club;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JDBCClub extends Table implements ch.tiim.sco.database.TableClub {
-    private static final Logger LOGGER = LogManager.getLogger(JDBCClub.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(JDBCClub.class);
 
     private NamedParameterPreparedStatement add;
     private NamedParameterPreparedStatement delete;
@@ -41,7 +41,7 @@ public class JDBCClub extends Table implements ch.tiim.sco.database.TableClub {
         add.setString("code", c.getCode());
         add.setString("nationality", c.getNationality());
         add.setInt("externId", c.getExternId());
-        LOGGER.debug(MARKER_QUERRY, add);
+        LOGGER.debug(MARKER_QUERRY, add.toString());
         testUpdate(add);
         c.setId(getGenKey(add));
     }
@@ -49,7 +49,7 @@ public class JDBCClub extends Table implements ch.tiim.sco.database.TableClub {
     @Override
     public void deleteClub(Club c) throws SQLException {
         delete.setInt("id", c.getId());
-        LOGGER.debug(MARKER_QUERRY, delete);
+        LOGGER.debug(MARKER_QUERRY, delete.toString());
         testUpdate(delete);
     }
 
@@ -63,13 +63,13 @@ public class JDBCClub extends Table implements ch.tiim.sco.database.TableClub {
         update.setString("nationality", c.getNationality());
         update.setInt("externId", c.getExternId());
         update.setInt("id", c.getId());
-        LOGGER.debug(MARKER_QUERRY, update);
+        LOGGER.debug(MARKER_QUERRY, update.toString());
         testUpdate(update);
     }
 
     @Override
     public List<Club> getAll() throws SQLException {
-        LOGGER.debug(MARKER_QUERRY, getAll);
+        LOGGER.debug(MARKER_QUERRY, getAll.toString());
         ResultSet rs = getAll.executeQuery();
         List<Club> l = new ArrayList<>();
         while (rs.next()) {

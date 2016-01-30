@@ -18,9 +18,11 @@ import javafx.scene.control.SplitPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class TeamView extends MainView {
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(TeamView.class);
     @Inject(name = "main-stage")
     private Stage mainStage;
     @Inject(name = "db-controller")

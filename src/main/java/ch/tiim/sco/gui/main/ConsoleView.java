@@ -9,6 +9,8 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import jdk.nashorn.api.scripting.NashornScriptEngine;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
@@ -17,7 +19,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 
 public class ConsoleView extends MainView {
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(ConsoleView.class);
     private final NashornScriptEngine engine;
     @Inject(name = "db-controller")
     private DatabaseController db;

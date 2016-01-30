@@ -4,8 +4,8 @@ import ch.tiim.jdbc.namedparameters.NamedParameterPreparedStatement;
 import ch.tiim.sco.database.DatabaseController;
 import ch.tiim.sco.database.TableSetStroke;
 import ch.tiim.sco.database.model.SetStroke;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,7 +14,7 @@ import java.util.List;
 
 
 public class JDBCSetStroke extends Table implements TableSetStroke {
-    private static final Logger LOGGER = LogManager.getLogger(JDBCSetStroke.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(JDBCSetStroke.class);
     private NamedParameterPreparedStatement add;
     private NamedParameterPreparedStatement update;
     private NamedParameterPreparedStatement delete;
@@ -37,7 +37,7 @@ public class JDBCSetStroke extends Table implements TableSetStroke {
         add.setString("name", stroke.getName());
         add.setString("abbr", stroke.getAbbr());
         add.setString("notes", stroke.getNotes());
-        LOGGER.debug(MARKER_QUERRY, add);
+        LOGGER.debug(MARKER_QUERRY, add.toString());
         testUpdate(add);
         stroke.setId(getGenKey(add));
     }
@@ -48,21 +48,21 @@ public class JDBCSetStroke extends Table implements TableSetStroke {
         update.setString("abbr", stroke.getAbbr());
         update.setString("notes", stroke.getNotes());
         update.setInt("id", stroke.getId());
-        LOGGER.debug(MARKER_QUERRY, update);
+        LOGGER.debug(MARKER_QUERRY, update.toString());
         testUpdate(update);
     }
 
     @Override
     public void deleteSetStroke(SetStroke stroke) throws SQLException {
         delete.setInt("id", stroke.getId());
-        LOGGER.debug(MARKER_QUERRY, delete);
+        LOGGER.debug(MARKER_QUERRY, delete.toString());
         testUpdate(delete);
     }
 
     @Override
     public List<SetStroke> getAllStrokes() throws SQLException {
         ResultSet rs = getAll.executeQuery();
-        LOGGER.debug(MARKER_QUERRY, getAll);
+        LOGGER.debug(MARKER_QUERRY, getAll.toString());
         List<SetStroke> l = new LinkedList<>();
         while (rs.next()) {
             l.add(getSetStroke(rs));

@@ -17,11 +17,13 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 
 public class ResultView extends MainView {
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(ResultView.class);
     @Inject(name = "db-controller")
     private DatabaseController db;
     @Inject(name = "main-stage")

@@ -10,9 +10,11 @@ import javafx.scene.Parent;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class StrokeDialog extends DialogView {
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(StrokeDialog.class);
     @Inject(name = "db-controller")
     private DatabaseController db;
 

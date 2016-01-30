@@ -16,13 +16,15 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class AboutDialog extends DialogView {
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(AboutDialog.class);
     @Inject(name = "host")
     private HostServices host;
 

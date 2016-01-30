@@ -13,11 +13,13 @@ import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Collections;
 
 public class SwimmerView extends MainView {
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(SwimmerView.class);
     @Inject(name = "db-controller")
     private DatabaseController db;
     @Inject(name = "main-stage")

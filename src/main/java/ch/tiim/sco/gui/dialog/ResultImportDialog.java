@@ -21,6 +21,8 @@ import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.util.Pair;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -32,7 +34,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ResultImportDialog extends DialogView {
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(ResultImportDialog.class);
     private final HashMap<Pair<Swimmer, Result>, BooleanProperty> selected = new HashMap<>();
     @Inject(name = "db-controller")
     private DatabaseController db;

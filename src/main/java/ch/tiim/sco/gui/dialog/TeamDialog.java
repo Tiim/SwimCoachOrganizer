@@ -17,6 +17,8 @@ import javafx.scene.control.cell.CheckBoxListCell;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,7 +26,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class TeamDialog extends DialogView {
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(TeamDialog.class);
     private final HashMap<Swimmer, ObservableValue<Boolean>> selected = new HashMap<>();
     @Inject(name = "db-controller")
     private DatabaseController db;

@@ -2,8 +2,8 @@ package ch.tiim.sco.update;
 
 
 import com.github.zafarkhaja.semver.Version;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -14,7 +14,6 @@ import java.nio.file.Paths;
  * @since 07 - 2014
  */
 public final class VersionChecker {
-    private static final Logger LOGGER = LogManager.getLogger(VersionChecker.class.getName());
     private static Version currentVersion = null;
     private static Version remoteVersion = null;
 
@@ -27,6 +26,7 @@ public final class VersionChecker {
     }
 
     public static boolean isNewUpdaterVersionAvailable() {
+        Logger LOGGER = LoggerFactory.getLogger(VersionChecker.class);
         try {
             final Version remote = Version.valueOf(Constants.downloadString(Constants.REMOTE_UPDATER_VERSION_URL));
             if (!Files.exists(Paths.get(Constants.LOCAL_UPDATER_VERSION_URL))) {
@@ -70,6 +70,7 @@ public final class VersionChecker {
     }
 
     public static void reloadRemoteVersion() {
+        Logger LOGGER = LoggerFactory.getLogger(VersionChecker.class);
         Version v;
         try {
             v = Version.valueOf(Constants.downloadString(Constants.REMOTE_PROGRAM_VERSION_URL));

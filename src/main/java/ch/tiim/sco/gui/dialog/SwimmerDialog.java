@@ -15,9 +15,11 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SwimmerDialog extends DialogView {
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(SwimmerDialog.class);
     @Inject(name = "db-controller")
     private DatabaseController db;
 

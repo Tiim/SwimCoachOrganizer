@@ -16,12 +16,14 @@ import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ClubView extends MainView {
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(ClubView.class);
     @Inject(name = "main-stage")
     private Stage mainStage;
     @Inject(name = "db-controller")

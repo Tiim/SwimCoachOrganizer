@@ -7,8 +7,8 @@ import ch.tiim.sco.database.model.Course;
 import ch.tiim.sco.database.model.Result;
 import ch.tiim.sco.database.model.Stroke;
 import ch.tiim.sco.database.model.Swimmer;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,8 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JDBCResult extends Table implements TableResult {
-    private static final Logger LOGGER = LogManager.getLogger(JDBCResult.class.getName());
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(JDBCResult.class);
 
     private NamedParameterPreparedStatement add;
     private NamedParameterPreparedStatement update;
@@ -82,7 +81,7 @@ public class JDBCResult extends Table implements TableResult {
     @Override
     public List<Result> getResults(Swimmer s) throws SQLException {
         get.setInt("id", s.getId());
-        LOGGER.debug(MARKER_QUERRY, get);
+        LOGGER.debug(MARKER_QUERRY, get.toString());
         ResultSet rs = get.executeQuery();
         List<Result> l = new ArrayList<>();
         while (rs.next()) {

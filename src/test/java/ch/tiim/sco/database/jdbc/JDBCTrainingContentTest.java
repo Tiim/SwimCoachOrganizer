@@ -4,12 +4,12 @@ import ch.tiim.sco.database.DatabaseController;
 import ch.tiim.sco.database.model.IndexedSet;
 import ch.tiim.sco.database.model.Set;
 import ch.tiim.sco.database.model.Training;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class JDBCTrainingContentTest {
-    private static final Logger LOGGER = LogManager.getLogger(JDBCTrainingContentTest.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(JDBCTrainingContentTest.class);
     private DatabaseController db;
     private Training t;
     private IndexedSet s1;
@@ -98,10 +98,10 @@ public class JDBCTrainingContentTest {
             Assert.assertEquals(2, i1.getIndex());
             Assert.assertEquals(1, i2.getIndex());
         } catch (AssertionError e) {
-            LOGGER.warn(s1);
-            LOGGER.warn(s2);
-            LOGGER.warn(i1);
-            LOGGER.warn(i2);
+            LOGGER.warn(s1.toString());
+            LOGGER.warn(s2.toString());
+            LOGGER.warn(i1.toString());
+            LOGGER.warn(i2.toString());
             throw e;
         }
     }

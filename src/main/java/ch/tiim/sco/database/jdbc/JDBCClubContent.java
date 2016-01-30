@@ -4,8 +4,8 @@ import ch.tiim.jdbc.namedparameters.NamedParameterPreparedStatement;
 import ch.tiim.sco.database.DatabaseController;
 import ch.tiim.sco.database.model.Club;
 import ch.tiim.sco.database.model.Team;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JDBCClubContent extends Table implements ch.tiim.sco.database.TableClubContent {
-    private static final Logger LOGGER = LogManager.getLogger(JDBCClubContent.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(JDBCClubContent.class);
     private NamedParameterPreparedStatement add;
     private NamedParameterPreparedStatement delete;
     private NamedParameterPreparedStatement get;
@@ -37,7 +37,7 @@ public class JDBCClubContent extends Table implements ch.tiim.sco.database.Table
     public void addTeam(Club c, Team t) throws SQLException {
         add.setInt("club_id", c.getId());
         add.setInt("team_id", t.getId());
-        LOGGER.debug(MARKER_QUERRY, add);
+        LOGGER.debug(MARKER_QUERRY, add.toString());
         testUpdate(add);
     }
 
@@ -45,14 +45,14 @@ public class JDBCClubContent extends Table implements ch.tiim.sco.database.Table
     public void deleteTeam(Club c, Team t) throws SQLException {
         delete.setInt("club_id", c.getId());
         delete.setInt("team_id", t.getId());
-        LOGGER.debug(MARKER_QUERRY, delete);
+        LOGGER.debug(MARKER_QUERRY, delete.toString());
         testUpdate(delete);
     }
 
     @Override
     public List<Team> getTeams(Club c) throws SQLException {
         get.setInt("club_id", c.getId());
-        LOGGER.debug(MARKER_QUERRY, get);
+        LOGGER.debug(MARKER_QUERRY, get.toString());
         ResultSet rs = get.executeQuery();
         List<Team> l = new ArrayList<>();
         while (rs.next()) {
@@ -64,7 +64,7 @@ public class JDBCClubContent extends Table implements ch.tiim.sco.database.Table
     @Override
     public List<Team> getNotTeams(Club c) throws SQLException {
         getNot.setInt("club_id", c.getId());
-        LOGGER.debug(MARKER_QUERRY, getNot);
+        LOGGER.debug(MARKER_QUERRY, getNot.toString());
         ResultSet rs = getNot.executeQuery();
         List<Team> l = new ArrayList<>();
         while (rs.next()) {
@@ -76,7 +76,7 @@ public class JDBCClubContent extends Table implements ch.tiim.sco.database.Table
     @Override
     public void setTeams(Club club, List<Team> teams) throws SQLException {
         deleteAll.setInt("club_id", club.getId());
-        LOGGER.debug(MARKER_QUERRY, deleteAll);
+        LOGGER.debug(MARKER_QUERRY, deleteAll.toString());
         deleteAll.executeUpdate(); //Might affect zero rows
         if (!teams.isEmpty()) {
             for (Team t : teams) {

@@ -14,8 +14,11 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SetView extends MainView {
+    private static final Logger LOGGER = LoggerFactory.getLogger(SetView.class);
     @Inject(name = "main-stage")
     private Stage mainStage;
     @Inject(name = "db-controller")

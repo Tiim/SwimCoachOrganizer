@@ -5,8 +5,8 @@ import ch.tiim.sco.database.DatabaseController;
 import ch.tiim.sco.database.model.IndexedSet;
 import ch.tiim.sco.database.model.Set;
 import ch.tiim.sco.database.model.Training;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,8 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JDBCTrainingContent extends Table implements ch.tiim.sco.database.TableTrainingContent {
-    private static final Logger LOGGER = LogManager.getLogger(JDBCTrainingContent.class.getName());
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(JDBCTrainingContent.class);
 
     private NamedParameterPreparedStatement add;
     private NamedParameterPreparedStatement delete;
@@ -39,7 +38,7 @@ public class JDBCTrainingContent extends Table implements ch.tiim.sco.database.T
     @Override
     public List<IndexedSet> getSets(Training training) throws SQLException {
         get.setInt("training_id", training.getId());
-        LOGGER.debug(MARKER_QUERRY, get);
+        LOGGER.debug(MARKER_QUERRY, get.toString());
         ResultSet rs = get.executeQuery();
         List<IndexedSet> l = new ArrayList<>();
         while (rs.next()) {
@@ -53,7 +52,7 @@ public class JDBCTrainingContent extends Table implements ch.tiim.sco.database.T
         add.setInt("training_id", t.getId());
         add.setInt("set_id", set.getId());
         add.setInt("index", index);
-        LOGGER.debug(MARKER_QUERRY, add);
+        LOGGER.debug(MARKER_QUERRY, add.toString());
         testUpdate(add);
     }
 
@@ -61,7 +60,7 @@ public class JDBCTrainingContent extends Table implements ch.tiim.sco.database.T
     public void deleteSet(Training t, int index) throws SQLException {
         delete.setInt("training_id", t.getId());
         delete.setInt("index", index);
-        LOGGER.debug(MARKER_QUERRY, delete);
+        LOGGER.debug(MARKER_QUERRY, delete.toString());
         testUpdate(delete);
     }
 
@@ -70,14 +69,14 @@ public class JDBCTrainingContent extends Table implements ch.tiim.sco.database.T
         updateIndex.setInt("low", index + (up ? -1 : 0));
         updateIndex.setInt("high", index + (!up ? 1 : 0));
         updateIndex.setInt("training_id", tr.getId());
-        LOGGER.debug(MARKER_QUERRY, updateIndex);
+        LOGGER.debug(MARKER_QUERRY, updateIndex.toString());
         testUpdate(updateIndex);
     }
 
     @Override
     public void setSets(Training tr, List<IndexedSet> items) throws Exception {
         deleteAll.setInt("training_id", tr.getId());
-        LOGGER.debug(MARKER_QUERRY, deleteAll);
+        LOGGER.debug(MARKER_QUERRY, deleteAll.toString());
         deleteAll.executeUpdate(); //Might affect zero rows
         if (!items.isEmpty()) {
             for (IndexedSet s : items) {

@@ -3,8 +3,8 @@ package ch.tiim.sco.database.export;
 import ch.tiim.sco.database.DatabaseController;
 import ch.tiim.sco.database.model.*;
 import javafx.util.Pair;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -22,8 +22,7 @@ import java.util.HashMap;
 import java.util.Queue;
 
 public class ExportController {
-
-    private static final Logger LOGGER = LogManager.getLogger(ExportController.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(ExportController.class);
     private static final HashMap<Class<? extends Model>, XMLExporter> EXPORTERS = new HashMap<>();
 
     static {

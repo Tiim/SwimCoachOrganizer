@@ -6,8 +6,8 @@ import ch.tiim.sco.util.Debug;
 import ch.tiim.sql_xml.SqlLoader;
 import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -21,7 +21,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class DatabaseController implements Closeable {
-    private static final Logger LOGGER = LogManager.getLogger(DatabaseController.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseController.class);
     private static final String VERSION = "1";
 
     private final TableSetFocus tblSetFocus;

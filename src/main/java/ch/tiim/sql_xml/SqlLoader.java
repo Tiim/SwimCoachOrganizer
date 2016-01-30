@@ -4,8 +4,8 @@ import ch.tiim.sco.util.OutOfCoffeeException;
 import ch.tiim.sql_xml.model.Entry;
 import ch.tiim.sql_xml.model.Module;
 import ch.tiim.sql_xml.model.Modules;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.xml.bind.JAXB;
 import java.io.InputStream;
@@ -26,7 +26,7 @@ import java.io.InputStream;
  * }</pre>
  */
 public class SqlLoader {
-    private static final Logger LOGGER = LogManager.getLogger(SqlLoader.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(SqlLoader.class);
     private final Modules modules;
 
     /**

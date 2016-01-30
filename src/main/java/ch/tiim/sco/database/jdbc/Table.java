@@ -2,8 +2,8 @@ package ch.tiim.sco.database.jdbc;
 
 
 import ch.tiim.sco.database.DatabaseController;
-import org.apache.logging.log4j.Marker;
-import org.apache.logging.log4j.MarkerManager;
+import org.slf4j.Marker;
+import org.slf4j.MarkerFactory;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,9 +11,7 @@ import java.sql.SQLException;
 
 abstract class Table {
 
-    static final Marker MARKER_SQL = MarkerManager.getMarker("SQL");
-    static final Marker MARKER_QUERRY = MarkerManager.getMarker("SQL_QUERY").addParents(MARKER_SQL);
-    static final Marker MARKER_RESULT = MarkerManager.getMarker("SQL_RESULT").addParents(MARKER_SQL);
+    static final Marker MARKER_QUERRY = MarkerFactory.getMarker("SQL_QUERRY");
 
     protected final DatabaseController db;
 
@@ -38,7 +36,7 @@ abstract class Table {
 
     protected void testBatchUpdate(PreparedStatement stmt) throws SQLException {
         int[] results = stmt.executeBatch();
-        for(int i : results) {
+        for (int i : results) {
             if (i == 0) {
                 throw new SQLException("Update failed, no rows affected.");
             }

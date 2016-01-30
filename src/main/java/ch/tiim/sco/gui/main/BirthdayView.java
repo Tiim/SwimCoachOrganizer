@@ -13,12 +13,14 @@ import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.image.ImageView;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Collections;
 import java.util.List;
 
 public class BirthdayView extends MainView {
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(BirthdayView.class);
     @Inject(name = "db-controller")
     private DatabaseController db;
 

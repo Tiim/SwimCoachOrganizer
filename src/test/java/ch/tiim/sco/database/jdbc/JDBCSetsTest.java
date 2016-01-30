@@ -5,8 +5,6 @@ import ch.tiim.sco.database.TableSets;
 import ch.tiim.sco.database.model.Set;
 import ch.tiim.sco.database.model.SetFocus;
 import ch.tiim.sco.database.model.SetStroke;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -19,7 +17,6 @@ import static org.junit.Assert.assertEquals;
 
 @SuppressWarnings("SpellCheckingInspection")
 public class JDBCSetsTest {
-    private static final Logger LOGGER = LogManager.getLogger(JDBCSetsTest.class.getName());
     private TableSets sets;
 
     private DatabaseController db;
@@ -41,6 +38,17 @@ public class JDBCSetsTest {
         sets.addSet(s);
         Set result = sets.getAllSets().get(0);
         assertEquals(s, result);
+    }
+
+    private Set set() {
+        return new Set(
+                "TestName",
+                "Content",
+                1, 2, 3, 99,
+                null, null,
+                "Test Note",
+                10, true
+        );
     }
 
     @Test
@@ -76,16 +84,5 @@ public class JDBCSetsTest {
         sets.addSet(s1);
 
         Assert.assertEquals(s1, sets.getAllSets().get(0));
-    }
-
-    private Set set() {
-        return new Set(
-                "TestName",
-                "Content",
-                1, 2, 3, 99,
-                null, null,
-                "Test Note",
-                10, true
-        );
     }
 }

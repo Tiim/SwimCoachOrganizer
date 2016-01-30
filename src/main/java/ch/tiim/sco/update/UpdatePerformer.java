@@ -4,8 +4,8 @@ package ch.tiim.sco.update;
 import ch.tiim.sco.gui.alert.ExceptionAlert;
 import com.google.common.eventbus.EventBus;
 import javafx.concurrent.Task;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
@@ -14,7 +14,7 @@ import java.io.IOException;
  * @since 07 - 2014
  */
 public class UpdatePerformer extends Task<Void> {
-    private static final Logger LOGGER = LogManager.getLogger(UpdatePerformer.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(UpdatePerformer.class);
     private final EventBus eventBus;
 
     public UpdatePerformer(EventBus eventBus) {

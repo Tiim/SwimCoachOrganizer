@@ -2,11 +2,11 @@ package ch.tiim.sco.update;
 
 
 import com.google.common.eventbus.EventBus;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class VersionCheckTask implements Runnable {
-    private static final Logger LOGGER = LogManager.getLogger(VersionCheckTask.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(VersionCheckTask.class);
     private final EventBus eventBus;
 
     public VersionCheckTask(EventBus eventBus) {
