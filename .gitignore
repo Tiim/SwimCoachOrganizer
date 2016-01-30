@@ -1,3 +1,5 @@
+#file with api keys and such
+/src/main/resources/ch/tiim/sco/config/private.properties
 # /src/generated
 out/
 build/
