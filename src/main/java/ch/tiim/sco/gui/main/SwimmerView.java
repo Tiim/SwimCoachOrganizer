@@ -123,6 +123,7 @@ public class SwimmerView extends MainView {
         }
     }
 
+    @FXML
     private void onEmail() {
         Swimmer sw = swimmers.getSelectionModel().getSelectedItem();
         if (sw != null) {
