@@ -1,31 +1,38 @@
 package ch.tiim.sco.config;
 
-import jdk.nashorn.api.scripting.JSObject;
-
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
-import java.io.InputStreamReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 
 public class Config {
 
-    private static final String CONFIG = "config.js";
+    public static final Config INSTANCE = new Config();
+    private static final String CONFIG = "private.properties";
+    private static final String ALTERNATE = "public.properties";
+    private Properties config;
 
-    private JSObject config;
-
-    public Config() throws ScriptException {
-        ScriptEngineManager manager = new ScriptEngineManager();
-        ScriptEngine engine = manager.getEngineByName("nashorn");
-        engine.eval(new InputStreamReader(Config.class.getResourceAsStream(CONFIG)));
-        config = (JSObject) engine.get("config");
-    }
-
-
-    public String getString(String key) {
-        return (String) config.eval(key);
+    private Config() {
+        InputStream res = Config.class.getResourceAsStream(CONFIG);
+        if (res == null) {
+            res = Config.class.getResourceAsStream(ALTERNATE);
+        }
+        config = new Properties();
+        try {
+            config.load(res);
+        } catch (IOException e) {
+            //Can't log this.. this is called before loggers are initialized :(
+        }
     }
 
     public int getInt(String key) {
-        return (Integer) config.eval(key);
+        return Integer.parseInt(getString(key));
+    }
+
+    public String getString(String key) {
+        return config.getProperty(key);
+    }
+
+    public boolean getBoolean(String key) {
+        return Boolean.parseBoolean(getString(key));
     }
 }
