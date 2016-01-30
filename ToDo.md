@@ -3,7 +3,7 @@
 
 ### Features
 
-* [ ] **EventBus** for decoupled event passing
+* [x] **EventBus** for decoupled event passing
 * [ ] Opening and closing file.
 
 * [x] Assembling a training 
@@ -13,11 +13,11 @@
 * [ ] Tagging series
 * [ ] Print/Export trainings plan to pdf
     * [ ] Print
-    * [ ] Export as pdf
+    * [x] Export as pdf
 
 * [ ] Export
     * [ ] Sets
-    * [ ] Trainings
+    * [x] Trainings
     * [ ] Swimmers
         * [ ] Times and Results
 * [ ] Import/Export Members, Sets, Trainings, Exc
@@ -31,16 +31,16 @@
     * [ ] Manage members
         * [x] Name, Birthday etc.
         * [x] Show next birthdays: This Week, Next Week, Next 30 Days
-        * [ ] Notify on birthdays
+        * [x] Notify on birthdays
     * [ ] Manage records
 
 * [ ] Manage swimmer results
     * [ ] Manage personal best times
         * [ ] with graphs
-    * [ ] Display history
+    * [x] Display history
 * [ ] Read/Write `LENEX` files
     * [x] Parse into JavaBean
-    * [ ] Import results from meet
+    * [x] Import results from meet
     * [ ] Import meet invitation
         * [ ] Automatically recommend swimmers with fast enough times
     * [ ] Export meet sign up
