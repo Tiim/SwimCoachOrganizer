@@ -7,6 +7,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class JDBCTrainingTest {
@@ -32,11 +33,15 @@ public class JDBCTrainingTest {
         Assert.assertEquals(t, all.get(0));
     }
 
+    private Training training() {
+        return new Training(LocalDate.now());
+    }
+
     @Test
     public void testUpdateTraining() throws Exception {
         Training t = training();
         db.getTblTraining().addTraining(t);
-        t.setName("New Name");
+        t.setDate(LocalDate.now());
         db.getTblTraining().updateTraining(t);
         List<Training> all = db.getTblTraining().getAllTrainings();
         Assert.assertEquals(1, all.size());
@@ -62,9 +67,5 @@ public class JDBCTrainingTest {
         db.getTblTraining().addTraining(training());
         db.getTblTraining().addTraining(training());
         Assert.assertEquals(4, db.getTblTraining().getAllTrainings().size());
-    }
-
-    private Training training() {
-        return new Training("Training Name");
     }
 }

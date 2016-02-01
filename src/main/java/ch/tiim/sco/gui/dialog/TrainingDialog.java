@@ -14,10 +14,10 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +32,7 @@ public class TrainingDialog extends DialogView {
     @FXML
     private Parent root;
     @FXML
-    private TextField name;
+    private DatePicker date;
     @FXML
     private TableView<IndexedSet> training;
     @FXML
@@ -113,10 +113,10 @@ public class TrainingDialog extends DialogView {
     private void onSave() {
         boolean newTraining = false;
         if (currentTraining == null) {
-            currentTraining = new Training(name.getText());
+            currentTraining = new Training(date.getValue());
             newTraining = true;
         } else {
-            currentTraining.setName(name.getText());
+            currentTraining.setDate(date.getValue());
         }
         try {
             if (newTraining) {
@@ -152,7 +152,7 @@ public class TrainingDialog extends DialogView {
 
     private void populateTraining(Training tr) {
         if (tr != null) {
-            name.setText(tr.getName());
+            date.setValue(tr.getDate());
             try {
                 List<IndexedSet> sets = db.getTblTrainingContent().getSets(tr);
                 training.getItems().setAll(sets);

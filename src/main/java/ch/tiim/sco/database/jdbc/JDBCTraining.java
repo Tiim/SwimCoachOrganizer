@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +34,7 @@ public class JDBCTraining extends Table implements ch.tiim.sco.database.TableTra
 
     @Override
     public void addTraining(Training t) throws SQLException {
-        add.setString("name", t.getName());
+        add.setString("date", t.getDate().toString());
         LOGGER.debug(MARKER_QUERRY, add.toString());
         testUpdate(add);
         t.setId(getGenKey(add));
@@ -41,7 +42,7 @@ public class JDBCTraining extends Table implements ch.tiim.sco.database.TableTra
 
     @Override
     public void updateTraining(Training t) throws SQLException {
-        update.setString("name", t.getName());
+        update.setString("date", t.getDate().toString());
         update.setInt("id", t.getId());
         LOGGER.debug(MARKER_QUERRY, update.toString());
         testUpdate(update);
@@ -68,7 +69,7 @@ public class JDBCTraining extends Table implements ch.tiim.sco.database.TableTra
     static Training getTraining(ResultSet rs) throws SQLException {
         return new Training(
                 rs.getInt("training_id"),
-                rs.getString("name")
+                LocalDate.parse(rs.getString("date"))
         );
     }
 }

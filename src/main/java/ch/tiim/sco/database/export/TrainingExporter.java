@@ -33,7 +33,7 @@ public class TrainingExporter extends XMLExporter<Training> {
         trainings.appendChild(training);
 
         training.setAttribute("id", String.valueOf(id));
-        appendElement(doc, training, "Name", data.getName());
+        appendElement(doc, training, "Date", data.getDate().toString());
 
         List<Pair<Integer, IndexedSet>> sets = getSetsForTraining(data)
                 .stream()

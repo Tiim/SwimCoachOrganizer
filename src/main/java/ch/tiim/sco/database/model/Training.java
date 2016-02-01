@@ -1,25 +1,26 @@
 package ch.tiim.sco.database.model;
 
 
+import java.time.LocalDate;
 import java.util.Objects;
 
 public class Training implements Model {
 
     private Integer id;
-    private String name;
+    private LocalDate date;
 
-    public Training(int id, String name) {
-        this(name);
+    public Training(int id, LocalDate date) {
+        this(date);
         this.id = id;
     }
 
-    public Training(String name) {
-        this.name = name;
+    public Training(LocalDate date) {
+        this.date = date;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name);
+        return Objects.hash(id, date);
     }
 
     @Override
@@ -28,12 +29,12 @@ public class Training implements Model {
         if (o == null || getClass() != o.getClass()) return false;
         Training that = (Training) o;
         return Objects.equals(this.id, that.id) &&
-                Objects.equals(this.name, that.name);
+                Objects.equals(this.date, that.date);
     }
 
     @Override
     public String toString() {
-        return name;
+        return date.toString();
     }
 
     @Override
@@ -41,19 +42,19 @@ public class Training implements Model {
         return toString();
     }
 
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
     public Integer getId() {
         return id;
     }
 
-    public String getName() {
-        return name;
-    }
-
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 }

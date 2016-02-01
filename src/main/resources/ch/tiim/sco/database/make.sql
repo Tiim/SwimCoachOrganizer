@@ -76,7 +76,7 @@ CREATE TABLE team_content (
 
 CREATE TABLE training (
     training_id INTEGER PRIMARY KEY AUTO_INCREMENT,
-    name TEXT
+    date TEXT
 );
 
 CREATE TABLE training_content (

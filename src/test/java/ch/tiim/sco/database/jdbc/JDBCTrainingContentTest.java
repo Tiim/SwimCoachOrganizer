@@ -11,6 +11,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -27,7 +28,7 @@ public class JDBCTrainingContentTest {
     @Before
     public void setUp() throws Exception {
         db = new DatabaseController(":memory:");
-        t = new Training("Training");
+        t = new Training(LocalDate.now());
         s1 = iset(1);
         s2 = iset(2);
         s3 = iset(3);

@@ -12,7 +12,8 @@
             <items>
                 <VBox>
                     <children>
-                        <TextField fx:id="name" promptText="Name"/>
+                        <DatePicker fx:id="date" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                                    promptText="Date"/>
                         <TableView fx:id="training" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                             <columns>
                                 <TableColumn fx:id="colNr" maxWidth="25.0" prefWidth="25.0" resizable="false" text="i"/>
