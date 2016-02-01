@@ -19,7 +19,7 @@ def appenders = []
 
 appender('CONSOLE', ConsoleAppender) {
     encoder(PatternLayoutEncoder) {
-        pattern = '%d{"ISO8601", UTC}  %p %t %c{0}.%M - %m%n'
+        pattern = '%d{"ISO8601", UTC}  %p %t %c.%M - %m%n'
     }
 }
 appenders << 'CONSOLE'
@@ -37,5 +37,7 @@ if (Settings.INSTANCE.getBoolean('loggly.enabled', false) && Config.INSTANCE.get
 
 
 logger('ch.tiim.sco.database', WARN)
+logger('org.apache', WARN)
+logger('FOP', WARN)
 
 root(TRACE, appenders)
