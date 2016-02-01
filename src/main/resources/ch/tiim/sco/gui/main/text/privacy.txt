@@ -1,0 +1,1 @@
+This application can send usage and error logs to loggly for a better user experience and faster bug fixes. Do you agree with this? (recommended)

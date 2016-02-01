@@ -28,7 +28,7 @@ repositories {
 dependencies {
     //Logback & groovy
     compile 'ch.qos.logback:logback-classic:1.1.3'
-    runtime 'org.codehaus.groovy:groovy:2.4.5'
+    compile 'org.codehaus.groovy:groovy:2.4.5'
     compile 'org.logback-extensions:logback-ext-loggly:0.1.4'
 
     //H2

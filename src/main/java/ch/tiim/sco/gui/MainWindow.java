@@ -2,10 +2,14 @@ package ch.tiim.sco.gui;
 
 import ch.tiim.inject.Inject;
 import ch.tiim.sco.config.Config;
+import ch.tiim.sco.config.Settings;
 import ch.tiim.sco.gui.events.AboutEvent;
 import ch.tiim.sco.gui.main.*;
 import ch.tiim.sco.gui.util.DialogListener;
+import ch.tiim.sco.util.Logging;
+import ch.tiim.sco.util.OutOfCoffeeException;
 import com.github.zafarkhaja.semver.Version;
+import com.google.common.io.Resources;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -15,12 +19,20 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 public class MainWindow extends View {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(MainWindow.class);
 
     @Inject(name = "config")
     private Config config;
@@ -39,7 +51,7 @@ public class MainWindow extends View {
     private Menu lastMenu;
 
     @FXML
-    private void initialize() {
+    private void initialize() throws IOException {
         initDialogs();
         initToolbar();
 
@@ -52,6 +64,8 @@ public class MainWindow extends View {
         //Wait until the stage got resized. Otherwise
         //the split plane has not the right ratio.
         Platform.runLater(() -> ((Button) toolBar.getItems().get(0)).getOnAction().handle(null));
+
+        Platform.runLater(() -> showPrivacyDialog());
     }
 
     private void initDialogs() {
@@ -94,6 +108,31 @@ public class MainWindow extends View {
                     v.opened();
                 });
             }
+        }
+    }
+
+    private void showPrivacyDialog() {
+        if (Settings.INSTANCE.getBoolean("show_privacy_dialog", true)) {
+            URL uri = MainWindow.class.getResource("main/text/privacy.txt");
+            Alert alert = null;
+            try {
+                alert = new Alert(
+                        Alert.AlertType.INFORMATION,
+                        Resources.toString(uri, Charset.forName("UTF-8")),
+                        ButtonType.YES, ButtonType.NO
+                );
+            } catch (IOException e) {
+                throw new OutOfCoffeeException("Can't read " + uri, e);
+            }
+            Optional<ButtonType> res = alert.showAndWait();
+            if (res.isPresent()) {
+                Settings.INSTANCE.setBoolean("show_privacy_dialog", false);
+                if (res.get() == ButtonType.YES) {
+                    Settings.INSTANCE.setBoolean("loggly.enabled", true);
+                }
+                Logging.reloadLoggerConfig();
+            }
+            LOGGER.info("Logging with loggly: " + Settings.INSTANCE.getBoolean("loggly.enabled", false));
         }
     }
 
