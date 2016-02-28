@@ -290,4 +290,57 @@
             WHERE result.result_id = :result_id
         </entry>
     </module>
+    <module name="Schedule">
+        <entry name="add_schedule">
+            INSERT INTO schedule (start_date, start_time, inter, duration, team_id)
+            VALUES (:start_date, :start_time, :inter, :duration, :team_id)
+        </entry>
+        <entry name="delete_schedule">
+            DELETE FROM schedule
+            WHERE schedule_id = :schedule_id
+        </entry>
+        <entry name="update_schedule">
+            UPDATE schedule
+            SET start_date = :start_date, start_time = :start_time, inter = :inter, duration = :duration,
+            team_id = :team_id
+            WHERE schedule_id = :schedule_id
+        </entry>
+        <entry name="get_schedule">
+            SELECT schedule_id, start_date, start_time, inter, duration, team.team_id, team.name
+            FROM schedule
+            INNER JOIN team
+            ON schedule.team_id = team.team_id
+            WHERE team.team_id = :team_id
+        </entry>
+        <entry name="get_all_schedules">
+            SELECT schedule_id, start_date, start_time, inter, duration, team.team_id, team.name
+            FROM schedule
+            INNER JOIN team
+            ON schedule.team_id = team.team_id
+        </entry>
+        <entry name="add_exception">
+            INSERT INTO schedule_exception (schedule_id, day)
+            VALUES (:schedule_id, :day)
+        </entry>
+        <entry name="delete_exception">
+            DELETE FROM schedule_exception
+            WHERE exception_id = :exception_id
+        </entry>
+        <entry name="update_exception">
+            UPDATE schedule_exception
+            SET schedule_id = :schedule_id, day = :day
+            WHERE exception_id = :exception_id
+        </entry>
+        <entry name="get_exception_for_rule">
+            SELECT exception_id, day,
+            schedule.schedule_id, schedule.start_date, schedule.start_time, schedule.inter, schedule.duration,
+            team.team_id, team.name
+            FROM schedule_exception
+            INNER JOIN schedule
+            ON schedule.schedule_id = schedule_exception.schedule_id
+            INNER JOIN team
+            ON team.team_id = schedule.team_id
+            WHERE schedule.schedule_id = :schedule_id
+        </entry>
+    </module>
 </modules>

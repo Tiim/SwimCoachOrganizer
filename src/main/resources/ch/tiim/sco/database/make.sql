@@ -100,3 +100,20 @@ CREATE TABLE result (
     course TEXT NOT NULL,
     FOREIGN KEY(swimmer_id) REFERENCES public.swimmer(swimmer_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
+
+CREATE TABLE schedule (
+    schedule_id INTEGER PRIMARY KEY AUTO_INCREMENT,
+    team_id INTEGER NOT NULL,
+    start_date DATE NOT NULL,
+    start_time TIME NOT NULL,
+    inter INTEGER NOT NULL,
+    duration INTEGER NOT NULL,
+    FOREIGN KEY(team_id) REFERENCES public.team(team_id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE schedule_exception (
+    exception_id INTEGER PRIMARY KEY AUTO_INCREMENT,
+    schedule_id INTEGER NOT NULL,
+    day DATE NOT NULL,
+    FOREIGN KEY(schedule_id) REFERENCES public.schedule(schedule_id) ON DELETE CASCADE ON UPDATE CASCADE,
+);
