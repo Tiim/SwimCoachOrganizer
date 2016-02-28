@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<fx:root xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+         minWidth="-Infinity" prefHeight="402.0" prefWidth="493.0" type="BorderPane"
+         xmlns="http://javafx.com/javafx/8.0.65" fx:controller="ch.tiim.sco.gui.component.CalendarControl">
+    <top>
+        <BorderPane BorderPane.alignment="CENTER">
+            <center>
+                <Label fx:id="title" styleClass="title" text="Month"/>
+            </center>
+            <left>
+                <Button mnemonicParsing="false" onAction="#lastMonth" text="&lt;" BorderPane.alignment="CENTER"/>
+            </left>
+            <right>
+                <Button mnemonicParsing="false" onAction="#nextMonth" text="&gt;" BorderPane.alignment="CENTER"/>
+            </right>
+        </BorderPane>
+    </top>
+    <center>
+        <GridPane fx:id="grid" prefHeight="270.0" prefWidth="553.0" BorderPane.alignment="CENTER">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+            </rowConstraints>
+            <children>
+                <Label styleClass="day" text="Monday" GridPane.halignment="CENTER"/>
+                <Label styleClass="day" text="Tuesday" GridPane.columnIndex="1" GridPane.halignment="CENTER"/>
+                <Label styleClass="day" text="Wednesday" GridPane.columnIndex="2" GridPane.halignment="CENTER"/>
+                <Label styleClass="day" text="Thursday" GridPane.columnIndex="3" GridPane.halignment="CENTER"/>
+                <Label styleClass="day" text="Friday" GridPane.columnIndex="4" GridPane.halignment="CENTER"/>
+                <Label styleClass="day" text="Saturday" GridPane.columnIndex="5" GridPane.halignment="CENTER"/>
+                <Label styleClass="day" text="Sunday" GridPane.columnIndex="6" GridPane.halignment="CENTER"/>
+            </children>
+        </GridPane>
+    </center>
+</fx:root>
