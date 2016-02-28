@@ -19,7 +19,7 @@ def appenders = []
 
 appender('CONSOLE', ConsoleAppender) {
     encoder(PatternLayoutEncoder) {
-        pattern = '%d{"ISO8601", UTC}  %p %t %c.%M - %m%n'
+        pattern = '%d{"ISO8601", UTC}  [%p] [%t] [%c.%M] -- %m%n'
     }
 }
 appenders << 'CONSOLE'
