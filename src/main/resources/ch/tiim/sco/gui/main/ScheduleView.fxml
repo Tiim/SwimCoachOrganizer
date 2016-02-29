@@ -3,6 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import ch.tiim.sco.gui.component.CalendarControl?>
 <SplitPane xmlns:fx="http://javafx.com/fxml/1" fx:id="root" dividerPositions="0.25" maxHeight="1.7976931348623157E308"
            maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity"
            xmlns="http://javafx.com/javafx/8.0.65" fx:controller="ch.tiim.sco.gui.main.ScheduleView">
@@ -10,21 +11,7 @@
         <ListView fx:id="teams" prefHeight="200.0" prefWidth="200.0"/>
         <SplitPane dividerPositions="0.75" orientation="VERTICAL">
             <items>
-                <BorderPane>
-                    <center>
-                        <ListView fx:id="nextTrainings" maxHeight="1.7976931348623157E308"
-                                  maxWidth="1.7976931348623157E308" prefHeight="150.0" prefWidth="100.0"/>
-                    </center>
-                    <top>
-                        <HBox alignment="CENTER" BorderPane.alignment="CENTER">
-                            <children>
-                                <Label text="Show Next Trainings In "/>
-                                <Spinner fx:id="days" prefWidth="100.0"/>
-                                <Label text=" Days"/>
-                            </children>
-                        </HBox>
-                    </top>
-                </BorderPane>
+                <CalendarControl id="calendar"/>
                 <ListView fx:id="schedules" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
                           prefHeight="100.0" prefWidth="100.0"/>
             </items>
