@@ -48,7 +48,7 @@ public class CalendarControl extends BorderPane {
         for (int i = 0; i < labels.length; i++) {
             Label l = new Label();
             labels[i] = l;
-            grid.add(l, i % DAYS_OF_WEEK, (i / WEEKS) + 1);
+            grid.add(l, i % DAYS_OF_WEEK, i / DAYS_OF_WEEK + 1);
         }
         dateChanged();
     }
@@ -63,8 +63,12 @@ public class CalendarControl extends BorderPane {
         LocalDate first = localDate.withDayOfMonth(1);
         int day = first.getDayOfWeek().getValue() - 1;
         int maxDays = YearMonth.from(localDate).lengthOfMonth();
-        for (int i = 0; i <= maxDays; i++) {
-            labels[i + day].setText(String.valueOf(i + 1));
+        for (int i = 0; i < DAYS_OF_WEEK * WEEKS; i++) {
+            if (i > day && i < maxDays) {
+                labels[i].setText(String.valueOf(i + 1));
+            } else {
+                labels[i].setText("");
+            }
         }
     }
 
