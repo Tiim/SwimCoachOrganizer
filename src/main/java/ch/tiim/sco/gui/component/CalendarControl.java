@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -94,5 +95,10 @@ public class CalendarControl extends BorderPane {
 
     public void setSelectedDate(LocalDate selectedDate) {
         this.selectedDate.set(selectedDate);
+    }
+    public static class CalendarEvent extends HBox {
+        public CalendarEvent(){
+
+        }
     }
 }
