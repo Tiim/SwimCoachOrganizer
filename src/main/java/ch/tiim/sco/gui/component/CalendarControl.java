@@ -2,17 +2,20 @@ package ch.tiim.sco.gui.component;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.Month;
 import java.time.YearMonth;
 import java.time.format.TextStyle;
@@ -96,9 +99,47 @@ public class CalendarControl extends BorderPane {
     public void setSelectedDate(LocalDate selectedDate) {
         this.selectedDate.set(selectedDate);
     }
-    public static class CalendarEvent extends HBox {
-        public CalendarEvent(){
 
+    //TODO: Change background to color
+    public static class CalendarEvent extends HBox {
+        private Label time;
+        private Label text;
+        private ObjectProperty<LocalTime> localTime = new SimpleObjectProperty<>();
+        private ObjectProperty<Color> color = new SimpleObjectProperty<>();
+
+        public CalendarEvent(LocalTime time, String name, Color color){
+            this.time = new Label(time.toString());
+            this.text = new Label(name);
+            this.color.set(color);
+            localTime.set(time);
+            localTime.addListener(observable -> this.time.setText(localTime.get().toString()));
+            this.time.getStyleClass().add("time");
+            this.text.getStyleClass().add("name");
+            getStyleClass().add("event");
         }
+
+        public LocalTime getTime() {
+            return localTime.get();
+        }
+
+        public ObjectProperty<LocalTime> timeProperty() {
+            return localTime;
+        }
+
+        public void setTime(LocalTime time) {
+            this.localTime.set(time);
+        }
+        public String getName() {
+            return text.getText();
+        }
+
+        public StringProperty textProperty() {
+            return text.textProperty();
+        }
+
+        public void setText(String text) {
+            this.text.setText(text);
+        }
+
     }
 }
