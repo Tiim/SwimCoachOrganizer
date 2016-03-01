@@ -118,7 +118,7 @@ public class CalendarControl extends BorderPane {
 
     @FXML
     private void nextMonth() {
-        selectedDate.setValue(selectedDate.get().minusMonths(1).withDayOfMonth(1));
+        selectedDate.setValue(selectedDate.get().plusMonths(1).withDayOfMonth(1));
     }
 
     ///////////PROPERTIES///////////
@@ -127,24 +127,24 @@ public class CalendarControl extends BorderPane {
         return selectedDate;
     }
 
-    public LocalDate getSelectedDate() {
-        return selectedDate.get();
-    }
-
-    public void setSelectedDate(LocalDate selectedDate) {
-        this.selectedDate.set(selectedDate);
+    public ObjectProperty<Function<LocalDate, List<CalendarEvent>>> callbackProperty() {
+        return callback;
     }
 
     public Function<LocalDate, List<CalendarEvent>> getCallback() {
         return callback.get();
     }
 
-    public ObjectProperty<Function<LocalDate, List<CalendarEvent>>> callbackProperty() {
-        return callback;
-    }
-
     public void setCallback(Function<LocalDate, List<CalendarEvent>> callback) {
         this.callback.set(callback);
+    }
+
+    public LocalDate getSelectedDate() {
+        return selectedDate.get();
+    }
+
+    public void setSelectedDate(LocalDate selectedDate) {
+        this.selectedDate.set(selectedDate);
     }
 
     //TODO: Change background to color
@@ -165,24 +165,24 @@ public class CalendarControl extends BorderPane {
             getStyleClass().add("event");
         }
 
-        public LocalTime getTime() {
-            return localTime.get();
-        }
-
         public ObjectProperty<LocalTime> timeProperty() {
             return localTime;
         }
 
-        public void setTime(LocalTime time) {
-            this.localTime.set(time);
+        public StringProperty textProperty() {
+            return text.textProperty();
         }
 
         public String getName() {
             return text.getText();
         }
 
-        public StringProperty textProperty() {
-            return text.textProperty();
+        public LocalTime getTime() {
+            return localTime.get();
+        }
+
+        public void setTime(LocalTime time) {
+            this.localTime.set(time);
         }
 
         public void setText(String text) {
