@@ -6,9 +6,11 @@ import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +34,7 @@ public class CalendarControl extends BorderPane {
     private GridPane grid;
 
     private Label[] labels = new Label[WEEKS * DAYS_OF_WEEK];
+    private VBox[] eventBoxes = new VBox[WEEKS * DAYS_OF_WEEK];
     private ObjectProperty<LocalDate> selectedDate = new SimpleObjectProperty<>(LocalDate.now());
 
     public CalendarControl() {
@@ -50,9 +53,23 @@ public class CalendarControl extends BorderPane {
 
     private void init() {
         for (int i = 0; i < labels.length; i++) {
+            BorderPane bp = new BorderPane();
             Label l = new Label();
+            ScrollPane sp = new ScrollPane();
+            VBox vb = new VBox();
+
+            sp.setContent(vb);
+            bp.setTop(l);
+            bp.setCenter(sp);
+
             labels[i] = l;
-            grid.add(l, i % DAYS_OF_WEEK, i / DAYS_OF_WEEK + 1);
+
+            grid.add(bp, i % DAYS_OF_WEEK, i / DAYS_OF_WEEK + 1);
+
+            l.getStyleClass().add("day");
+            sp.getStyleClass().add("scroll-pane");
+            vb.getStyleClass().add("vbox-events");
+            bp.getStyleClass().add("day-box");
         }
         dateChanged();
     }
