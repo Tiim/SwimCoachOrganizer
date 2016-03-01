@@ -10,7 +10,6 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 public class ProcScheduleStream implements ch.tiim.sco.database.ProcSchedule {
     private static final Logger LOGGER = LoggerFactory.getLogger(ProcScheduleStream.class);

@@ -91,9 +91,9 @@ public class CalendarControl extends BorderPane {
         int day = first.getDayOfWeek().getValue() - 1;
         int maxDays = YearMonth.from(localDate).lengthOfMonth();
         for (int i = 0; i < DAYS_OF_WEEK * WEEKS; i++) {
-            if (i > day && i < maxDays) {
-                labels[i].setText(String.valueOf(i + 1));
-                populateDay(first.plusDays(i), eventBoxes[i]);
+            if (i >= day && i < maxDays + day) {
+                labels[i].setText(String.valueOf(i - day + 1));
+                populateDay(first.plusDays(i - day), eventBoxes[i]);
             } else {
                 labels[i].setText("");
                 eventBoxes[i].getChildren().clear();
@@ -146,7 +146,6 @@ public class CalendarControl extends BorderPane {
         this.selectedDate.set(selectedDate);
     }
 
-    //TODO: Change background to color
     public static class CalendarEvent extends HBox {
         private Label time;
         private Label text;
