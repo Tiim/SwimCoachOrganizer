@@ -7,5 +7,5 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface ProcSchedule {
-    List<Pair<LocalDate, ScheduleRule>> getNextTrainings(LocalDate day, int span) throws Exception;
+    List<ScheduleRule> getTrainingsForDay(LocalDate day) throws Exception;
 }
