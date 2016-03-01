@@ -5,12 +5,10 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,6 +51,7 @@ public class CalendarControl extends BorderPane {
 
         init();
         selectedDate.addListener(observable -> dateChanged());
+        callback.addListener(observable -> dateChanged());
     }
 
     private void init() {
@@ -103,7 +102,7 @@ public class CalendarControl extends BorderPane {
     }
 
     private void populateDay(LocalDate localDate, VBox eventBox) {
-        if (callback.isNotNull().get()) {
+        if (callback.get() != null) {
             List<CalendarEvent> events = callback.get().apply(localDate);
             eventBox.getChildren().setAll(events);
         } else {
@@ -157,12 +156,16 @@ public class CalendarControl extends BorderPane {
         public CalendarEvent(LocalTime time, String name, Color color) {
             this.time = new Label(time.toString());
             this.text = new Label(name);
+            this.color.addListener(observable1 ->
+                    this.setBackground(new Background(
+                            new BackgroundFill(this.color.get(), CornerRadii.EMPTY, Insets.EMPTY))));
             this.color.set(color);
-            localTime.set(time);
-            localTime.addListener(observable -> this.time.setText(localTime.get().toString()));
+            this.localTime.set(time);
+            this.localTime.addListener(observable -> this.time.setText(localTime.get().toString()));
             this.time.getStyleClass().add("time");
             this.text.getStyleClass().add("name");
             getStyleClass().add("event");
+            getChildren().addAll(this.time, this.text);
         }
 
         public ObjectProperty<LocalTime> timeProperty() {
