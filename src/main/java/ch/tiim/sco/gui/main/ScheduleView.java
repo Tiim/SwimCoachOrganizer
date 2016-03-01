@@ -8,6 +8,7 @@ import ch.tiim.sco.gui.component.CalendarControl;
 import ch.tiim.sco.gui.events.ScheduleEvent;
 import ch.tiim.sco.gui.events.TeamEvent;
 import ch.tiim.sco.gui.util.ModelCell;
+import ch.tiim.sco.util.ColorUtil;
 import com.google.common.eventbus.Subscribe;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -17,6 +18,11 @@ import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class ScheduleView extends MainView {
 
@@ -48,7 +54,19 @@ public class ScheduleView extends MainView {
         schedules.setCellFactory(param -> new ModelCell<>());
         teams.getSelectionModel().selectedItemProperty()
                 .addListener((observable, oldValue, newValue) -> selected(newValue));
+        calendar.setCallback(this::getEvents);
         populate();
+    }
+
+    private List<CalendarControl.CalendarEvent> getEvents(LocalDate localDate) {
+        try {
+            return db.getProcSchedule().getTrainingsForDay(localDate).stream()
+            .map(it -> new CalendarControl.CalendarEvent(it.getTime(), it.getTeam().getName(),
+                    ColorUtil.getPastelColorHash(it.getTeam().getName()))).collect(Collectors.toList());
+        } catch (Exception e) {
+            LOGGER.warn("Can't load trainings for day " + localDate, e);
+            return new ArrayList<>(0);
+        }
     }
 
     private void initMenu() {
