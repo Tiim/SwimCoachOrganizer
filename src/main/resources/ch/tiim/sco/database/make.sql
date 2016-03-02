@@ -76,7 +76,9 @@ CREATE TABLE team_content (
 
 CREATE TABLE training (
     training_id INTEGER PRIMARY KEY AUTO_INCREMENT,
-    date TEXT
+    date DATE,
+    team_id INTEGER,
+    FOREIGN KEY(team_id) REFERENCES public.training(training_id) ON DELETE SET NULL ON UPDATE
 );
 
 CREATE TABLE training_content (

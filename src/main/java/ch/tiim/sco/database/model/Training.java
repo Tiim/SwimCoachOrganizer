@@ -8,8 +8,9 @@ public class Training implements Model {
 
     private Integer id;
     private LocalDate date;
+    private Team team;
 
-    public Training(int id, LocalDate date) {
+    public Training(int id, LocalDate date, Team team) {
         this(date);
         this.id = id;
     }
