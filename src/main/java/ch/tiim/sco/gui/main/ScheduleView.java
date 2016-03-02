@@ -59,7 +59,7 @@ public class ScheduleView extends MainView {
         populate();
     }
 
-    private void onEventClicked(ScheduleRule scheduleRule) {
+    private void onEventClicked(LocalDate ld, ScheduleRule scheduleRule) {
 
     }
 

@@ -21,6 +21,7 @@ import java.time.YearMonth;
 import java.time.format.TextStyle;
 import java.util.List;
 import java.util.Locale;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -40,7 +41,7 @@ public class CalendarControl<T> extends BorderPane {
     private ObjectProperty<Function<LocalDate, List<CalendarEvent<T>>>> callback =
             new SimpleObjectProperty<>();
 
-    private ObjectProperty<Consumer<T>> onEventCallback =
+    private ObjectProperty<BiConsumer<LocalDate, T>> onEventCallback =
             new SimpleObjectProperty<>();
 
     public CalendarControl() {
@@ -112,7 +113,7 @@ public class CalendarControl<T> extends BorderPane {
     private void populateDay(LocalDate localDate, VBox eventBox) {
         if (callback.get() != null) {
             List<CalendarEvent<T>> events = callback.get().apply(localDate);
-            events.forEach(it -> it.setOnMouseClicked(it2 -> onEventCallback.get().accept(it.getObject())));
+            events.forEach(it -> it.setOnMouseClicked(it2 -> onEventCallback.get().accept(localDate, it.getObject())));
             eventBox.getChildren().setAll(events);
         } else {
             eventBox.getChildren().clear();
@@ -155,15 +156,15 @@ public class CalendarControl<T> extends BorderPane {
         this.selectedDate.set(selectedDate);
     }
 
-    public Consumer<T> getOnEventCallback() {
+    public BiConsumer<LocalDate, T> getOnEventCallback() {
         return onEventCallback.get();
     }
 
-    public ObjectProperty<Consumer<T>> onEventCallbackProperty() {
+    public ObjectProperty<BiConsumer<LocalDate, T>> onEventCallbackProperty() {
         return onEventCallback;
     }
 
-    public void setOnEventCallback(Consumer<T> onEventCallback) {
+    public void setOnEventCallback(BiConsumer<LocalDate, T> onEventCallback) {
         this.onEventCallback.set(onEventCallback);
     }
 
