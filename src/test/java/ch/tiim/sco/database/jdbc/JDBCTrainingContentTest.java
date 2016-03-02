@@ -30,7 +30,7 @@ public class JDBCTrainingContentTest {
     public void setUp() throws Exception {
         db = new DatabaseController(":memory:");
         Team team = new Team("Test Team");
-        t = new Training(LocalDate.now(), team, null);
+        t = new Training(LocalDate.now(), null, null);
         s1 = iset(1);
         s2 = iset(2);
         s3 = iset(3);
