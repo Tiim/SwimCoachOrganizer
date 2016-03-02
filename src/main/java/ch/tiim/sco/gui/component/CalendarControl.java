@@ -3,13 +3,14 @@ package ch.tiim.sco.gui.component;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.StringProperty;
+import javafx.css.PseudoClass;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import org.controlsfx.control.PopOver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,16 +27,22 @@ import java.util.function.Function;
 
 public class CalendarControl<T> extends BorderPane {
     private static final Logger LOGGER = LoggerFactory.getLogger(CalendarControl.class);
+    private static final PseudoClass NON_EMPTY = PseudoClass.getPseudoClass("non-empty");
+    private static final PseudoClass IN_MONTH = PseudoClass.getPseudoClass("in-month");
     private static final int DAYS_OF_WEEK = 7;
     private static final int WEEKS = 6;
+    private static final int DAYS = DAYS_OF_WEEK * WEEKS;
 
     @FXML
     private Label title;
     @FXML
     private GridPane grid;
 
-    private Label[] labels = new Label[WEEKS * DAYS_OF_WEEK];
-    private VBox[] eventBoxes = new VBox[WEEKS * DAYS_OF_WEEK];
+    private BorderPane[] days = new BorderPane[DAYS];
+    private Label[] labels = new Label[DAYS];
+    private VBox[] eventBoxes = new VBox[DAYS];
+    private PopOver popOver;
+
     private ObjectProperty<LocalDate> selectedDate = new SimpleObjectProperty<>(LocalDate.now());
     private ObjectProperty<Function<LocalDate, List<CalendarEvent<T>>>> callback =
             new SimpleObjectProperty<>();
@@ -62,32 +69,6 @@ public class CalendarControl<T> extends BorderPane {
         dateChanged();
     }
 
-    private void init() {
-        for (int i = 0; i < labels.length; i++) {
-            BorderPane bp = new BorderPane();
-            Label l = new Label();
-            ScrollPane sp = new ScrollPane();
-            VBox vb = new VBox();
-
-            sp.setContent(vb);
-            bp.setTop(l);
-            bp.setCenter(sp);
-
-            labels[i] = l;
-            eventBoxes[i] = vb;
-
-            grid.add(bp, i % DAYS_OF_WEEK, i / DAYS_OF_WEEK + 1);
-
-            l.getStyleClass().add("day");
-            sp.getStyleClass().add("scroll-pane-events");
-            vb.getStyleClass().add("vbox-events");
-            bp.getStyleClass().add("day-box");
-
-            sp.setMinHeight(Double.MIN_VALUE);
-        }
-        dateChanged();
-    }
-
     private void dateChanged() {
         LocalDate localDate = selectedDate.get();
         Month month = localDate.getMonth();
@@ -101,22 +82,58 @@ public class CalendarControl<T> extends BorderPane {
         for (int i = 0; i < DAYS_OF_WEEK * WEEKS; i++) {
             if (i >= day && i < maxDays + day) {
                 labels[i].setText(String.valueOf(i - day + 1));
-                populateDay(first.plusDays(i - day), eventBoxes[i]);
+                populateDay(first.plusDays(i - day), eventBoxes[i], days[i]);
+                days[i].pseudoClassStateChanged(IN_MONTH, true);
             } else {
                 labels[i].setText("");
                 eventBoxes[i].getChildren().clear();
+                days[i].pseudoClassStateChanged(IN_MONTH, false);
             }
         }
     }
 
-    private void populateDay(LocalDate localDate, VBox eventBox) {
+    private void populateDay(LocalDate localDate, VBox eventBox, BorderPane day) {
         if (callback.get() != null) {
             List<CalendarEvent<T>> events = callback.get().apply(localDate);
             events.forEach(it -> it.setOnMouseClicked(it2 -> onEventCallback.get().accept(localDate, it.getObject())));
             eventBox.getChildren().setAll(events);
+            day.pseudoClassStateChanged(NON_EMPTY, !eventBox.getChildren().isEmpty());
         } else {
             eventBox.getChildren().clear();
+            day.pseudoClassStateChanged(NON_EMPTY, false);
         }
+    }
+
+    private void init() {
+        for (int i = 0; i < labels.length; i++) {
+            BorderPane bp = new BorderPane();
+            Label l = new Label();
+            VBox vb = new VBox();
+
+            bp.setTop(l);
+            //bp.setCenter(sp);
+
+            days[i] = bp;
+            labels[i] = l;
+            eventBoxes[i] = vb;
+
+
+            grid.add(bp, i % DAYS_OF_WEEK, i / DAYS_OF_WEEK + 1);
+
+            final int y = i;
+            bp.setOnMouseClicked(event -> {
+                if (!eventBoxes[y].getChildren().isEmpty()) {
+                    popOver = new PopOver(vb);
+                    popOver.getRoot().getStylesheets().addAll("ch/tiim/sco/gui/component/CalendarPopup.css");
+                    popOver.show(bp);
+                }
+            });
+
+            l.getStyleClass().add("day");
+            vb.getStyleClass().add("vbox-events");
+            bp.getStyleClass().add("day-box");
+        }
+        dateChanged();
     }
 
     @FXML
@@ -139,12 +156,24 @@ public class CalendarControl<T> extends BorderPane {
         return callback;
     }
 
+    public ObjectProperty<BiConsumer<LocalDate, T>> onEventCallbackProperty() {
+        return onEventCallback;
+    }
+
     public Function<LocalDate, List<CalendarEvent<T>>> getCallback() {
         return callback.get();
     }
 
     public void setCallback(Function<LocalDate, List<CalendarEvent<T>>> callback) {
         this.callback.set(callback);
+    }
+
+    public BiConsumer<LocalDate, T> getOnEventCallback() {
+        return onEventCallback.get();
+    }
+
+    public void setOnEventCallback(BiConsumer<LocalDate, T> onEventCallback) {
+        this.onEventCallback.set(onEventCallback);
     }
 
     public LocalDate getSelectedDate() {
@@ -155,24 +184,12 @@ public class CalendarControl<T> extends BorderPane {
         this.selectedDate.set(selectedDate);
     }
 
-    public BiConsumer<LocalDate, T> getOnEventCallback() {
-        return onEventCallback.get();
-    }
-
-    public ObjectProperty<BiConsumer<LocalDate, T>> onEventCallbackProperty() {
-        return onEventCallback;
-    }
-
-    public void setOnEventCallback(BiConsumer<LocalDate, T> onEventCallback) {
-        this.onEventCallback.set(onEventCallback);
-    }
-
     public static class CalendarEvent<T> extends HBox {
+        private final T object;
         private Label time;
         private Label text;
         private ObjectProperty<LocalTime> localTime = new SimpleObjectProperty<>();
         private ObjectProperty<Color> color = new SimpleObjectProperty<>();
-        private final T object;
 
         public CalendarEvent(LocalTime time, String name, Color color, T object) {
             this.time = new Label(time.toString());
@@ -202,6 +219,10 @@ public class CalendarControl<T> extends BorderPane {
             return text.getText();
         }
 
+        public T getObject() {
+            return object;
+        }
+
         public LocalTime getTime() {
             return localTime.get();
         }
@@ -212,10 +233,6 @@ public class CalendarControl<T> extends BorderPane {
 
         public void setText(String text) {
             this.text.setText(text);
-        }
-
-        public T getObject() {
-            return object;
         }
     }
 }
