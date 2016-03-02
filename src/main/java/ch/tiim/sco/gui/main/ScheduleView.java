@@ -40,7 +40,7 @@ public class ScheduleView extends MainView {
     @FXML
     private ListView<ScheduleRule> schedules;
     @FXML
-    private CalendarControl calendar;
+    private CalendarControl<ScheduleRule> calendar;
 
     private BooleanProperty isTeamSelected = new SimpleBooleanProperty(false);
     private BooleanProperty isScheduleSelected = new SimpleBooleanProperty(false);
@@ -55,14 +55,19 @@ public class ScheduleView extends MainView {
         teams.getSelectionModel().selectedItemProperty()
                 .addListener((observable, oldValue, newValue) -> selected(newValue));
         calendar.setCallback(this::getEvents);
+        calendar.setOnEventCallback(this::onEventClicked);
         populate();
     }
 
-    private List<CalendarControl.CalendarEvent> getEvents(LocalDate localDate) {
+    private void onEventClicked(ScheduleRule scheduleRule) {
+
+    }
+
+    private List<CalendarControl.CalendarEvent<ScheduleRule>> getEvents(LocalDate localDate) {
         try {
             return db.getProcSchedule().getTrainingsForDay(localDate).stream()
-            .map(it -> new CalendarControl.CalendarEvent(it.getTime(), it.getTeam().getName(),
-                    ColorUtil.getPastelColorHash(it.getTeam().getName()))).collect(Collectors.toList());
+                    .map(it -> new CalendarControl.CalendarEvent<>(it.getTime(), it.getTeam().getName(),
+                            ColorUtil.getPastelColorHash(it.getTeam().getName()), it)).collect(Collectors.toList());
         } catch (Exception e) {
             LOGGER.warn("Can't load trainings for day " + localDate, e);
             return new ArrayList<>(0);

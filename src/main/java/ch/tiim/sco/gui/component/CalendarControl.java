@@ -21,9 +21,10 @@ import java.time.YearMonth;
 import java.time.format.TextStyle;
 import java.util.List;
 import java.util.Locale;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
-public class CalendarControl extends BorderPane {
+public class CalendarControl<T> extends BorderPane {
     private static final Logger LOGGER = LoggerFactory.getLogger(CalendarControl.class);
     private static final int DAYS_OF_WEEK = 7;
     private static final int WEEKS = 6;
@@ -36,7 +37,10 @@ public class CalendarControl extends BorderPane {
     private Label[] labels = new Label[WEEKS * DAYS_OF_WEEK];
     private VBox[] eventBoxes = new VBox[WEEKS * DAYS_OF_WEEK];
     private ObjectProperty<LocalDate> selectedDate = new SimpleObjectProperty<>(LocalDate.now());
-    private ObjectProperty<Function<LocalDate, List<CalendarEvent>>> callback =
+    private ObjectProperty<Function<LocalDate, List<CalendarEvent<T>>>> callback =
+            new SimpleObjectProperty<>();
+
+    private ObjectProperty<Consumer<T>> onEventCallback =
             new SimpleObjectProperty<>();
 
     public CalendarControl() {
@@ -107,7 +111,8 @@ public class CalendarControl extends BorderPane {
 
     private void populateDay(LocalDate localDate, VBox eventBox) {
         if (callback.get() != null) {
-            List<CalendarEvent> events = callback.get().apply(localDate);
+            List<CalendarEvent<T>> events = callback.get().apply(localDate);
+            events.forEach(it -> it.setOnMouseClicked(it2 -> onEventCallback.get().accept(it.getObject())));
             eventBox.getChildren().setAll(events);
         } else {
             eventBox.getChildren().clear();
@@ -130,15 +135,15 @@ public class CalendarControl extends BorderPane {
         return selectedDate;
     }
 
-    public ObjectProperty<Function<LocalDate, List<CalendarEvent>>> callbackProperty() {
+    public ObjectProperty<Function<LocalDate, List<CalendarEvent<T>>>> callbackProperty() {
         return callback;
     }
 
-    public Function<LocalDate, List<CalendarEvent>> getCallback() {
+    public Function<LocalDate, List<CalendarEvent<T>>> getCallback() {
         return callback.get();
     }
 
-    public void setCallback(Function<LocalDate, List<CalendarEvent>> callback) {
+    public void setCallback(Function<LocalDate, List<CalendarEvent<T>>> callback) {
         this.callback.set(callback);
     }
 
@@ -150,13 +155,26 @@ public class CalendarControl extends BorderPane {
         this.selectedDate.set(selectedDate);
     }
 
-    public static class CalendarEvent extends HBox {
+    public Consumer<T> getOnEventCallback() {
+        return onEventCallback.get();
+    }
+
+    public ObjectProperty<Consumer<T>> onEventCallbackProperty() {
+        return onEventCallback;
+    }
+
+    public void setOnEventCallback(Consumer<T> onEventCallback) {
+        this.onEventCallback.set(onEventCallback);
+    }
+
+    public static class CalendarEvent<T> extends HBox {
         private Label time;
         private Label text;
         private ObjectProperty<LocalTime> localTime = new SimpleObjectProperty<>();
         private ObjectProperty<Color> color = new SimpleObjectProperty<>();
+        private T object;
 
-        public CalendarEvent(LocalTime time, String name, Color color) {
+        public CalendarEvent(LocalTime time, String name, Color color, T object) {
             this.time = new Label(time.toString());
             this.text = new Label(name);
             this.color.addListener(observable1 ->
@@ -195,5 +213,8 @@ public class CalendarControl extends BorderPane {
             this.text.setText(text);
         }
 
+        public T getObject() {
+            return object;
+        }
     }
 }
