@@ -173,7 +173,7 @@ public class CalendarControl<T> extends BorderPane {
         private Label text;
         private ObjectProperty<LocalTime> localTime = new SimpleObjectProperty<>();
         private ObjectProperty<Color> color = new SimpleObjectProperty<>();
-        private T object;
+        private final T object;
 
         public CalendarEvent(LocalTime time, String name, Color color, T object) {
             this.time = new Label(time.toString());
@@ -186,6 +186,7 @@ public class CalendarControl<T> extends BorderPane {
             this.localTime.addListener(observable -> this.time.setText(localTime.get().toString()));
             this.time.getStyleClass().add("time");
             this.text.getStyleClass().add("name");
+            this.object = object;
             getStyleClass().add("event");
             getChildren().addAll(this.time, this.text);
         }
