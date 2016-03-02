@@ -1,0 +1,18 @@
+.vbox-events {
+    -fx-spacing: 2px;
+    -fx-padding: 2 2 2 4;
+}
+
+.time {
+    -fx-font: italic 12 sans-serif;
+    -fx-padding: 2 3 2 2;
+}
+
+.name {
+    -fx-font: bold 12 sans-serif;
+    -fx-padding: 2 2 2 3;
+}
+
+.events {
+
+}

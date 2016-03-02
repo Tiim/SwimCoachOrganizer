@@ -6,13 +6,22 @@
     -fx-font: bold 14 sans-serif;
 }
 
-.scroll-pane-events {
-    -fx-padding: 0;
-    -fx-background-insets: 0;
-    -fx-fit-to-width: true;
-    -fx-pannable: true;
+.grid {
+    -fx-grid-lines-visible: true;
 }
 
-.vbox-events {
-    -fx-spacing: 2px;
+.day-box {
+    -fx-padding: 2;
+}
+
+.day {
+    -fx-font: 12 sans-serif;
+}
+
+.day-box:in-month {
+    -fx-background-color: rgba(0, 0, 0, 0.1);
+}
+
+.day-box:non-empty {
+    -fx-background-color: rgba(0%, 30%, 100%, 0.1);
 }
