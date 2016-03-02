@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +36,11 @@ public class JDBCTraining extends Table implements ch.tiim.sco.database.TableTra
     @Override
     public void addTraining(Training t) throws SQLException {
         add.setString("date", t.getDate().toString());
+        if (t.getTeam() != null) {
+            add.setInt("team_id", t.getTeam().getId());
+        } else {
+            add.setNull("team_id", Types.INTEGER);
+        }
         LOGGER.debug(MARKER_QUERRY, add.toString());
         testUpdate(add);
         t.setId(getGenKey(add));
@@ -44,6 +50,11 @@ public class JDBCTraining extends Table implements ch.tiim.sco.database.TableTra
     public void updateTraining(Training t) throws SQLException {
         update.setString("date", t.getDate().toString());
         update.setInt("id", t.getId());
+        if (t.getTeam() != null) {
+            update.setInt("team_id", t.getTeam().getId());
+        } else {
+            update.setNull("team_id", Types.INTEGER);
+        }
         LOGGER.debug(MARKER_QUERRY, update.toString());
         testUpdate(update);
     }
@@ -69,7 +80,8 @@ public class JDBCTraining extends Table implements ch.tiim.sco.database.TableTra
     static Training getTraining(ResultSet rs) throws SQLException {
         return new Training(
                 rs.getInt("training_id"),
-                LocalDate.parse(rs.getString("date"))
+                LocalDate.parse(rs.getString("date")),
+                rs.getString("name") != null ? JDBCTeam.getTeam(rs) : null
         );
     }
 }

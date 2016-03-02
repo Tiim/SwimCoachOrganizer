@@ -4,6 +4,7 @@ import ch.tiim.inject.Inject;
 import ch.tiim.sco.database.DatabaseController;
 import ch.tiim.sco.database.model.IndexedSet;
 import ch.tiim.sco.database.model.Set;
+import ch.tiim.sco.database.model.Team;
 import ch.tiim.sco.database.model.Training;
 import ch.tiim.sco.gui.alert.ExceptionAlert;
 import ch.tiim.sco.gui.events.OpenEvent;
@@ -14,10 +15,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +31,8 @@ public class TrainingDialog extends DialogView {
     private Parent root;
     @FXML
     private DatePicker date;
+    @FXML
+    private ChoiceBox<Team> teams;
     @FXML
     private TableView<IndexedSet> training;
     @FXML
@@ -54,6 +54,12 @@ public class TrainingDialog extends DialogView {
         colNr.setCellValueFactory(d -> new SimpleIntegerProperty(d.getValue().getIndex()));
         colName.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getSet().getName()));
         colContent.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getSet().getContent()));
+
+        try {
+            teams.getItems().setAll(db.getTblTeam().getAllTeams());
+        } catch (Exception e) {
+            ExceptionAlert.showError(LOGGER, "Can't load teams", e, eventBus);
+        }
     }
 
     @FXML
@@ -113,10 +119,11 @@ public class TrainingDialog extends DialogView {
     private void onSave() {
         boolean newTraining = false;
         if (currentTraining == null) {
-            currentTraining = new Training(date.getValue());
+            currentTraining = new Training(date.getValue(), teams.getValue());
             newTraining = true;
         } else {
             currentTraining.setDate(date.getValue());
+            currentTraining.setTeam(teams.getValue());
         }
         try {
             if (newTraining) {
@@ -153,6 +160,7 @@ public class TrainingDialog extends DialogView {
     private void populateTraining(Training tr) {
         if (tr != null) {
             date.setValue(tr.getDate());
+            teams.setValue(tr.getTeam());
             try {
                 List<IndexedSet> sets = db.getTblTrainingContent().getSets(tr);
                 training.getItems().setAll(sets);

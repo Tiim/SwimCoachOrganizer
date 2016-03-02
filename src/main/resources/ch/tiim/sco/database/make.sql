@@ -78,7 +78,7 @@ CREATE TABLE training (
     training_id INTEGER PRIMARY KEY AUTO_INCREMENT,
     date DATE,
     team_id INTEGER,
-    FOREIGN KEY(team_id) REFERENCES public.training(training_id) ON DELETE SET NULL ON UPDATE
+    FOREIGN KEY(team_id) REFERENCES public.training(training_id) ON DELETE SET NULL ON UPDATE CASCADE
 );
 
 CREATE TABLE training_content (
@@ -86,8 +86,7 @@ CREATE TABLE training_content (
     set_id INTEGER NOT NULL,
     index INTEGER NOT NULL,
     FOREIGN KEY(training_id) REFERENCES public.training(training_id) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY(set_id) REFERENCES public.sets(set_id) ON DELETE CASCADE ON UPDATE CASCADE --,
-    --UNIQUE (training_id, indx)
+    FOREIGN KEY(set_id) REFERENCES public.sets(set_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE result (

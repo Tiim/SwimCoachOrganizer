@@ -11,12 +11,13 @@ public class Training implements Model {
     private Team team;
 
     public Training(int id, LocalDate date, Team team) {
-        this(date);
+        this(date, team);
         this.id = id;
     }
 
-    public Training(LocalDate date) {
+    public Training(LocalDate date, Team team) {
         this.date = date;
+        this.team = team;
     }
 
     @Override
@@ -57,5 +58,13 @@ public class Training implements Model {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Team getTeam() {
+        return team;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
     }
 }

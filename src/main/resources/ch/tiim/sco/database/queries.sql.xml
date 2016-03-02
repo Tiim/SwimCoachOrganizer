@@ -221,8 +221,8 @@
         </entry>
         <entry name="get_all">
             SELECT training_id, date, team.team_id, team.name
-                LEFT JOIN team ON team.team_id = training.team_id
             FROM training
+                LEFT JOIN team ON team.team_id = training.team_id
         </entry>
     </module>
     <module name="TrainingContent">

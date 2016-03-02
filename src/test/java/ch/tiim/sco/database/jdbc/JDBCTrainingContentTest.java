@@ -3,6 +3,7 @@ package ch.tiim.sco.database.jdbc;
 import ch.tiim.sco.database.DatabaseController;
 import ch.tiim.sco.database.model.IndexedSet;
 import ch.tiim.sco.database.model.Set;
+import ch.tiim.sco.database.model.Team;
 import ch.tiim.sco.database.model.Training;
 import org.junit.After;
 import org.junit.Assert;
@@ -28,7 +29,8 @@ public class JDBCTrainingContentTest {
     @Before
     public void setUp() throws Exception {
         db = new DatabaseController(":memory:");
-        t = new Training(LocalDate.now());
+        Team team = new Team("Test Team");
+        t = new Training(LocalDate.now(), team);
         s1 = iset(1);
         s2 = iset(2);
         s3 = iset(3);
