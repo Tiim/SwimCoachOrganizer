@@ -2,12 +2,16 @@ package ch.tiim.sco.database.jdbc;
 
 import ch.tiim.jdbc.namedparameters.NamedParameterPreparedStatement;
 import ch.tiim.sco.database.DatabaseController;
+import ch.tiim.sco.database.model.ScheduleRule;
 import ch.tiim.sco.database.model.Training;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +22,7 @@ public class JDBCTraining extends Table implements ch.tiim.sco.database.TableTra
     private NamedParameterPreparedStatement delete;
     private NamedParameterPreparedStatement update;
     private NamedParameterPreparedStatement getAll;
+    private NamedParameterPreparedStatement getFromSchedule;
 
     public JDBCTraining(DatabaseController db) throws SQLException {
         super(db);
@@ -29,11 +34,22 @@ public class JDBCTraining extends Table implements ch.tiim.sco.database.TableTra
         delete = db.getPrepStmt(getSql("delete"));
         update = db.getPrepStmt(getSql("update"));
         getAll = db.getPrepStmt(getSql("get_all"));
+        getFromSchedule = db.getPrepStmt(getSql("get_from_schedule"));
     }
 
     @Override
     public void addTraining(Training t) throws SQLException {
-        add.setString("name", t.getName());
+        add.setString("date", t.getDate().toString());
+        if (t.getTeam() != null) {
+            add.setInt("team_id", t.getTeam().getId());
+        } else {
+            add.setNull("team_id", Types.INTEGER);
+        }
+        if (t.getSchedule() != null) {
+            add.setInt("schedule_id", t.getSchedule().getId());
+        } else {
+            add.setNull("schedule_id", Types.INTEGER);
+        }
         LOGGER.debug(MARKER_QUERRY, add.toString());
         testUpdate(add);
         t.setId(getGenKey(add));
@@ -41,8 +57,18 @@ public class JDBCTraining extends Table implements ch.tiim.sco.database.TableTra
 
     @Override
     public void updateTraining(Training t) throws SQLException {
-        update.setString("name", t.getName());
+        update.setString("date", t.getDate().toString());
         update.setInt("id", t.getId());
+        if (t.getTeam() != null) {
+            update.setInt("team_id", t.getTeam().getId());
+        } else {
+            update.setNull("team_id", Types.INTEGER);
+        }
+        if (t.getSchedule() != null) {
+            update.setInt("schedule_id", t.getSchedule().getId());
+        } else {
+            update.setNull("schedule_id", Types.INTEGER);
+        }
         LOGGER.debug(MARKER_QUERRY, update.toString());
         testUpdate(update);
     }
@@ -52,6 +78,19 @@ public class JDBCTraining extends Table implements ch.tiim.sco.database.TableTra
         delete.setInt("id", t.getId());
         LOGGER.debug(MARKER_QUERRY, delete.toString());
         testUpdate(delete);
+    }
+
+    @Override
+    public Training getTrainingFromSchedule(LocalDate ld, ScheduleRule sr) throws SQLException {
+        getFromSchedule.setInt("schedule_id", sr.getId());
+        getFromSchedule.setDate("date", Date.valueOf(ld));
+        LOGGER.debug(MARKER_QUERRY, getFromSchedule.toString());
+        ResultSet rs = getFromSchedule.executeQuery();
+        if (rs.next()) {
+            return getTraining(rs);
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -68,7 +107,9 @@ public class JDBCTraining extends Table implements ch.tiim.sco.database.TableTra
     static Training getTraining(ResultSet rs) throws SQLException {
         return new Training(
                 rs.getInt("training_id"),
-                rs.getString("name")
+                LocalDate.parse(rs.getString("date")),
+                rs.getString("name") != null ? JDBCTeam.getTeam(rs) : null,
+                rs.getDate("start_date") != null ? JDBCSchedule.getScheduleRule(rs) : null
         );
     }
 }

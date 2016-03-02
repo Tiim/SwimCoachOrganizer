@@ -57,7 +57,7 @@
     <xsl:template match="SwimCoachOrganizer">
         <xsl:for-each select="Trainings/Training">
             <fo:block font-size="16pt" font-weight="bold" margin-top="10mm" margin-bottom="5mm">
-                <xsl:value-of select="Name"/>
+                <xsl:value-of select="Date"/>
             </fo:block>
             <fo:block border-bottom-width="0.5pt"
                       border-bottom-style="solid"

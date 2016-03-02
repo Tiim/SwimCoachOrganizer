@@ -81,6 +81,7 @@ public class MainWindow extends View {
                 ViewLoader.load(FocusView.class),
                 ViewLoader.load(StrokeView.class),
                 null,
+                ViewLoader.load(ScheduleView.class),
                 ViewLoader.load(ClubView.class),
                 ViewLoader.load(TeamView.class),
                 ViewLoader.load(SwimmerView.class),

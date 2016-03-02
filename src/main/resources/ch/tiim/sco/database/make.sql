@@ -74,9 +74,23 @@ CREATE TABLE team_content (
     FOREIGN KEY(team_id) REFERENCES public.team(team_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
+CREATE TABLE schedule (
+    schedule_id INTEGER PRIMARY KEY AUTO_INCREMENT,
+    team_id INTEGER NOT NULL,
+    start_date DATE NOT NULL,
+    start_time TIME NOT NULL,
+    inter INTEGER NOT NULL,
+    duration INTEGER NOT NULL,
+    FOREIGN KEY(team_id) REFERENCES public.team(team_id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
 CREATE TABLE training (
     training_id INTEGER PRIMARY KEY AUTO_INCREMENT,
-    name TEXT
+    date DATE,
+    team_id INTEGER,
+    schedule_id INTEGER,
+    FOREIGN KEY(team_id) REFERENCES public.training(training_id) ON DELETE SET NULL ON UPDATE CASCADE,
+    FOREIGN KEY(schedule_id) REFERENCES public.schedule(schedule_id) ON DELETE SET NULL ON UPDATE CASCADE
 );
 
 CREATE TABLE training_content (
@@ -84,8 +98,7 @@ CREATE TABLE training_content (
     set_id INTEGER NOT NULL,
     index INTEGER NOT NULL,
     FOREIGN KEY(training_id) REFERENCES public.training(training_id) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY(set_id) REFERENCES public.sets(set_id) ON DELETE CASCADE ON UPDATE CASCADE --,
-    --UNIQUE (training_id, indx)
+    FOREIGN KEY(set_id) REFERENCES public.sets(set_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE result (
@@ -99,4 +112,11 @@ CREATE TABLE result (
     distance INTEGER NOT NULL,
     course TEXT NOT NULL,
     FOREIGN KEY(swimmer_id) REFERENCES public.swimmer(swimmer_id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE schedule_exception (
+    exception_id INTEGER PRIMARY KEY AUTO_INCREMENT,
+    schedule_id INTEGER NOT NULL,
+    day DATE NOT NULL,
+    FOREIGN KEY(schedule_id) REFERENCES public.schedule(schedule_id) ON DELETE CASCADE ON UPDATE CASCADE,
 );

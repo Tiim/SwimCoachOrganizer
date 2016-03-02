@@ -2,6 +2,7 @@ package ch.tiim.sco.database;
 
 import ch.tiim.jdbc.namedparameters.NamedParameterPreparedStatement;
 import ch.tiim.sco.database.jdbc.*;
+import ch.tiim.sco.database.proc.ProcScheduleStream;
 import ch.tiim.sco.util.Debug;
 import ch.tiim.sql_xml.SqlLoader;
 import com.google.common.base.Charsets;
@@ -35,6 +36,9 @@ public class DatabaseController implements Closeable {
     private final TableClub tblClub;
     private final TableClubContent tblClubContent;
     private final TableResult tblResult;
+    private final TableSchedule tblSchedule;
+
+    private final ProcSchedule procSchedule;
 
     private final SqlLoader sqlLoader;
     private final Connection conn;
@@ -78,6 +82,9 @@ public class DatabaseController implements Closeable {
         tblClub = new JDBCClub(this);
         tblClubContent = new JDBCClubContent(this);
         tblResult = new JDBCResult(this);
+        tblSchedule = new JDBCSchedule(this);
+
+        procSchedule = new ProcScheduleStream(this);
     }
 
     private void mkDatabase() throws SQLException {
@@ -137,6 +144,10 @@ public class DatabaseController implements Closeable {
         return conn;
     }
 
+    public ProcSchedule getProcSchedule() {
+        return procSchedule;
+    }
+
     public SqlLoader getSqlLoader() {
         return sqlLoader;
     }
@@ -151,6 +162,10 @@ public class DatabaseController implements Closeable {
 
     public TableResult getTblResult() {
         return tblResult;
+    }
+
+    public TableSchedule getTblSchedule() {
+        return tblSchedule;
     }
 
     public TableSets getTblSet() {
