@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
-<VBox xmlns:fx="http://javafx.com/fxml/1" fx:id="root" xmlns="http://javafx.com/javafx/8.0.40"
+<VBox xmlns:fx="http://javafx.com/fxml/1" fx:id="root" xmlns="http://javafx.com/javafx/8.0.65"
       fx:controller="ch.tiim.sco.gui.dialog.TrainingDialog">
     <children>
         <SplitPane dividerPositions="0.5" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
@@ -14,7 +14,7 @@
                     <children>
                         <DatePicker fx:id="date" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
                                     promptText="Date"/>
-                        <ChoiceBox fx:id="teams" />
+                        <ChoiceBox fx:id="teams" maxWidth="1.7976931348623157E308"/>
                         <TableView fx:id="training" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                             <columns>
                                 <TableColumn fx:id="colNr" maxWidth="25.0" prefWidth="25.0" resizable="false" text="i"/>

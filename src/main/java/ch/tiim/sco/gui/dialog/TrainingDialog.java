@@ -11,6 +11,7 @@ import ch.tiim.sco.gui.events.OpenEvent;
 import ch.tiim.sco.gui.events.SetEvent;
 import ch.tiim.sco.gui.events.TrainingEvent;
 import ch.tiim.sco.gui.util.ModelCell;
+import ch.tiim.sco.gui.util.ModelConverter;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
@@ -50,6 +51,7 @@ public class TrainingDialog extends DialogView {
     @FXML
     private void initialize() {
         sets.setCellFactory(param -> new ModelCell<>());
+        teams.setConverter(new ModelConverter<>());
 
         colNr.setCellValueFactory(d -> new SimpleIntegerProperty(d.getValue().getIndex()));
         colName.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getSet().getName()));

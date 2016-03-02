@@ -36,7 +36,7 @@ public class Training implements Model {
 
     @Override
     public String toString() {
-        return date.toString();
+        return String.format("%s - %s", date.toString(), team == null ? "No Team" : team.getName());
     }
 
     @Override
