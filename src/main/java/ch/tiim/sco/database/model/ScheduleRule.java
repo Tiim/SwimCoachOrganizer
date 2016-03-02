@@ -7,14 +7,14 @@ import java.util.Objects;
 
 public class ScheduleRule implements Model {
 
-    private int id;
+    private Integer id;
     private LocalDate start;
     private LocalTime time;
     private int interval;
     private int duration;
     private Team team;
 
-    public ScheduleRule(int id, LocalDate start, LocalTime time, int interval, int duration, Team team) {
+    public ScheduleRule(Integer id, LocalDate start, LocalTime time, int interval, int duration, Team team) {
         this(start, time, interval, duration, team);
         this.id = id;
     }
@@ -69,11 +69,11 @@ public class ScheduleRule implements Model {
         this.duration = duration;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
