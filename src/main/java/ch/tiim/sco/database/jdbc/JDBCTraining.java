@@ -2,10 +2,12 @@ package ch.tiim.sco.database.jdbc;
 
 import ch.tiim.jdbc.namedparameters.NamedParameterPreparedStatement;
 import ch.tiim.sco.database.DatabaseController;
+import ch.tiim.sco.database.model.ScheduleRule;
 import ch.tiim.sco.database.model.Training;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
@@ -20,6 +22,7 @@ public class JDBCTraining extends Table implements ch.tiim.sco.database.TableTra
     private NamedParameterPreparedStatement delete;
     private NamedParameterPreparedStatement update;
     private NamedParameterPreparedStatement getAll;
+    private NamedParameterPreparedStatement getFromSchedule;
 
     public JDBCTraining(DatabaseController db) throws SQLException {
         super(db);
@@ -31,6 +34,7 @@ public class JDBCTraining extends Table implements ch.tiim.sco.database.TableTra
         delete = db.getPrepStmt(getSql("delete"));
         update = db.getPrepStmt(getSql("update"));
         getAll = db.getPrepStmt(getSql("get_all"));
+        getFromSchedule = db.getPrepStmt(getSql("get_from_schedule"));
     }
 
     @Override
@@ -74,6 +78,19 @@ public class JDBCTraining extends Table implements ch.tiim.sco.database.TableTra
         delete.setInt("id", t.getId());
         LOGGER.debug(MARKER_QUERRY, delete.toString());
         testUpdate(delete);
+    }
+
+    @Override
+    public Training getTrainingFromSchedule(LocalDate ld, ScheduleRule sr) throws SQLException {
+        getFromSchedule.setInt("schedule_id", sr.getId());
+        getFromSchedule.setDate("date", Date.valueOf(ld));
+        LOGGER.debug(MARKER_QUERRY, getFromSchedule.toString());
+        ResultSet rs = getFromSchedule.executeQuery();
+        if (rs.next()) {
+            return getTraining(rs);
+        } else {
+            return null;
+        }
     }
 
     @Override

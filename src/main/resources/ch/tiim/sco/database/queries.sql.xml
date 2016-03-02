@@ -221,12 +221,22 @@
         </entry>
         <entry name="get_all">
             SELECT training_id, date,
-            team.team_id, team.name,
-            schedule.schedule_id, schedule.start_date, schedule.start_time,
-            schedule.inter, schedule.duration
+                team.team_id, team.name,
+                schedule.schedule_id, schedule.start_date, schedule.start_time,
+                schedule.inter, schedule.duration
             FROM training
                 LEFT JOIN team ON team.team_id = training.team_id
-            LEFT JOIN schedule ON schedule.schedule_id = training.schedule_id
+                LEFT JOIN schedule ON schedule.schedule_id = training.schedule_id
+        </entry>
+        <entry name="get_from_schedule">
+            SELECT training_id, date,
+                team.team_id, team.name,
+                schedule.schedule_id, schedule.start_date, schedule.start_time,
+                schedule.inter, schedule.duration
+            FROM training
+                LEFT JOIN team ON team.team_id = training.team_id
+                LEFT JOIN schedule ON schedule.schedule_id = training.schedule_id
+            WHERE date = :date AND schedule.schedule_id = :schedule_id
         </entry>
     </module>
     <module name="TrainingContent">
