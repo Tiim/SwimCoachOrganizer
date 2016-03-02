@@ -115,6 +115,7 @@ public class ScheduleView extends MainView {
 
     @Subscribe
     public void onSchedule(ScheduleEvent event) {
+        calendar.reloadEvents();
         selected(teams.getSelectionModel().getSelectedItem());
     }
 

@@ -54,6 +54,10 @@ public class CalendarControl extends BorderPane {
         callback.addListener(observable -> dateChanged());
     }
 
+    public void reloadEvents() {
+        dateChanged();
+    }
+
     private void init() {
         for (int i = 0; i < labels.length; i++) {
             BorderPane bp = new BorderPane();
