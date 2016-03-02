@@ -32,6 +32,9 @@ dependencies {
     compile 'org.logback-extensions:logback-ext-loggly:0.1.4'
     runtime 'org.slf4j:jcl-over-slf4j:1.7.14'
 
+    //ControlsFX for popup
+    compile 'org.controlsfx:controlsfx:8.40.10'
+
     //H2
     compile group: 'com.h2database', name: 'h2', version: '1.4.+'
 
