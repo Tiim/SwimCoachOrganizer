@@ -4,9 +4,12 @@ import ch.tiim.inject.Inject;
 import ch.tiim.sco.database.DatabaseController;
 import ch.tiim.sco.database.model.ScheduleRule;
 import ch.tiim.sco.database.model.Team;
+import ch.tiim.sco.database.model.Training;
+import ch.tiim.sco.gui.alert.ExceptionAlert;
 import ch.tiim.sco.gui.component.CalendarControl;
 import ch.tiim.sco.gui.events.ScheduleEvent;
 import ch.tiim.sco.gui.events.TeamEvent;
+import ch.tiim.sco.gui.events.TrainingEvent;
 import ch.tiim.sco.gui.util.ModelCell;
 import ch.tiim.sco.util.ColorUtil;
 import com.google.common.eventbus.Subscribe;
@@ -59,21 +62,6 @@ public class ScheduleView extends MainView {
         populate();
     }
 
-    private void onEventClicked(LocalDate ld, ScheduleRule scheduleRule) {
-
-    }
-
-    private List<CalendarControl.CalendarEvent<ScheduleRule>> getEvents(LocalDate localDate) {
-        try {
-            return db.getProcSchedule().getTrainingsForDay(localDate).stream()
-                    .map(it -> new CalendarControl.CalendarEvent<>(it.getTime(), it.getTeam().getName(),
-                            ColorUtil.getPastelColorHash(it.getTeam().getName()), it)).collect(Collectors.toList());
-        } catch (Exception e) {
-            LOGGER.warn("Can't load trainings for day " + localDate, e);
-            return new ArrayList<>(0);
-        }
-    }
-
     private void initMenu() {
         getMenu().getItems().addAll(
                 createItem("Add Schedule", null, event -> onNew()),
@@ -111,6 +99,32 @@ public class ScheduleView extends MainView {
             LOGGER.warn("Can't delete schedule");
         }
         eventBus.post(new ScheduleEvent.ScheduleDeleteEvent(item));
+    }
+
+    private void onEventClicked(LocalDate ld, ScheduleRule scheduleRule) {
+        Training t = null;
+        try {
+            t = db.getTblTraining().getTrainingFromSchedule(ld, scheduleRule);
+        } catch (Exception e) {
+            ExceptionAlert.showError(LOGGER, "Can't load training for schedule", e, eventBus);
+        }
+        if (t == null) {
+            eventBus.post(new TrainingEvent.TrainingOpenEvent(
+                    new Training(ld, scheduleRule.getTeam(), scheduleRule), mainStage));
+        } else {
+            eventBus.post(new TrainingEvent.TrainingOpenEvent(t, mainStage));
+        }
+    }
+
+    private List<CalendarControl.CalendarEvent<ScheduleRule>> getEvents(LocalDate localDate) {
+        try {
+            return db.getProcSchedule().getTrainingsForDay(localDate).stream()
+                    .map(it -> new CalendarControl.CalendarEvent<>(it.getTime(), it.getTeam().getName(),
+                            ColorUtil.getPastelColorHash(it.getTeam().getName()), it)).collect(Collectors.toList());
+        } catch (Exception e) {
+            LOGGER.warn("Can't load trainings for day " + localDate, e);
+            return new ArrayList<>(0);
+        }
     }
 
     @Subscribe

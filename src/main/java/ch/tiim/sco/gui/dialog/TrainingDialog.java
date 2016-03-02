@@ -136,16 +136,14 @@ public class TrainingDialog extends DialogView {
 
     @FXML
     private void onSave() {
-        boolean newTraining = false;
         if (currentTraining == null) {
             currentTraining = new Training(date.getValue(), teams.getValue(), schedules.getValue());
-            newTraining = true;
         } else {
             currentTraining.setDate(date.getValue());
             currentTraining.setTeam(teams.getValue());
         }
         try {
-            if (newTraining) {
+            if (currentTraining.getId() == null) {
                 db.getTblTraining().addTraining(currentTraining);
             } else {
                 db.getTblTraining().updateTraining(currentTraining);
@@ -181,8 +179,10 @@ public class TrainingDialog extends DialogView {
             teams.setValue(tr.getTeam());
             schedules.setValue(tr.getSchedule());
             try {
-                List<IndexedSet> sets = db.getTblTrainingContent().getSets(tr);
-                training.getItems().setAll(sets);
+                if (tr.getId() != null) {
+                    List<IndexedSet> sets = db.getTblTrainingContent().getSets(tr);
+                    training.getItems().setAll(sets);
+                }
             } catch (Exception e) {
                 ExceptionAlert.showError(LOGGER, "Can't load sets for training", e, eventBus);
             }
