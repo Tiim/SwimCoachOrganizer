@@ -34,7 +34,7 @@ public class JDBCTrainingTest {
     }
 
     private Training training() {
-        return new Training(LocalDate.now(), null);
+        return new Training(LocalDate.now(), null, null);
     }
 
     @Test

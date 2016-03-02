@@ -207,12 +207,12 @@
     </module>
     <module name="Training">
         <entry name="add">
-            INSERT INTO training (date, team_id)
-            VALUES (:date, :team_id)
+            INSERT INTO training (date, team_id, schedule_id)
+            VALUES (:date, :team_id, :schedule_id)
         </entry>
         <entry name="update">
             UPDATE training
-            SET date = :date, team_id = :team_id
+            SET date = :date, team_id = :team_id, schedule_id = :schedule_id
             WHERE training_id = :id
         </entry>
         <entry name="delete">
@@ -220,9 +220,13 @@
             WHERE training_id = :id
         </entry>
         <entry name="get_all">
-            SELECT training_id, date, team.team_id, team.name
+            SELECT training_id, date,
+            team.team_id, team.name,
+            schedule.schedule_id, schedule.start_date, schedule.start_time,
+            schedule.inter, schedule.duration
             FROM training
                 LEFT JOIN team ON team.team_id = training.team_id
+            LEFT JOIN schedule ON schedule.schedule_id = training.schedule_id
         </entry>
     </module>
     <module name="TrainingContent">

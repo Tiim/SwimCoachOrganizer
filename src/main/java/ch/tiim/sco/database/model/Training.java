@@ -9,15 +9,17 @@ public class Training implements Model {
     private Integer id;
     private LocalDate date;
     private Team team;
+    private ScheduleRule schedule;
 
-    public Training(int id, LocalDate date, Team team) {
-        this(date, team);
+    public Training(int id, LocalDate date, Team team, ScheduleRule schedule) {
+        this(date, team, schedule);
         this.id = id;
     }
 
-    public Training(LocalDate date, Team team) {
+    public Training(LocalDate date, Team team, ScheduleRule schedule) {
         this.date = date;
         this.team = team;
+        this.schedule = schedule;
     }
 
     @Override
@@ -58,6 +60,14 @@ public class Training implements Model {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public ScheduleRule getSchedule() {
+        return schedule;
+    }
+
+    public void setSchedule(ScheduleRule schedule) {
+        this.schedule = schedule;
     }
 
     public Team getTeam() {

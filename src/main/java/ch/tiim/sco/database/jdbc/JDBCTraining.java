@@ -41,6 +41,11 @@ public class JDBCTraining extends Table implements ch.tiim.sco.database.TableTra
         } else {
             add.setNull("team_id", Types.INTEGER);
         }
+        if (t.getSchedule() != null) {
+            add.setInt("schedule_id", t.getSchedule().getId());
+        } else {
+            add.setNull("schedule_id", Types.INTEGER);
+        }
         LOGGER.debug(MARKER_QUERRY, add.toString());
         testUpdate(add);
         t.setId(getGenKey(add));
@@ -54,6 +59,11 @@ public class JDBCTraining extends Table implements ch.tiim.sco.database.TableTra
             update.setInt("team_id", t.getTeam().getId());
         } else {
             update.setNull("team_id", Types.INTEGER);
+        }
+        if (t.getSchedule() != null) {
+            update.setInt("schedule_id", t.getSchedule().getId());
+        } else {
+            update.setNull("schedule_id", Types.INTEGER);
         }
         LOGGER.debug(MARKER_QUERRY, update.toString());
         testUpdate(update);
@@ -81,7 +91,8 @@ public class JDBCTraining extends Table implements ch.tiim.sco.database.TableTra
         return new Training(
                 rs.getInt("training_id"),
                 LocalDate.parse(rs.getString("date")),
-                rs.getString("name") != null ? JDBCTeam.getTeam(rs) : null
+                rs.getString("name") != null ? JDBCTeam.getTeam(rs) : null,
+                rs.getDate("start_date") != null ? JDBCSchedule.getScheduleRule(rs) : null
         );
     }
 }
