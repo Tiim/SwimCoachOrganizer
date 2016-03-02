@@ -40,13 +40,13 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
             </rowConstraints>
             <children>
-                <Label styleClass="day" text="Monday" GridPane.halignment="CENTER"/>
-                <Label styleClass="day" text="Tuesday" GridPane.columnIndex="1" GridPane.halignment="CENTER"/>
-                <Label styleClass="day" text="Wednesday" GridPane.columnIndex="2" GridPane.halignment="CENTER"/>
-                <Label styleClass="day" text="Thursday" GridPane.columnIndex="3" GridPane.halignment="CENTER"/>
-                <Label styleClass="day" text="Friday" GridPane.columnIndex="4" GridPane.halignment="CENTER"/>
-                <Label styleClass="day" text="Saturday" GridPane.columnIndex="5" GridPane.halignment="CENTER"/>
-                <Label styleClass="day" text="Sunday" GridPane.columnIndex="6" GridPane.halignment="CENTER"/>
+                <Label styleClass="week-day" text="Monday" GridPane.halignment="CENTER"/>
+                <Label styleClass="week-day" text="Tuesday" GridPane.columnIndex="1" GridPane.halignment="CENTER"/>
+                <Label styleClass="week-day" text="Wednesday" GridPane.columnIndex="2" GridPane.halignment="CENTER"/>
+                <Label styleClass="week-day" text="Thursday" GridPane.columnIndex="3" GridPane.halignment="CENTER"/>
+                <Label styleClass="week-day" text="Friday" GridPane.columnIndex="4" GridPane.halignment="CENTER"/>
+                <Label styleClass="week-day" text="Saturday" GridPane.columnIndex="5" GridPane.halignment="CENTER"/>
+                <Label styleClass="week-day" text="Sunday" GridPane.columnIndex="6" GridPane.halignment="CENTER"/>
             </children>
         </GridPane>
     </center>

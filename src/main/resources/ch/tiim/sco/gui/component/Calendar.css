@@ -1,0 +1,18 @@
+.title {
+    -fx-font: bold 18 sans-serif;
+}
+
+.week-day {
+    -fx-font: bold 14 sans-serif;
+}
+
+.scroll-pane-events {
+    -fx-padding: 0;
+    -fx-background-insets: 0;
+    -fx-fit-to-width: true;
+    -fx-pannable: true;
+}
+
+.vbox-events {
+    -fx-spacing: 2px;
+}

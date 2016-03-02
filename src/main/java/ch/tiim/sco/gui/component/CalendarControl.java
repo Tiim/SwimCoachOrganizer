@@ -22,7 +22,6 @@ import java.time.format.TextStyle;
 import java.util.List;
 import java.util.Locale;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 import java.util.function.Function;
 
 public class CalendarControl<T> extends BorderPane {
@@ -53,7 +52,7 @@ public class CalendarControl<T> extends BorderPane {
         } catch (IOException e) {
             throw new RuntimeException("Can't load Calendar.fxml", e);
         }
-
+        getStylesheets().add("ch/tiim/sco/gui/component/Calendar.css");
         init();
         selectedDate.addListener(observable -> dateChanged());
         callback.addListener(observable -> dateChanged());
