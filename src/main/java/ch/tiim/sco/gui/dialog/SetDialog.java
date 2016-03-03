@@ -8,6 +8,7 @@ import ch.tiim.sco.database.model.SetStroke;
 import ch.tiim.sco.gui.alert.ExceptionAlert;
 import ch.tiim.sco.gui.events.OpenEvent;
 import ch.tiim.sco.gui.events.SetEvent;
+import ch.tiim.sco.gui.util.UIException;
 import ch.tiim.sco.util.DurationFormatter;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -67,27 +68,15 @@ public class SetDialog extends DialogView {
 
     @FXML
     private void onSave() {
-
-        boolean update = true;
-        if (currentSet == null) {
-            currentSet = new Set();
-            update = false;
+        try {
+            currentSet = getSet(currentSet);
+        } catch (UIException e) {
+            e.showDialog("Missing Setting");
+            return;
         }
 
-        currentSet.setName(name.getText());
-        currentSet.setContent(content.getText());
-        currentSet.setDistance1(distance1.getValue());
-        currentSet.setDistance2(distance2.getValue());
-        currentSet.setDistance3(distance3.getValue());
-        currentSet.setIntensity((int) intensity.getValue());
-        currentSet.setFocus(focus.getValue());
-        currentSet.setStroke(stroke.getValue());
-        currentSet.setInterval((int) DurationFormatter.parse(time.getText()).toMillis());
-        currentSet.setIsPause(!isIntervall.isSelected());
-        currentSet.setNotes(notes.getText());
-
         try {
-            if (update) {
+            if (currentSet.getId() != null) {
                 db.getTblSet().updateSet(currentSet);
             } else {
                 db.getTblSet().addSet(currentSet);
@@ -98,6 +87,32 @@ public class SetDialog extends DialogView {
 
         eventBus.post(new SetEvent.SetSaveEvent(currentSet));
         close();
+    }
+
+    private Set getSet(Set set) throws UIException {
+        if (currentSet == null) {
+            currentSet = new Set();
+        }
+        String name = this.name.getText();
+        if (name == null || name.isEmpty()) {
+            throw new UIException("Name");
+        }
+        set.setName(name);
+        String content = this.content.getText();
+        if (content == null || content.isEmpty()) {
+            throw new UIException("Content");
+        }
+        set.setContent(content);
+        set.setDistance1(distance1.getValue());
+        set.setDistance2(distance2.getValue());
+        set.setDistance3(distance3.getValue());
+        set.setIntensity((int) intensity.getValue());
+        set.setFocus(focus.getValue());
+        set.setStroke(stroke.getValue());
+        set.setInterval((int) DurationFormatter.parse(time.getText()).toMillis());
+        set.setIsPause(!isIntervall.isSelected());
+        set.setNotes(notes.getText());
+        return set;
     }
 
     @FXML
