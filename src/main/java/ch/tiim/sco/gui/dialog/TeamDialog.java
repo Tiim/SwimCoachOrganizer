@@ -7,6 +7,7 @@ import ch.tiim.sco.database.model.Team;
 import ch.tiim.sco.gui.alert.ExceptionAlert;
 import ch.tiim.sco.gui.events.OpenEvent;
 import ch.tiim.sco.gui.events.TeamEvent;
+import ch.tiim.sco.gui.util.UIException;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -60,18 +61,17 @@ public class TeamDialog extends DialogView {
 
     @FXML
     private void onSave() {
-        boolean isNew = false;
+        try {
+            currentTeam = getTeam();
+        } catch (UIException e) {
+            e.showDialog("Missing Setting");
+            return;
+        }
         List<Swimmer> swimmers = selected.keySet().stream()
                 .filter(swimmer -> selected.get(swimmer).getValue())
                 .collect(Collectors.toList());
-        if (currentTeam == null) {
-            isNew = true;
-            currentTeam = new Team(name.getText());
-        } else {
-            currentTeam.setName(name.getText());
-        }
         try {
-            if (isNew) {
+            if (currentTeam.getId() == null) {
                 db.getTblTeam().addTeam(currentTeam);
             } else {
                 db.getTblTeam().updateTeam(currentTeam);
@@ -82,6 +82,19 @@ public class TeamDialog extends DialogView {
         }
         close();
         eventBus.post(new TeamEvent.TeamSaveEvent(currentTeam));
+    }
+
+    private Team getTeam() throws UIException {
+        String name = this.name.getText();
+        if (name == null || name.isEmpty()) {
+            throw new UIException("Name");
+        }
+        if (currentTeam == null) {
+            currentTeam = new Team(name);
+        } else {
+            currentTeam.setName(name);
+        }
+        return currentTeam;
     }
 
     @Override
