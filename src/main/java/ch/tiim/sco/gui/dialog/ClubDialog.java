@@ -8,6 +8,7 @@ import ch.tiim.sco.gui.alert.ExceptionAlert;
 import ch.tiim.sco.gui.events.ClubEvent;
 import ch.tiim.sco.gui.events.OpenEvent;
 import ch.tiim.sco.gui.util.UIException;
+import ch.tiim.sco.gui.util.Validator;
 import ch.tiim.sco.lenex.model.Nation;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ObservableValue;
@@ -106,18 +107,12 @@ public class ClubDialog extends DialogView {
         if (currentClub == null) {
             currentClub = new Club();
         }
-        String name = this.name.getText();
-        if (name == null || name.isEmpty()) {
-            throw new UIException("Name");
-        }
+        String name = Validator.strNotEmpty(this.name.getText(), "Name");
         currentClub.setName(name);
         currentClub.setNameShort(nameShort.getText());
         currentClub.setNameEn(nameEn.getText());
         currentClub.setNameShortEn(nameShortEn.getText());
-        Nation value = country.getValue();
-        if (value == null) {
-            throw new UIException("Country");
-        }
+        Nation value = Validator.nonNull(country.getValue(), "Country");
         currentClub.setNationality(value.toString());
         currentClub.setCode(code.getText());
         currentClub.setExternId(externid.getValue());

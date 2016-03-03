@@ -9,6 +9,7 @@ import ch.tiim.sco.gui.alert.ExceptionAlert;
 import ch.tiim.sco.gui.events.OpenEvent;
 import ch.tiim.sco.gui.events.SetEvent;
 import ch.tiim.sco.gui.util.UIException;
+import ch.tiim.sco.gui.util.Validator;
 import ch.tiim.sco.util.DurationFormatter;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -93,15 +94,9 @@ public class SetDialog extends DialogView {
         if (currentSet == null) {
             currentSet = new Set();
         }
-        String name = this.name.getText();
-        if (name == null || name.isEmpty()) {
-            throw new UIException("Name");
-        }
+        String name = Validator.strNotEmpty(this.name.getText(), "Name");
         set.setName(name);
-        String content = this.content.getText();
-        if (content == null || content.isEmpty()) {
-            throw new UIException("Content");
-        }
+        String content = Validator.strNotEmpty(this.content.getText(), "Content");
         set.setContent(content);
         set.setDistance1(distance1.getValue());
         set.setDistance2(distance2.getValue());

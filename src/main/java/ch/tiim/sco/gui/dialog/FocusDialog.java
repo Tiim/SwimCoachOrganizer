@@ -6,6 +6,7 @@ import ch.tiim.sco.database.model.SetFocus;
 import ch.tiim.sco.gui.events.FocusEvent;
 import ch.tiim.sco.gui.events.OpenEvent;
 import ch.tiim.sco.gui.util.UIException;
+import ch.tiim.sco.gui.util.Validator;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.TextArea;
@@ -72,14 +73,8 @@ public class FocusDialog extends DialogView {
     }
 
     private SetFocus getFocus(SetFocus f) throws UIException {
-        String name = this.name.getText();
-        String abbr = this.abbr.getText();
-        if (name == null || name.isEmpty()) {
-            throw new UIException("Name");
-        }
-        if (abbr == null || name.isEmpty()) {
-            throw new UIException("Abbr");
-        }
+        String name = Validator.strNotEmpty(this.name.getText(), "Name");
+        String abbr = Validator.strNotEmpty(this.abbr.getText(), "Abbr");
         if (f == null) {
             f = new SetFocus(name, abbr, notes.getText());
         } else {

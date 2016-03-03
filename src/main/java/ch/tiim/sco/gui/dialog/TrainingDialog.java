@@ -10,6 +10,7 @@ import ch.tiim.sco.gui.events.TrainingEvent;
 import ch.tiim.sco.gui.util.ModelCell;
 import ch.tiim.sco.gui.util.ModelConverter;
 import ch.tiim.sco.gui.util.UIException;
+import ch.tiim.sco.gui.util.Validator;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
@@ -160,10 +161,7 @@ public class TrainingDialog extends DialogView {
     }
 
     private Training getTraining(Training t) throws UIException {
-        LocalDate d = date.getValue();
-        if (d == null) {
-            throw new UIException("Date");
-        }
+        LocalDate d = Validator.nonNull(date.getValue(), "Date");
         Team team = teams.getValue();
         ScheduleRule schedule = schedules.getValue();
         if (t == null) {

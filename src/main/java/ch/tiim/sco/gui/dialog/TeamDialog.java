@@ -8,6 +8,7 @@ import ch.tiim.sco.gui.alert.ExceptionAlert;
 import ch.tiim.sco.gui.events.OpenEvent;
 import ch.tiim.sco.gui.events.TeamEvent;
 import ch.tiim.sco.gui.util.UIException;
+import ch.tiim.sco.gui.util.Validator;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -85,10 +86,7 @@ public class TeamDialog extends DialogView {
     }
 
     private Team getTeam() throws UIException {
-        String name = this.name.getText();
-        if (name == null || name.isEmpty()) {
-            throw new UIException("Name");
-        }
+        String name = Validator.strNotEmpty(this.name.getText(), "Name");
         if (currentTeam == null) {
             currentTeam = new Team(name);
         } else {

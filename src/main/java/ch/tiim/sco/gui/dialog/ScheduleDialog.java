@@ -8,6 +8,7 @@ import ch.tiim.sco.gui.events.OpenEvent;
 import ch.tiim.sco.gui.events.ScheduleEvent;
 import ch.tiim.sco.gui.util.ModelConverter;
 import ch.tiim.sco.gui.util.UIException;
+import ch.tiim.sco.gui.util.Validator;
 import javafx.beans.InvalidationListener;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -74,12 +75,9 @@ public class ScheduleDialog extends DialogView {
     }
 
     private ScheduleRule getScheduleRule() throws UIException {
-        LocalDate day = startDay.getValue();
-        if (day == null) throw new UIException("Start Day is missing");
+        LocalDate day = Validator.nonNull(startDay.getValue(), "Start Day");
         LocalTime time = LocalTime.of(startHour.getValue(), startMinute.getValue());
-        if (time == null) throw new UIException("End Day is missing");
-        Team team = this.team.getValue();
-        if (team == null) throw new UIException("Team is missing");
+        Team team = Validator.nonNull(this.team.getValue(), "Team");
         return new ScheduleRule(day, time, interval.getValue(), duration.getValue(), team);
     }
 
