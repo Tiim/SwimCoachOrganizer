@@ -86,7 +86,7 @@ public class ResultView extends MainView {
                 }),
                 createItem("Import Results From LENEX", null, event1 -> onImport()),
                 new SeparatorMenuItem(),
-                createItem("New Result", null, event2 -> onNew()),
+                createItem("New Result", isSwimmerSelected, event2 -> onNew()),
                 createItem("Edit Result", isResultSelected, event3 -> onEdit()),
                 createItem("Delete Reuslt", isResultSelected, event4 -> onDelete())
         );
