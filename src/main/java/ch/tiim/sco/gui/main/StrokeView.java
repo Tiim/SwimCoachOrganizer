@@ -73,7 +73,7 @@ public class StrokeView extends MainView {
         try {
             strokes.setItems(FXCollections.observableArrayList(db.getTblSetStroke().getAllStrokes()));
         } catch (Exception e) {
-            ExceptionAlert.showError(LOGGER, "Can't load strokes", e, eventBus);
+            ExceptionAlert.showError(LOGGER, "Can't load strokes", e);
         }
     }
 
@@ -94,7 +94,7 @@ public class StrokeView extends MainView {
             try {
                 db.getTblSetStroke().deleteSetStroke(item);
             } catch (Exception e) {
-                ExceptionAlert.showError(LOGGER, "Can't delete focus", e, eventBus);
+                ExceptionAlert.showError(LOGGER, "Can't delete focus", e);
             }
             eventBus.post(new StrokeEvent.StrokeDeleteEvent(item));
         }

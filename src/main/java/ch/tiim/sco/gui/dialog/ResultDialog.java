@@ -68,7 +68,7 @@ public class ResultDialog extends DialogView {
                 db.getTblResult().updateResult(currentResult);
             }
         } catch (Exception e) {
-            ExceptionAlert.showError(LOGGER, "Can't save result", e, eventBus);
+            ExceptionAlert.showError(LOGGER, "Can't save result", e);
         }
         eventBus.post(new ResultEvent.ResultSaveEvent(currentResult, currentSwimmer));
         close();

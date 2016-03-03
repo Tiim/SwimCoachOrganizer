@@ -86,7 +86,7 @@ public class SwimmerDialog extends DialogView {
                 db.getTblSwimmer().updateSwimmer(currentSwimmer);
             }
         } catch (Exception e) {
-            ExceptionAlert.showError(LOGGER, "Can't save swimmer", e, eventBus);
+            ExceptionAlert.showError(LOGGER, "Can't save swimmer", e);
         }
         eventBus.post(new SwimmerEvent.SwimmerSaveEvent(currentSwimmer));
         close();

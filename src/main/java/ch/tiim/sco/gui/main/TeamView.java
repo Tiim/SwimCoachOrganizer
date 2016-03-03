@@ -87,7 +87,7 @@ public class TeamView extends MainView {
             try {
                 swimmers.getItems().setAll(db.getTblTeamContent().getSwimmers(team));
             } catch (Exception e) {
-                ExceptionAlert.showError(LOGGER, "Can't load swimmers", e, eventBus);
+                ExceptionAlert.showError(LOGGER, "Can't load swimmers", e);
             }
         }
     }
@@ -96,7 +96,7 @@ public class TeamView extends MainView {
         try {
             teams.getItems().setAll(db.getTblTeam().getAllTeams());
         } catch (Exception e) {
-            ExceptionAlert.showError(LOGGER, "Can't load teams", e, eventBus);
+            ExceptionAlert.showError(LOGGER, "Can't load teams", e);
         }
     }
 
@@ -109,7 +109,7 @@ public class TeamView extends MainView {
                 eventBus.post(event);
             }
         } catch (Exception e) {
-            ExceptionAlert.showError(LOGGER, "Can't load swimmers", e, eventBus);
+            ExceptionAlert.showError(LOGGER, "Can't load swimmers", e);
         }
     }
 
@@ -130,7 +130,7 @@ public class TeamView extends MainView {
             try {
                 db.getTblTeam().deleteTeam(team);
             } catch (Exception e) {
-                ExceptionAlert.showError(LOGGER, "Can't delete team", e, eventBus);
+                ExceptionAlert.showError(LOGGER, "Can't delete team", e);
             }
             eventBus.post(new TeamEvent.TeamDeleteEvent(team));
         }

@@ -152,7 +152,7 @@ public class TrainingView extends MainView {
             try {
                 db.getTblTraining().deleteTraining(item);
             } catch (Exception e) {
-                ExceptionAlert.showError(LOGGER, "Can't delete training", e, eventBus);
+                ExceptionAlert.showError(LOGGER, "Can't delete training", e);
             }
             eventBus.post(new TrainingEvent.TrainingDeleteEvent(item));
         }

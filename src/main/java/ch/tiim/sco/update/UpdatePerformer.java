@@ -34,7 +34,7 @@ public class UpdatePerformer extends Task<Void> {
             launchUpdater();
             System.exit(0);
         } catch (final IOException e) {
-            ExceptionAlert.showError(LOGGER, "Something went wrong while updating", e, eventBus);
+            ExceptionAlert.showError(LOGGER, "Something went wrong while updating", e);
         }
         return null;
     }

@@ -61,7 +61,7 @@ public class SetDialog extends DialogView {
             focus.setItems(FXCollections.observableArrayList(db.getTblSetFocus().getAllFoci()));
             stroke.setItems(FXCollections.observableArrayList(db.getTblSetStroke().getAllStrokes()));
         } catch (Exception e) {
-            ExceptionAlert.showError(LOGGER, "Can't query database", e, eventBus);
+            ExceptionAlert.showError(LOGGER, "Can't query database", e);
         }
     }
 

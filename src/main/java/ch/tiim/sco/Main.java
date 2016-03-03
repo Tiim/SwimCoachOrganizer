@@ -51,7 +51,7 @@ public class Main extends Application {
             try {
                 ExceptionAlert.showError(LOGGER,
                         String.format("Uncaught exception in thread: %s.\nThis is a bug! Please report it.", t.getName()),
-                        e, eventBus);
+                        e);
             } catch (Throwable ex) {
                 LOGGER.error(ex.getMessage(), ex);
                 throw ex;

@@ -17,12 +17,9 @@ import java.util.Optional;
 public class ExceptionAlert extends Alert {
     public static final ButtonType BUTTON_REPORT = new ButtonType("Report");
 
-    private final EventBus eventBus;
-
     private ExceptionAlert(@Nonnull Logger logger, @Nonnull String message,
-                           @Nullable Throwable t, @Nullable EventBus eventBus) {
+                           @Nullable Throwable t) {
         super(AlertType.ERROR);
-        this.eventBus = eventBus;
         getButtonTypes().setAll(BUTTON_REPORT, ButtonType.CLOSE);
         setTitle("Error");
         setHeaderText(String.format("%s: %s", message, t != null ? t.getMessage() : ""));
@@ -44,10 +41,10 @@ public class ExceptionAlert extends Alert {
         return sw.toString();
     }
 
-    public static void showError(Logger logger, String message, Throwable t, EventBus eventBus) {
+    public static void showError(Logger logger, String message, Throwable t) {
         logger.error(String.format("[ALERT] -> %s", message), t);
         Platform.runLater(() -> {
-            ExceptionAlert alert = new ExceptionAlert(logger, message, t, eventBus);
+            ExceptionAlert alert = new ExceptionAlert(logger, message, t);
             alert.handle();
         });
     }
@@ -56,7 +53,7 @@ public class ExceptionAlert extends Alert {
     public void handle() {
         Optional<ButtonType> buttonType = showAndWait();
         if (buttonType.isPresent() && buttonType.get() == BUTTON_REPORT) {
-            eventBus.post(new ShowDocumentEvent("https://github.com/Tiim/SwimCoachOrganizer/issues"));
+            //TODO: report bug
         }
     }
 }
