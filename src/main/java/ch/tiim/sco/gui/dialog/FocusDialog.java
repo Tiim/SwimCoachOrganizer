@@ -5,6 +5,7 @@ import ch.tiim.sco.database.DatabaseController;
 import ch.tiim.sco.database.model.SetFocus;
 import ch.tiim.sco.gui.events.FocusEvent;
 import ch.tiim.sco.gui.events.OpenEvent;
+import ch.tiim.sco.gui.util.UIException;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.TextArea;
@@ -51,26 +52,42 @@ public class FocusDialog extends DialogView {
 
     @FXML
     private void onSave() {
-        boolean isNew = false;
-        if (currentFocus == null) {
-            isNew = true;
-            currentFocus = new SetFocus(name.getText(), abbr.getText(), notes.getText());
-        } else {
-            currentFocus.setName(name.getText());
-            currentFocus.setAbbr(abbr.getText());
-            currentFocus.setNotes(notes.getText());
+        try {
+            currentFocus = getFocus(currentFocus);
+        } catch (UIException e) {
+            e.showDialog("Missing Setting");
+            return;
         }
         try {
-            if (isNew) {
+            if (currentFocus.getId() == null) {
                 db.getTblSetFocus().addSetFocus(currentFocus);
             } else {
                 db.getTblSetFocus().updateSetFocus(currentFocus);
             }
         } catch (Exception e) {
-            LOGGER.warn("Can't save stroke");
+            LOGGER.warn("Can't save stroke", e);
         }
         close();
         eventBus.post(new FocusEvent.FocusSaveEvent(currentFocus));
+    }
+
+    private SetFocus getFocus(SetFocus f) throws UIException {
+        String name = this.name.getText();
+        String abbr = this.abbr.getText();
+        if (name == null || name.isEmpty()) {
+            throw new UIException("Name");
+        }
+        if (abbr == null || name.isEmpty()) {
+            throw new UIException("Abbr");
+        }
+        if (f == null) {
+            f = new SetFocus(name, abbr, notes.getText());
+        } else {
+            f.setName(name);
+            f.setAbbr(abbr);
+            f.setNotes(notes.getText());
+        }
+        return f;
     }
 
     @Override
