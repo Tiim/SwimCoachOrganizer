@@ -9,6 +9,7 @@ import ch.tiim.sco.gui.events.SetEvent;
 import ch.tiim.sco.gui.events.TrainingEvent;
 import ch.tiim.sco.gui.util.ModelCell;
 import ch.tiim.sco.gui.util.ModelConverter;
+import ch.tiim.sco.gui.util.UIException;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
@@ -18,6 +19,7 @@ import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -136,11 +138,11 @@ public class TrainingDialog extends DialogView {
 
     @FXML
     private void onSave() {
-        if (currentTraining == null) {
-            currentTraining = new Training(date.getValue(), teams.getValue(), schedules.getValue());
-        } else {
-            currentTraining.setDate(date.getValue());
-            currentTraining.setTeam(teams.getValue());
+        try {
+            currentTraining = getTraining(currentTraining);
+        } catch (UIException e) {
+            e.showDialog("Missing settings:");
+            return;
         }
         try {
             if (currentTraining.getId() == null) {
@@ -151,9 +153,27 @@ public class TrainingDialog extends DialogView {
             db.getTblTrainingContent().setSets(currentTraining, training.getItems());
         } catch (Exception e) {
             ExceptionAlert.showError(LOGGER, "can't save training", e, eventBus);
+            return;
         }
         close();
         eventBus.post(new TrainingEvent.TrainingSaveEvent(currentTraining));
+    }
+
+    private Training getTraining(Training t) throws UIException {
+        LocalDate d = date.getValue();
+        if (d == null) {
+            throw new UIException("Date");
+        }
+        Team team = teams.getValue();
+        ScheduleRule schedule = schedules.getValue();
+        if (t == null) {
+            t = new Training(d, team, schedule);
+        } else {
+            t.setDate(d);
+            t.setTeam(team);
+            t.setSchedule(schedule);
+        }
+        return t;
     }
 
     @FXML
