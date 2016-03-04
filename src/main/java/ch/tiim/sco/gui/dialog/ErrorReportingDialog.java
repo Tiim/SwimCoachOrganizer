@@ -77,11 +77,13 @@ public class ErrorReportingDialog extends DialogView {
     @FXML
     private void onReport() {
         report.setReport(data.getText() + "\n\n=== USER ===\n" + input.getText());
-        try {
-            report.send();
-        } catch (IOException e) {
-            //ignore
-        }
+        new Thread(() -> {
+            try {
+                report.send();
+            } catch (IOException e) {
+                //ignore
+            }
+        }).start();
         close();
     }
 
