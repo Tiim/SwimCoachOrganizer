@@ -4,7 +4,9 @@ import ch.tiim.sco.util.StringBuilderWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.file.Files;
@@ -14,43 +16,64 @@ import java.util.List;
 
 public class ErrorReport {
     private static final Logger LOGGER = LoggerFactory.getLogger(ErrorReport.class);
-    private static final String SERVER_URL = "";
+    private static final String SERVER_URL = "https://n.ethz.ch/student/batim/php/sco_report.php";
 
     private Throwable throwable;
     private ArrayList<Path> files = new ArrayList<>(2);
-    private String userMessage;
-    private String finalReport;
+    private String report;
 
     public ErrorReport() {
 
     }
 
-    public void setUserMessage(String userMessage) {
-        this.userMessage = userMessage;
-    }
-
     public void setThrowable(Throwable t) {
-        this.throwable = throwable;
+        this.throwable = t;
     }
 
     public void addFile(Path p) {
         files.add(p);
     }
 
-    public String generateReport() throws IOException {
+    private String osInfo() {
         StringBuilder sb = new StringBuilder();
-        sb.append("=== USER ===\n").append(userMessage).append("\n");
+        sb.append("\n\n=== SPEC ===\n");
+        sb.append("Java Version ").append(System.getProperty("java.version")).append("\n");
+        sb.append("User Name ").append(System.getProperty("user.name")).append("\n");
+        sb.append("OS ").append(System.getProperty("os.name")).append(" ").append(System.getProperty("os.version"))
+                .append("\n");
+        sb.append("JavaFx ").append(System.getProperty("javafx.version")).append("\n");
+        sb.append("JVM ").append(System.getProperty("java.vm.vendor")).append(" ")
+                .append(System.getProperty("java.vm.version")).append("\n");
+        sb.append("Arch ").append(System.getProperty("os.arch")).append("\n");
+        return sb.toString();
+    }
+
+    public String generateReport() {
+        StringBuilder sb = new StringBuilder();
         throwable.printStackTrace(new PrintWriter(new StringBuilderWriter(sb)));
         sb.append("\n");
+        sb.append(osInfo());
         for (Path p : files) {
-            sb.append("=== ").append(p.getFileName().toString()).append(" ===");
-            List<String> l = Files.readAllLines(p);
-            for (String s : l) {
-                sb.append(l).append("\n");
+            sb.append("\n\n=== ").append(p.getFileName().toString()).append(" ===\n");
+            try {
+                List<String> l = Files.readAllLines(p);
+                for (String s : l) {
+                    sb.append(s).append("\n");
+                }
+            } catch (IOException e) {
+                sb.append("Can't read line: ").append(e);
             }
         }
-        finalReport = sb.toString();
-        return finalReport;
+        report = sb.toString();
+        return report;
+    }
+
+    public String getReport() {
+        return report;
+    }
+
+    public void setReport(String r) {
+        report = r;
     }
 
     public void send() throws IOException {
@@ -61,10 +84,10 @@ public class ErrorReport {
         conn.setRequestMethod("POST");
         conn.setRequestProperty("Content-Type", "plain/text");
         conn.setRequestProperty("charset", "utf-8");
-        conn.setRequestProperty("Content-Length", Integer.toString(finalReport.length()));
+        conn.setRequestProperty("Content-Length", Integer.toString(report.length()));
         conn.setUseCaches(false);
         try (PrintWriter wr = new PrintWriter(conn.getOutputStream())) {
-            wr.write(finalReport);
+            wr.write(report);
         }
         InputStream is = conn.getInputStream();
     }

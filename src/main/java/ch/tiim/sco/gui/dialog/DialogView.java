@@ -6,8 +6,12 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class DialogView extends View {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(DialogView.class);
 
     private Stage stage;
 
@@ -17,6 +21,11 @@ public abstract class DialogView extends View {
             Parent root = getRoot();
             if (root == null) {
                 throw new NullPointerException("Root can't be null!");
+            }
+            String css = getClass().getCanonicalName().replace('.', '/') + ".css";
+            if (DialogView.class.getResource('/' + css) != null) {
+                LOGGER.info("Loading " + css);
+                root.getStylesheets().add(css);
             }
             Scene scene = new Scene(root);
             stage = new Stage();

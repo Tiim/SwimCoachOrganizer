@@ -1,6 +1,7 @@
 package ch.tiim.sco.gui.alert;
 
-import ch.tiim.sco.event.ShowDocumentEvent;
+import ch.tiim.sco.gui.events.ErrorReportEvent;
+import ch.tiim.sco.util.error.ErrorReport;
 import com.google.common.eventbus.EventBus;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
@@ -12,14 +13,21 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Optional;
 
 public class ExceptionAlert extends Alert {
     public static final ButtonType BUTTON_REPORT = new ButtonType("Report");
+    private static EventBus eventBus;
+
+    private Throwable throwable;
 
     private ExceptionAlert(@Nonnull Logger logger, @Nonnull String message,
                            @Nullable Throwable t) {
         super(AlertType.ERROR);
+        this.throwable = t;
         getButtonTypes().setAll(BUTTON_REPORT, ButtonType.CLOSE);
         setTitle("Error");
         setHeaderText(String.format("%s: %s", message, t != null ? t.getMessage() : ""));
@@ -53,7 +61,22 @@ public class ExceptionAlert extends Alert {
     public void handle() {
         Optional<ButtonType> buttonType = showAndWait();
         if (buttonType.isPresent() && buttonType.get() == BUTTON_REPORT) {
-            //TODO: report bug
+            ErrorReport report = new ErrorReport();
+            Path logfile = Paths.get("logfile.log");
+            Path traceFile = Paths.get("file.db.trace.db");
+            if (Files.exists(logfile)) {
+                report.addFile(logfile);
+            }
+            if (Files.exists(traceFile)) {
+                report.addFile(traceFile);
+            }
+            report.setThrowable(throwable);
+            report.generateReport();
+            eventBus.post(new ErrorReportEvent.ErrorReportOpenEvent(report, null));
         }
+    }
+
+    public static void setEventBus(EventBus eventBus) {
+        ExceptionAlert.eventBus = eventBus;
     }
 }

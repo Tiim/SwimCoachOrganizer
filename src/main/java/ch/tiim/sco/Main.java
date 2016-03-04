@@ -47,6 +47,8 @@ public class Main extends Application {
         eventBus.register(listener);
         eventBus.register(this);
 
+        ExceptionAlert.setEventBus(eventBus);
+
         Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
             try {
                 ExceptionAlert.showError(LOGGER,
