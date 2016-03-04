@@ -121,7 +121,7 @@ public class SwimmerView extends MainView {
         try {
             swimmers.getItems().setAll(db.getTblSwimmer().getAllSwimmers());
         } catch (Exception e) {
-            ExceptionAlert.showError(LOGGER, "Can't load swimmers", e, eventBus);
+            ExceptionAlert.showError(LOGGER, "Can't load swimmers", e);
         }
     }
 
@@ -152,7 +152,7 @@ public class SwimmerView extends MainView {
             try {
                 db.getTblSwimmer().deleteSwimmer(sw);
             } catch (Exception e) {
-                ExceptionAlert.showError(LOGGER, "Can't delete swimmer", e, eventBus);
+                ExceptionAlert.showError(LOGGER, "Can't delete swimmer", e);
             }
             eventBus.post(new SwimmerEvent.SwimmerDeleteEvent(sw));
         }

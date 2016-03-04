@@ -7,6 +7,8 @@ import ch.tiim.sco.database.model.Team;
 import ch.tiim.sco.gui.alert.ExceptionAlert;
 import ch.tiim.sco.gui.events.ClubEvent;
 import ch.tiim.sco.gui.events.OpenEvent;
+import ch.tiim.sco.gui.util.UIException;
+import ch.tiim.sco.gui.util.Validator;
 import ch.tiim.sco.lenex.model.Nation;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ObservableValue;
@@ -81,31 +83,40 @@ public class ClubDialog extends DialogView {
         List<Team> teams = selected.keySet().stream()
                 .filter(team -> selected.get(team).getValue())
                 .collect(Collectors.toList());
-
-        boolean isNew = false;
-        if (currentClub == null) {
-            isNew = true;
-            currentClub = new Club();
-        }
-        currentClub.setName(name.getText());
-        currentClub.setNameShort(nameShort.getText());
-        currentClub.setNameEn(nameEn.getText());
-        currentClub.setNameShortEn(nameShortEn.getText());
-        currentClub.setNationality(country.getValue().toString());
-        currentClub.setCode(code.getText());
-        currentClub.setExternId(externid.getValue());
         try {
-            if (isNew) {
+            currentClub = getClub();
+        } catch (UIException e) {
+            e.showDialog("Missing Setting");
+            return;
+        }
+        try {
+            if (currentClub.getId() == null) {
                 db.getTblClub().addClub(currentClub);
             } else {
                 db.getTblClub().updateClub(currentClub);
             }
             db.getTblClubContent().setTeams(currentClub, teams);
         } catch (Exception e) {
-            ExceptionAlert.showError(LOGGER, "Can't save club", e, eventBus);
+            ExceptionAlert.showError(LOGGER, "Can't save club", e);
         }
         eventBus.post(new ClubEvent.ClubSaveEvent(currentClub));
         close();
+    }
+
+    private Club getClub() throws UIException {
+        if (currentClub == null) {
+            currentClub = new Club();
+        }
+        String name = Validator.strNotEmpty(this.name.getText(), "Name");
+        currentClub.setName(name);
+        currentClub.setNameShort(nameShort.getText());
+        currentClub.setNameEn(nameEn.getText());
+        currentClub.setNameShortEn(nameShortEn.getText());
+        Nation value = Validator.nonNull(country.getValue(), "Country");
+        currentClub.setNationality(value.toString());
+        currentClub.setCode(code.getText());
+        currentClub.setExternId(externid.getValue());
+        return currentClub;
     }
 
     @Override
@@ -138,7 +149,7 @@ public class ClubDialog extends DialogView {
                 notInClub = db.getTblTeam().getAllTeams();
             }
         } catch (Exception e) {
-            ExceptionAlert.showError(LOGGER, "Can't load teams", e, eventBus);
+            ExceptionAlert.showError(LOGGER, "Can't load teams", e);
             return;
         }
         inClub.forEach(team -> selected.put(team, new SimpleBooleanProperty(true)));

@@ -106,7 +106,7 @@ public class ScheduleView extends MainView {
         try {
             t = db.getTblTraining().getTrainingFromSchedule(ld, scheduleRule);
         } catch (Exception e) {
-            ExceptionAlert.showError(LOGGER, "Can't load training for schedule", e, eventBus);
+            ExceptionAlert.showError(LOGGER, "Can't load training for schedule", e);
         }
         if (t == null) {
             eventBus.post(new TrainingEvent.TrainingOpenEvent(

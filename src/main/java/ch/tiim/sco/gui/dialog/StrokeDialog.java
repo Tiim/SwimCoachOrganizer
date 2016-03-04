@@ -5,6 +5,8 @@ import ch.tiim.sco.database.DatabaseController;
 import ch.tiim.sco.database.model.SetStroke;
 import ch.tiim.sco.gui.events.OpenEvent;
 import ch.tiim.sco.gui.events.StrokeEvent;
+import ch.tiim.sco.gui.util.UIException;
+import ch.tiim.sco.gui.util.Validator;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.TextArea;
@@ -51,17 +53,14 @@ public class StrokeDialog extends DialogView {
 
     @FXML
     private void onSave() {
-        boolean isNew = false;
-        if (currentStroke == null) {
-            isNew = true;
-            currentStroke = new SetStroke(name.getText(), abbr.getText(), notes.getText());
-        } else {
-            currentStroke.setName(name.getText());
-            currentStroke.setAbbr(abbr.getText());
-            currentStroke.setNotes(notes.getText());
+        try {
+            currentStroke = getStroke(currentStroke);
+        } catch (UIException e) {
+            e.showDialog("Missing Setting");
+            return;
         }
         try {
-            if (isNew) {
+            if (currentStroke.getId() == null) {
                 db.getTblSetStroke().addSetStroke(currentStroke);
             } else {
                 db.getTblSetStroke().updateSetStroke(currentStroke);
@@ -71,6 +70,19 @@ public class StrokeDialog extends DialogView {
         }
         close();
         eventBus.post(new StrokeEvent.StrokeSaveEvent(currentStroke));
+    }
+
+    private SetStroke getStroke(SetStroke f) throws UIException {
+        String name = Validator.strNotEmpty(this.name.getText(), "Name");
+        String abbr = Validator.strNotEmpty(this.abbr.getText(), "Abbr");
+        if (f == null) {
+            f = new SetStroke(name, abbr, notes.getText());
+        } else {
+            f.setName(name);
+            f.setAbbr(abbr);
+            f.setNotes(notes.getText());
+        }
+        return f;
     }
 
     @Override

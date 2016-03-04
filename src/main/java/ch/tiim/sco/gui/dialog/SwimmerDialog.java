@@ -6,6 +6,8 @@ import ch.tiim.sco.database.model.Swimmer;
 import ch.tiim.sco.gui.alert.ExceptionAlert;
 import ch.tiim.sco.gui.events.OpenEvent;
 import ch.tiim.sco.gui.events.SwimmerEvent;
+import ch.tiim.sco.gui.util.UIException;
+import ch.tiim.sco.gui.util.Validator;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -17,6 +19,8 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import static ch.tiim.sco.gui.util.Validator.*;
 
 public class SwimmerDialog extends DialogView {
     private static final Logger LOGGER = LoggerFactory.getLogger(SwimmerDialog.class);
@@ -61,14 +65,32 @@ public class SwimmerDialog extends DialogView {
 
     @FXML
     private void onSave(ActionEvent event) {
-        boolean isNew = false;
+        try {
+            currentSwimmer = getSwimmer();
+        } catch (UIException e) {
+            e.showDialog("Missing Setting");
+            return;
+        }
+        try {
+            if (currentSwimmer.getId() == null) {
+                db.getTblSwimmer().addSwimmer(currentSwimmer);
+            } else {
+                db.getTblSwimmer().updateSwimmer(currentSwimmer);
+            }
+        } catch (Exception e) {
+            ExceptionAlert.showError(LOGGER, "Can't save swimmer", e);
+        }
+        eventBus.post(new SwimmerEvent.SwimmerSaveEvent(currentSwimmer));
+        close();
+    }
+
+    private Swimmer getSwimmer() throws UIException {
         if (currentSwimmer == null) {
-            isNew = true;
             currentSwimmer = new Swimmer();
         }
-        currentSwimmer.setFirstName(firstName.getText());
+        currentSwimmer.setFirstName(strNotEmpty(this.firstName.getText(), "First Name"));
         currentSwimmer.setEmail(email.getText());
-        currentSwimmer.setLastName(lastName.getText());
+        currentSwimmer.setLastName(strNotEmpty(lastName.getText(), "Last Name"));
         currentSwimmer.setPhonePrivate(phonePrivate.getText());
         currentSwimmer.setPhoneMobile(phoneMobile.getText());
         currentSwimmer.setPhoneWork(phoneWork.getText());
@@ -77,19 +99,10 @@ public class SwimmerDialog extends DialogView {
             currentSwimmer.setId(Integer.parseInt(licenseId.getText()));
         }
         currentSwimmer.setIsFemale(isFemale.isSelected());
-        currentSwimmer.setBirthDay(birthDay.getValue());
+        currentSwimmer.setBirthDay(nonNull(birthDay.getValue(), "Birthday"));
         currentSwimmer.setNotes(notes.getText());
-        try {
-            if (isNew) {
-                db.getTblSwimmer().addSwimmer(currentSwimmer);
-            } else {
-                db.getTblSwimmer().updateSwimmer(currentSwimmer);
-            }
-        } catch (Exception e) {
-            ExceptionAlert.showError(LOGGER, "Can't save swimmer", e, eventBus);
-        }
-        eventBus.post(new SwimmerEvent.SwimmerSaveEvent(currentSwimmer));
-        close();
+
+        return currentSwimmer;
     }
 
     @Override

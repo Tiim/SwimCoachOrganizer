@@ -7,6 +7,8 @@ import ch.tiim.sco.database.model.Team;
 import ch.tiim.sco.gui.alert.ExceptionAlert;
 import ch.tiim.sco.gui.events.OpenEvent;
 import ch.tiim.sco.gui.events.TeamEvent;
+import ch.tiim.sco.gui.util.UIException;
+import ch.tiim.sco.gui.util.Validator;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -60,28 +62,37 @@ public class TeamDialog extends DialogView {
 
     @FXML
     private void onSave() {
-        boolean isNew = false;
+        try {
+            currentTeam = getTeam();
+        } catch (UIException e) {
+            e.showDialog("Missing Setting");
+            return;
+        }
         List<Swimmer> swimmers = selected.keySet().stream()
                 .filter(swimmer -> selected.get(swimmer).getValue())
                 .collect(Collectors.toList());
-        if (currentTeam == null) {
-            isNew = true;
-            currentTeam = new Team(name.getText());
-        } else {
-            currentTeam.setName(name.getText());
-        }
         try {
-            if (isNew) {
+            if (currentTeam.getId() == null) {
                 db.getTblTeam().addTeam(currentTeam);
             } else {
                 db.getTblTeam().updateTeam(currentTeam);
             }
             db.getTblTeamContent().setSwimmers(currentTeam, swimmers);
         } catch (Exception e) {
-            ExceptionAlert.showError(LOGGER, "Can't save team", e, eventBus);
+            ExceptionAlert.showError(LOGGER, "Can't save team", e);
         }
         close();
         eventBus.post(new TeamEvent.TeamSaveEvent(currentTeam));
+    }
+
+    private Team getTeam() throws UIException {
+        String name = Validator.strNotEmpty(this.name.getText(), "Name");
+        if (currentTeam == null) {
+            currentTeam = new Team(name);
+        } else {
+            currentTeam.setName(name);
+        }
+        return currentTeam;
     }
 
     @Override
@@ -104,7 +115,7 @@ public class TeamDialog extends DialogView {
                 notInTeam = db.getTblSwimmer().getAllSwimmers();
             }
         } catch (Exception e) {
-            ExceptionAlert.showError(LOGGER, "Can't load swimmers", e, eventBus);
+            ExceptionAlert.showError(LOGGER, "Can't load swimmers", e);
             return;
         }
         inTeam.forEach(swimmer -> selected.put(swimmer, new SimpleBooleanProperty(true)));

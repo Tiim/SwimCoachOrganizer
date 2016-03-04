@@ -97,7 +97,7 @@ public class ResultView extends MainView {
             try {
                 results.getItems().setAll(db.getTblResult().getResults(swimmer));
             } catch (Exception e) {
-                ExceptionAlert.showError(LOGGER, "Can't load results", e, eventBus);
+                ExceptionAlert.showError(LOGGER, "Can't load results", e);
             }
         }
     }
@@ -106,7 +106,7 @@ public class ResultView extends MainView {
         try {
             swimmers.getItems().setAll(db.getTblSwimmer().getAllSwimmers());
         } catch (Exception e) {
-            ExceptionAlert.showError(LOGGER, "Can't load swimmers", e, eventBus);
+            ExceptionAlert.showError(LOGGER, "Can't load swimmers", e);
         }
     }
 
@@ -136,7 +136,7 @@ public class ResultView extends MainView {
             try {
                 db.getTblResult().deleteResult(res);
             } catch (Exception e) {
-                ExceptionAlert.showError(LOGGER, "Can't delete result", e, eventBus);
+                ExceptionAlert.showError(LOGGER, "Can't delete result", e);
             }
             eventBus.post(new ResultEvent.ResultDeleteEvent(res, swimmer));
         }
