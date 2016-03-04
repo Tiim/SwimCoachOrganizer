@@ -88,6 +88,7 @@ public class CalendarControl<T> extends BorderPane {
                 labels[i].setText("");
                 eventBoxes[i].getChildren().clear();
                 days[i].pseudoClassStateChanged(IN_MONTH, false);
+                days[i].pseudoClassStateChanged(NON_EMPTY, false);
             }
         }
     }
@@ -97,7 +98,7 @@ public class CalendarControl<T> extends BorderPane {
             List<CalendarEvent<T>> events = callback.get().apply(localDate);
             events.forEach(it -> it.setOnMouseClicked(it2 -> onEventCallback.get().accept(localDate, it.getObject())));
             eventBox.getChildren().setAll(events);
-            day.pseudoClassStateChanged(NON_EMPTY, !eventBox.getChildren().isEmpty());
+            day.pseudoClassStateChanged(NON_EMPTY, !events.isEmpty());
         } else {
             eventBox.getChildren().clear();
             day.pseudoClassStateChanged(NON_EMPTY, false);
