@@ -66,7 +66,7 @@ public class TrainingDialog extends DialogView {
         try {
             teams.getItems().setAll(db.getTblTeam().getAllTeams());
         } catch (Exception e) {
-            ExceptionAlert.showError(LOGGER, "Can't load teams", e, eventBus);
+            ExceptionAlert.showError(LOGGER, "Can't load teams", e);
         }
     }
 
@@ -80,7 +80,7 @@ public class TrainingDialog extends DialogView {
             }
             schedules.getItems().setAll(t);
         } catch (Exception e) {
-            ExceptionAlert.showError(LOGGER, "Can't load schedules", e, eventBus);
+            ExceptionAlert.showError(LOGGER, "Can't load schedules", e);
         }
     }
 
@@ -153,7 +153,7 @@ public class TrainingDialog extends DialogView {
             }
             db.getTblTrainingContent().setSets(currentTraining, training.getItems());
         } catch (Exception e) {
-            ExceptionAlert.showError(LOGGER, "can't save training", e, eventBus);
+            ExceptionAlert.showError(LOGGER, "can't save training", e);
             return;
         }
         close();
@@ -202,7 +202,7 @@ public class TrainingDialog extends DialogView {
                     training.getItems().setAll(sets);
                 }
             } catch (Exception e) {
-                ExceptionAlert.showError(LOGGER, "Can't load sets for training", e, eventBus);
+                ExceptionAlert.showError(LOGGER, "Can't load sets for training", e);
             }
         }
     }
@@ -211,7 +211,7 @@ public class TrainingDialog extends DialogView {
         try {
             sets.getItems().setAll(db.getTblSet().getAllSets());
         } catch (Exception e) {
-            ExceptionAlert.showError(LOGGER, "Can't load sets", e, eventBus);
+            ExceptionAlert.showError(LOGGER, "Can't load sets", e);
         }
     }
 

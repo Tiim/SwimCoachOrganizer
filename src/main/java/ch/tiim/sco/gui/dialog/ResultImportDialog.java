@@ -79,7 +79,7 @@ public class ResultImportDialog extends DialogView {
             loadTask.setOnSucceeded(event -> onLenexLoaded(loadTask.getValue()));
             loadTask.setOnFailed(event ->
                     ExceptionAlert.showError(LOGGER,
-                            "Failed to load lenex file", event.getSource().getException(), eventBus));
+                            "Failed to load lenex file", event.getSource().getException()));
             eventBus.post(loadTask);
         }
     }
@@ -95,7 +95,7 @@ public class ResultImportDialog extends DialogView {
         ImportResultsTask importTask = new ImportResultsTask(swimmers, lenex);
         importTask.setOnSucceeded(event -> onResultsLoaded(importTask.getValue()));
         importTask.setOnFailed(event ->
-                ExceptionAlert.showError(LOGGER, "Failed to load lenex file", event.getSource().getException(), eventBus));
+                ExceptionAlert.showError(LOGGER, "Failed to load lenex file", event.getSource().getException()));
         eventBus.post(importTask);
     }
 

@@ -51,7 +51,7 @@ public class AboutDialog extends DialogView {
         try {
             str = Resources.toString(AboutDialog.class.getResource("about/" + s), Charsets.UTF_8);
         } catch (IOException e) {
-            ExceptionAlert.showError(LOGGER, "Can't read file from classpath", e, eventBus);
+            ExceptionAlert.showError(LOGGER, "Can't read file from classpath", e);
             return;
         }
         eventBus.post(new TextOpenEvent(str, getStage()));

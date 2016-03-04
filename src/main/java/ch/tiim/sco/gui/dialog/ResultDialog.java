@@ -9,6 +9,7 @@ import ch.tiim.sco.database.model.Swimmer;
 import ch.tiim.sco.gui.alert.ExceptionAlert;
 import ch.tiim.sco.gui.events.OpenEvent;
 import ch.tiim.sco.gui.events.ResultEvent;
+import ch.tiim.sco.gui.util.UIException;
 import ch.tiim.sco.util.DurationFormatter;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -50,28 +51,39 @@ public class ResultDialog extends DialogView {
 
     @FXML
     private void onSave() {
-        boolean isNew = false;
-        if (currentResult == null) {
-            isNew = true;
-            currentResult = new Result();
-        }
-        currentResult.setDistance(distance.getValue());
-        currentResult.setStroke(stroke.getValue());
-        currentResult.setSwimTime(DurationFormatter.parse(time.getText()));
-        currentResult.setReactionTime(DurationFormatter.parse(reactionTime.getText()));
-        currentResult.setCourse(course.getValue());
-        currentResult.setMeetDate(date.getValue());
         try {
-            if (isNew) {
+            currentResult = getResult();
+        } catch (UIException e) {
+            e.showDialog("Invalid Settings");
+        }
+        try {
+            if (currentResult.getId() == null) {
                 db.getTblResult().addResult(currentSwimmer, currentResult);
             } else {
                 db.getTblResult().updateResult(currentResult);
             }
         } catch (Exception e) {
-            ExceptionAlert.showError(LOGGER, "Can't save result", e, eventBus);
+            ExceptionAlert.showError(LOGGER, "Can't save result", e);
         }
         eventBus.post(new ResultEvent.ResultSaveEvent(currentResult, currentSwimmer));
         close();
+    }
+
+    private Result getResult() throws UIException {
+        if (currentResult == null) {
+            currentResult = new Result();
+        }
+        currentResult.setDistance(distance.getValue());
+        currentResult.setStroke(stroke.getValue());
+        try {
+            currentResult.setSwimTime(DurationFormatter.parse(time.getText()));
+        } catch (IllegalArgumentException e) {
+            throw new UIException("Swim Time must be in the format hh:mm:ss.nn");
+        }
+        currentResult.setReactionTime(DurationFormatter.parse(reactionTime.getText()));
+        currentResult.setCourse(course.getValue());
+        currentResult.setMeetDate(date.getValue());
+        return currentResult;
     }
 
     @FXML

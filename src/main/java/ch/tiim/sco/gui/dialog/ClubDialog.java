@@ -97,7 +97,7 @@ public class ClubDialog extends DialogView {
             }
             db.getTblClubContent().setTeams(currentClub, teams);
         } catch (Exception e) {
-            ExceptionAlert.showError(LOGGER, "Can't save club", e, eventBus);
+            ExceptionAlert.showError(LOGGER, "Can't save club", e);
         }
         eventBus.post(new ClubEvent.ClubSaveEvent(currentClub));
         close();
@@ -149,7 +149,7 @@ public class ClubDialog extends DialogView {
                 notInClub = db.getTblTeam().getAllTeams();
             }
         } catch (Exception e) {
-            ExceptionAlert.showError(LOGGER, "Can't load teams", e, eventBus);
+            ExceptionAlert.showError(LOGGER, "Can't load teams", e);
             return;
         }
         inClub.forEach(team -> selected.put(team, new SimpleBooleanProperty(true)));
