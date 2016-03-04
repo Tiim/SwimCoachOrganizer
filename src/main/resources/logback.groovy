@@ -24,6 +24,15 @@ appender('CONSOLE', ConsoleAppender) {
 }
 appenders << 'CONSOLE'
 
+appender('FILE', FileAppender) {
+    append = false
+    file = 'logfile.log'
+    encoder(PatternLayoutEncoder) {
+        pattern = '%d{"ISO8601", UTC}  [%p] [%t] [%c.%M] -- %m%n'
+    }
+}
+appenders << 'FILE'
+
 
 if (Settings.INSTANCE.getBoolean('loggly.enabled', false) && Config.INSTANCE.getBoolean("loggly.enabled")) {
     appender('LOGGLY', LogglyAppender) {
