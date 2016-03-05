@@ -44,7 +44,7 @@ public class ViewLoader {
     public static void load(Parent parent, String path) {
         FXMLLoader loader = new FXMLLoader(parent.getClass().getResource("Calendar.fxml"));
         loader.setRoot(parent);
-        loader.setResources(bundle)
+        loader.setResources(bundle);
         loader.setController(parent);
         try {
             loader.load();
