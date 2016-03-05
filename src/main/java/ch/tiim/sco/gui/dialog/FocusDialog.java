@@ -60,7 +60,7 @@ public class FocusDialog extends DialogView {
         try {
             currentFocus = getFocus(currentFocus);
         } catch (UIException e) {
-            e.showDialog(lang.getString("gui.missing"));
+            e.showDialog(lang.str("gui.missing"));
             return;
         }
         try {
@@ -77,8 +77,8 @@ public class FocusDialog extends DialogView {
     }
 
     private SetFocus getFocus(SetFocus f) throws UIException {
-        String name = Validator.strNotEmpty(this.name.getText(), lang.getString("gui.name"));
-        String abbr = Validator.strNotEmpty(this.abbr.getText(), lang.getString("gui.abbr"));
+        String name = Validator.strNotEmpty(this.name.getText(), lang.str("gui.name"));
+        String abbr = Validator.strNotEmpty(this.abbr.getText(), lang.str("gui.abbr"));
         if (f == null) {
             f = new SetFocus(name, abbr, notes.getText());
         } else {

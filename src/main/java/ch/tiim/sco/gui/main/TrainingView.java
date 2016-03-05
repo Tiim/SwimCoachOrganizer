@@ -88,7 +88,7 @@ public class TrainingView extends MainView {
                 createItem(lang.format("gui.export", "gui.training"), isSelected, event -> {
                     throw new OutOfCoffeeException("Not implemented yet");
                 }),
-                createItem(lang.getString("gui.export.pdf"), isSelected, event -> onPDF()),
+                createItem(lang.str("gui.export.pdf"), isSelected, event -> onPDF()),
                 new SeparatorMenuItem(),
                 createItem(lang.format("gui.new", "gui.training"), null, event -> onNew()),
                 createItem(lang.format("gui.edit", "gui.training"), isSelected, event -> onEdit()),

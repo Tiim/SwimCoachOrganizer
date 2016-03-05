@@ -19,9 +19,17 @@ public class ResourceBundleEx extends ResourceBundle {
     public String format(String key, String... keys) {
         String[] vals = new String[keys.length];
         for (int i = 0; i < keys.length; i++) {
-            vals[i] = getString(keys[i]);
+            vals[i] = str(keys[i]);
         }
-        return String.format(getString(key), vals);
+        return String.format(str(key), vals);
+    }
+
+    public String str(String key) {
+        try {
+            return getString(key);
+        } catch (Exception e) {
+            return key;
+        }
     }
 
     @Override

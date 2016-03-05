@@ -76,7 +76,7 @@ public class SetDialog extends DialogView {
         try {
             currentSet = getSet(currentSet);
         } catch (UIException e) {
-            e.showDialog(lang.getString("gui.missing"));
+            e.showDialog(lang.str("gui.missing"));
             return;
         }
 
@@ -98,9 +98,9 @@ public class SetDialog extends DialogView {
         if (currentSet == null) {
             currentSet = new Set();
         }
-        String name = Validator.strNotEmpty(this.name.getText(), lang.getString("gui.name"));
+        String name = Validator.strNotEmpty(this.name.getText(), lang.str("gui.name"));
         set.setName(name);
-        String content = Validator.strNotEmpty(this.content.getText(), lang.getString("gui.content"));
+        String content = Validator.strNotEmpty(this.content.getText(), lang.str("gui.content"));
         set.setContent(content);
         set.setDistance1(distance1.getValue());
         set.setDistance2(distance2.getValue());

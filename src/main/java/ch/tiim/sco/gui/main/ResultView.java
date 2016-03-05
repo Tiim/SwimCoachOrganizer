@@ -87,7 +87,7 @@ public class ResultView extends MainView {
                 createItem(lang.format("gui.export", "gui.result"), isSwimmerSelected, event -> {
                     throw new OutOfCoffeeException("Not implemented yet");
                 }),
-                createItem(lang.getString("gui.import.result"), null, event1 -> onImport()),
+                createItem(lang.str("gui.import.result"), null, event1 -> onImport()),
                 new SeparatorMenuItem(),
                 createItem(lang.format("gui.new", "gui.result"), isSwimmerSelected, event2 -> onNew()),
                 createItem(lang.format("gui.edit", "gui.result"), isResultSelected, event3 -> onEdit()),

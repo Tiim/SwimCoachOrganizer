@@ -89,7 +89,7 @@ public class ClubDialog extends DialogView {
         try {
             currentClub = getClub();
         } catch (UIException e) {
-            e.showDialog(lang.getString("gui.missing"));
+            e.showDialog(lang.str("gui.missing"));
             return;
         }
         try {
@@ -110,12 +110,12 @@ public class ClubDialog extends DialogView {
         if (currentClub == null) {
             currentClub = new Club();
         }
-        String name = Validator.strNotEmpty(this.name.getText(), lang.getString("gui.name"));
+        String name = Validator.strNotEmpty(this.name.getText(), lang.str("gui.name"));
         currentClub.setName(name);
         currentClub.setNameShort(nameShort.getText());
         currentClub.setNameEn(nameEn.getText());
         currentClub.setNameShortEn(nameShortEn.getText());
-        Nation value = Validator.nonNull(country.getValue(), lang.getString("gui.country"));
+        Nation value = Validator.nonNull(country.getValue(), lang.str("gui.country"));
         currentClub.setNationality(value.toString());
         currentClub.setCode(code.getText());
         currentClub.setExternId(externid.getValue());

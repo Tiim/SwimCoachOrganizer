@@ -60,7 +60,7 @@ public class StrokeDialog extends DialogView {
         try {
             currentStroke = getStroke(currentStroke);
         } catch (UIException e) {
-            e.showDialog(lang.getString("gui.missing"));
+            e.showDialog(lang.str("gui.missing"));
             return;
         }
         try {
@@ -77,8 +77,8 @@ public class StrokeDialog extends DialogView {
     }
 
     private SetStroke getStroke(SetStroke f) throws UIException {
-        String name = Validator.strNotEmpty(this.name.getText(), lang.getString("gui.name"));
-        String abbr = Validator.strNotEmpty(this.abbr.getText(), lang.getString("gui.abbr"));
+        String name = Validator.strNotEmpty(this.name.getText(), lang.str("gui.name"));
+        String abbr = Validator.strNotEmpty(this.abbr.getText(), lang.str("gui.abbr"));
         if (f == null) {
             f = new SetStroke(name, abbr, notes.getText());
         } else {

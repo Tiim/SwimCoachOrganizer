@@ -79,9 +79,9 @@ public class ScheduleDialog extends DialogView {
     }
 
     private ScheduleRule getScheduleRule() throws UIException {
-        LocalDate day = Validator.nonNull(startDay.getValue(), lang.getString("gui.start.day"));
+        LocalDate day = Validator.nonNull(startDay.getValue(), lang.str("gui.start.day"));
         LocalTime time = LocalTime.of(startHour.getValue(), startMinute.getValue());
-        Team team = Validator.nonNull(this.team.getValue(), lang.getString("gui.team"));
+        Team team = Validator.nonNull(this.team.getValue(), lang.str("gui.team"));
         return new ScheduleRule(day, time, interval.getValue(), duration.getValue(), team);
     }
 
@@ -110,7 +110,7 @@ public class ScheduleDialog extends DialogView {
             eventBus.post(new ScheduleEvent.ScheduleSaveEvent(schedule));
             close();
         } catch (UIException e) {
-            e.showDialog(lang.getString("gui.missing"));
+            e.showDialog(lang.str("gui.missing"));
         } catch (Exception e) {
             ExceptionAlert.showError(LOGGER, lang.format("error.save", "error.subj.schedule"), e);
         }

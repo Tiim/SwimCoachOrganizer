@@ -84,7 +84,7 @@ public class SwimmerView extends MainView {
                     throw new OutOfCoffeeException("Not implemented yet");
                 }),
                 new SeparatorMenuItem(),
-                createItem(lang.getString("gui.email.swimmer"), isSelected, event1 -> onEmail()),
+                createItem(lang.str("gui.email.swimmer"), isSelected, event1 -> onEmail()),
                 new SeparatorMenuItem(),
                 createItem(lang.format("gui.new", "gui.swimmer"), null, event2 -> onNew()),
                 createItem(lang.format("gui.edit", "gui.swimmer"), isSelected, event3 -> onEdit()),

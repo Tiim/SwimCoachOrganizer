@@ -57,7 +57,7 @@ public class ResultDialog extends DialogView {
         try {
             currentResult = getResult();
         } catch (UIException e) {
-            e.showDialog(lang.getString("gui.missing"));
+            e.showDialog(lang.str("gui.missing"));
         }
         try {
             if (currentResult.getId() == null) {
@@ -81,7 +81,7 @@ public class ResultDialog extends DialogView {
         try {
             currentResult.setSwimTime(DurationFormatter.parse(time.getText()));
         } catch (IllegalArgumentException e) {
-            throw new UIException(lang.getString("gui.time_format"));
+            throw new UIException(lang.str("gui.time_format"));
         }
         currentResult.setReactionTime(DurationFormatter.parse(reactionTime.getText()));
         currentResult.setCourse(course.getValue());

@@ -77,7 +77,7 @@ public class TeamView extends MainView {
                     throw new OutOfCoffeeException("Not implemented yet");
                 }),
                 new SeparatorMenuItem(),
-                createItem(lang.getString("gui.email.team"), isSelected, event1 -> onEmail()),
+                createItem(lang.str("gui.email.team"), isSelected, event1 -> onEmail()),
                 new SeparatorMenuItem(),
                 createItem(lang.format("gui.new", "gui.team"), null, event2 -> onNew()),
                 createItem(lang.format("gui.edit", "gui.team"), isSelected, event3 -> onEdit()),

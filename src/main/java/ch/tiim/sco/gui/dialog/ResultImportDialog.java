@@ -114,7 +114,7 @@ public class ResultImportDialog extends DialogView {
     @FXML
     private void onBrowse() {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle(lang.getString("gui.open.lenex"));
+        fileChooser.setTitle(lang.str("gui.open.lenex"));
         fileChooser.setSelectedExtensionFilter(new FileChooser.ExtensionFilter("LENEX", "*.lxf", "*.lef"));
         File file = fileChooser.showOpenDialog(getStage());
         if (file != null) {

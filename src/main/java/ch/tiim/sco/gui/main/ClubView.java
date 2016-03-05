@@ -80,7 +80,7 @@ public class ClubView extends MainView {
                     throw new OutOfCoffeeException("Not implemented yet");
                 }),
                 new SeparatorMenuItem(),
-                createItem(lang.getString("gui.email.club"), isSelected, event4 -> onEmail()),
+                createItem(lang.str("gui.email.club"), isSelected, event4 -> onEmail()),
                 new SeparatorMenuItem(),
                 createItem(lang.format("gui.new", "gui.club"), null, event1 -> onNew()),
                 createItem(lang.format("gui.edit", "gui.club"), isSelected, event2 -> onEdit()),
