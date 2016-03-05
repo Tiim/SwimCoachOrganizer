@@ -24,7 +24,7 @@ public class ResourceBundleEx extends ResourceBundle {
         for (int i = 0; i < keys.length; i++) {
             vals[i] = str(keys[i]);
         }
-        return String.format(str(key), vals);
+        return String.format(str(key), (Object[]) vals);
     }
 
     public String str(String key) {
