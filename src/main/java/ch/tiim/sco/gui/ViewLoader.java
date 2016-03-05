@@ -2,8 +2,10 @@ package ch.tiim.sco.gui;
 
 import ch.tiim.sco.util.OutOfCoffeeException;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 
 import javax.annotation.Nonnull;
+import java.io.IOException;
 
 public class ViewLoader {
 
@@ -29,5 +31,16 @@ public class ViewLoader {
             throw new RuntimeException("Can't load fxml: " + clazz.getSimpleName() + ".fxml", e);
         }
         return c;
+    }
+
+    public static void load(Parent parent, String path) {
+        FXMLLoader loader = new FXMLLoader(parent.getClass().getResource("Calendar.fxml"));
+        loader.setRoot(parent);
+        loader.setController(parent);
+        try {
+            loader.load();
+        } catch (IOException e) {
+            throw new RuntimeException("Can't load Calendar.fxml", e);
+        }
     }
 }
