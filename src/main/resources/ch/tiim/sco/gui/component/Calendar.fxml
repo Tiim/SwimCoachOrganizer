@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<fx:root xmlns:fx="http://javafx.com/fxml/1" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity" type="BorderPane" xmlns="http://javafx.com/javafx/8.0.65">
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<fx:root maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity" type="BorderPane" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
     <top>
         <BorderPane BorderPane.alignment="CENTER">
             <center>
-                <Label fx:id="title" styleClass="title" text="Month" />
+                <Label fx:id="title" styleClass="title" text="%gui.month" />
             </center>
             <left>
                 <Button mnemonicParsing="false" onAction="#lastMonth" text="&lt;" BorderPane.alignment="CENTER" />
@@ -37,13 +42,13 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-                <Label styleClass="week-day" text="Monday" GridPane.halignment="CENTER" />
-                <Label styleClass="week-day" text="Tuesday" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-                <Label styleClass="week-day" text="Wednesday" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
-                <Label styleClass="week-day" text="Thursday" GridPane.columnIndex="3" GridPane.halignment="CENTER" />
-                <Label styleClass="week-day" text="Friday" GridPane.columnIndex="4" GridPane.halignment="CENTER" />
-                <Label styleClass="week-day" text="Saturday" GridPane.columnIndex="5" GridPane.halignment="CENTER" />
-                <Label styleClass="week-day" text="Sunday" GridPane.columnIndex="6" GridPane.halignment="CENTER" />
+                <Label styleClass="week-day" text="%gui.day.monday" GridPane.halignment="CENTER" />
+                <Label styleClass="week-day" text="%gui.day.tuesday" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+                <Label styleClass="week-day" text="%gui.day.wednesday" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
+                <Label styleClass="week-day" text="%gui.day.thursday" GridPane.columnIndex="3" GridPane.halignment="CENTER" />
+                <Label styleClass="week-day" text="%gui.day.friday" GridPane.columnIndex="4" GridPane.halignment="CENTER" />
+                <Label styleClass="week-day" text="%gui.day.saturday" GridPane.columnIndex="5" GridPane.halignment="CENTER" />
+                <Label styleClass="week-day" text="%gui.day.sunday" GridPane.columnIndex="6" GridPane.halignment="CENTER" />
             </children>
         </GridPane>
     </center>
