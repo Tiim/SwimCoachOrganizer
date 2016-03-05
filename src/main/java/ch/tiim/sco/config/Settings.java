@@ -5,6 +5,7 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Locale;
 import java.util.Properties;
 
 public class Settings {
@@ -57,4 +58,11 @@ public class Settings {
         setString(key, String.valueOf(val));
     }
 
+    public synchronized Locale getLocale(String locale, Locale def) {
+        return Locale.forLanguageTag(getString(locale, def.toLanguageTag()));
+    }
+
+    public synchronized void setLocale(String locale, Locale val) {
+        setString(locale, val.toLanguageTag());
+    }
 }

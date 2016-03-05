@@ -4,8 +4,11 @@ import ch.tiim.sco.util.OutOfCoffeeException;
 import javafx.fxml.FXMLLoader;
 
 import javax.annotation.Nonnull;
+import java.util.ResourceBundle;
 
 public class ViewLoader {
+
+    private static ResourceBundle bundle;
 
     /**
      * Loads a .fxml file and returns the controller that is associated with it.
@@ -20,6 +23,7 @@ public class ViewLoader {
         T c;
         try {
             FXMLLoader loader = new FXMLLoader(clazz.getResource(clazz.getSimpleName() + ".fxml"));
+            loader.setResources(bundle);
             loader.load();
             c = loader.getController();
             if (c == null) {
@@ -29,5 +33,9 @@ public class ViewLoader {
             throw new RuntimeException("Can't load fxml: " + clazz.getSimpleName() + ".fxml", e);
         }
         return c;
+    }
+
+    public static void setBundle(ResourceBundle bundle) {
+        ViewLoader.bundle = bundle;
     }
 }

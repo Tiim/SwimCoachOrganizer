@@ -2,6 +2,7 @@ package ch.tiim.sco;
 
 import ch.tiim.inject.Injector;
 import ch.tiim.sco.config.Config;
+import ch.tiim.sco.config.Settings;
 import ch.tiim.sco.database.DatabaseController;
 import ch.tiim.sco.event.ShowDocumentEvent;
 import ch.tiim.sco.gui.MainWindow;
@@ -13,6 +14,7 @@ import ch.tiim.sco.update.VersionCheckTask;
 import ch.tiim.sco.update.VersionChecker;
 import ch.tiim.sco.util.async.DaemonFactory;
 import ch.tiim.sco.util.async.ExecutorEventListener;
+import ch.tiim.sco.util.lang.ResourceBundleUtil;
 import com.github.zafarkhaja.semver.Version;
 import com.google.common.eventbus.DeadEvent;
 import com.google.common.eventbus.EventBus;
@@ -26,7 +28,9 @@ import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Locale;
 import java.util.Optional;
+import java.util.ResourceBundle;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 
@@ -47,6 +51,10 @@ public class Main extends Application {
         eventBus.register(listener);
         eventBus.register(this);
 
+        Locale locale = Settings.INSTANCE.getLocale("default_locale", Locale.getDefault());
+        ResourceBundle bundle = ResourceBundleUtil.getResourceBundle(locale);
+        ViewLoader.setBundle(bundle);
+
         ExceptionAlert.setEventBus(eventBus);
 
         Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
@@ -63,6 +71,7 @@ public class Main extends Application {
         DatabaseController db = new DatabaseController("./file.db");
         db.initializeDefaultValues();
 
+        Injector.getInstance().addInjectable(bundle, "lang");
         Injector.getInstance().addInjectable(getHostServices(), "host");
         Injector.getInstance().addInjectable(Config.INSTANCE, "config");
         Injector.getInstance().addInjectable(db, "db-controller");
