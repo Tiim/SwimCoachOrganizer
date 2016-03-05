@@ -1,11 +1,11 @@
 package ch.tiim.sco.gui.component;
 
+import ch.tiim.sco.gui.ViewLoader;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.StringProperty;
 import javafx.css.PseudoClass;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
@@ -14,7 +14,6 @@ import org.controlsfx.control.PopOver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.Month;
@@ -51,14 +50,7 @@ public class CalendarControl<T> extends BorderPane {
             new SimpleObjectProperty<>();
 
     public CalendarControl() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("Calendar.fxml"));
-        loader.setRoot(this);
-        loader.setController(this);
-        try {
-            loader.load();
-        } catch (IOException e) {
-            throw new RuntimeException("Can't load Calendar.fxml", e);
-        }
+        ViewLoader.load(this, "Calendar.fxml");
         getStylesheets().add("ch/tiim/sco/gui/component/Calendar.css");
         init();
         selectedDate.addListener(observable -> dateChanged());
