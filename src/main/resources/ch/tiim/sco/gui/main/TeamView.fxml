@@ -1,26 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.VBox?>
-<SplitPane xmlns:fx="http://javafx.com/fxml/1" fx:id="root" dividerPositions="0.25" maxHeight="1.7976931348623157E308"
-           maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity"
-           xmlns="http://javafx.com/javafx/8.0.40" fx:controller="ch.tiim.sco.gui.main.TeamView">
+
+<SplitPane fx:id="root" dividerPositions="0.25" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.tiim.sco.gui.main.TeamView">
     <items>
-        <ListView fx:id="teams" prefHeight="200.0" prefWidth="200.0"/>
+        <ListView fx:id="teams" prefHeight="200.0" prefWidth="200.0" />
         <VBox>
             <children>
-                <TableView fx:id="swimmers" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
-                           VBox.vgrow="ALWAYS">
+                <TableView fx:id="swimmers" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS">
                     <columns>
-                        <TableColumn fx:id="firstName" prefWidth="75.0" text="First Name"/>
-                        <TableColumn fx:id="name" prefWidth="75.0" text="Name"/>
-                        <TableColumn fx:id="gender" prefWidth="75.0" text="Gender"/>
-                        <TableColumn fx:id="address" prefWidth="75.0" text="Address"/>
-                        <TableColumn fx:id="email" prefWidth="75.0" text="Email"/>
-                        <TableColumn fx:id="birthday" prefWidth="75.0" text="Birthday"/>
+                        <TableColumn fx:id="firstName" prefWidth="75.0" text="%gui.name.first" />
+                        <TableColumn fx:id="name" prefWidth="75.0" text="%gui.name.last" />
+                        <TableColumn fx:id="gender" prefWidth="75.0" text="%gui.gender" />
+                        <TableColumn fx:id="address" prefWidth="75.0" text="%gui.address" />
+                        <TableColumn fx:id="email" prefWidth="75.0" text="%gui.email" />
+                        <TableColumn fx:id="birthday" prefWidth="75.0" text="%gui.birthday" />
                     </columns>
                     <columnResizePolicy>
-                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                     </columnResizePolicy>
                 </TableView>
             </children>

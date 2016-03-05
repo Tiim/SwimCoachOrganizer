@@ -6,6 +6,7 @@ import ch.tiim.sco.database.model.SetStroke;
 import ch.tiim.sco.gui.alert.ExceptionAlert;
 import ch.tiim.sco.gui.events.StrokeEvent;
 import ch.tiim.sco.util.OutOfCoffeeException;
+import ch.tiim.sco.util.lang.ResourceBundleEx;
 import com.google.common.eventbus.Subscribe;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -26,6 +27,8 @@ public class StrokeView extends MainView {
     private DatabaseController db;
     @Inject(name = "main-stage")
     private Stage mainStage;
+    @Inject(name = "lang")
+    private ResourceBundleEx lang;
 
     @FXML
     private Parent root;
@@ -51,13 +54,13 @@ public class StrokeView extends MainView {
 
     private void initMenu() {
         getMenu().getItems().addAll(
-                createItem("Export Stroke", isSelected, event -> {
+                createItem(lang.format("gui.export", "gui.stroke"), isSelected, event -> {
                     throw new OutOfCoffeeException("Not implemented Yet");
                 }),
                 new SeparatorMenuItem(),
-                createItem("New Stroke", null, event1 -> onNew()),
-                createItem("Edit Stroke", isSelected, event2 -> onEdit()),
-                createItem("Delete Stroke", isSelected, event3 -> onDelete())
+                createItem(lang.format("gui.new", "gui.stroke"), null, event1 -> onNew()),
+                createItem(lang.format("gui.edit", "gui.stroke"), isSelected, event2 -> onEdit()),
+                createItem(lang.format("gui.delete", "gui.stroke"), isSelected, event3 -> onDelete())
         );
     }
 
@@ -73,7 +76,7 @@ public class StrokeView extends MainView {
         try {
             strokes.setItems(FXCollections.observableArrayList(db.getTblSetStroke().getAllStrokes()));
         } catch (Exception e) {
-            ExceptionAlert.showError(LOGGER, "Can't load strokes", e);
+            ExceptionAlert.showError(LOGGER, lang.format("error.load", "error.subj.stroke"), e);
         }
     }
 
@@ -94,7 +97,7 @@ public class StrokeView extends MainView {
             try {
                 db.getTblSetStroke().deleteSetStroke(item);
             } catch (Exception e) {
-                ExceptionAlert.showError(LOGGER, "Can't delete focus", e);
+                ExceptionAlert.showError(LOGGER, lang.format("error.load", "error.subj.stroke"), e);
             }
             eventBus.post(new StrokeEvent.StrokeDeleteEvent(item));
         }

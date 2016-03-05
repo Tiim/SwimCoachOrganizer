@@ -1,60 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<SplitPane xmlns:fx="http://javafx.com/fxml/1" fx:id="root" dividerPositions="0.25" maxHeight="1.7976931348623157E308"
-           maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/8.0.40"
-           fx:controller="ch.tiim.sco.gui.main.SwimmerView">
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<SplitPane fx:id="root" dividerPositions="0.25" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.tiim.sco.gui.main.SwimmerView">
     <items>
-        <ListView fx:id="swimmers" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"/>
+        <ListView fx:id="swimmers" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" />
         <VBox alignment="CENTER_RIGHT">
             <children>
-                <GridPane fx:id="root1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
-                          minHeight="-Infinity" minWidth="-Infinity" VBox.vgrow="ALWAYS">
+                <GridPane fx:id="root1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" VBox.vgrow="ALWAYS">
                     <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                     </columnConstraints>
                     <rowConstraints>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
-                        <TextField fx:id="firstName" editable="false" promptText="First Name"/>
-                        <TextField fx:id="lastName" editable="false" promptText="Last Name" GridPane.rowIndex="1"/>
-                        <TextField fx:id="phonePrivate" editable="false" promptText="Phone Private"
-                                   GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-                        <TextField fx:id="phoneMobile" editable="false" promptText="Phone Mobile"
-                                   GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-                        <TextField fx:id="phoneWork" editable="false" promptText="Phone Work" GridPane.columnIndex="1"
-                                   GridPane.rowIndex="3"/>
-                        <TextField fx:id="address1" editable="false" promptText="Address" GridPane.rowIndex="4"/>
-                        <TextField fx:id="address2" editable="false" promptText="City" GridPane.rowIndex="5"/>
-                        <TextField fx:id="address3" editable="false" promptText="Country" GridPane.rowIndex="6"/>
-                        <TextField fx:id="licenseId" editable="false" promptText="License ID" GridPane.columnIndex="1"
-                                   GridPane.rowIndex="5"/>
+                        <TextField fx:id="firstName" editable="false" promptText="%gui.name.first" />
+                        <TextField fx:id="lastName" editable="false" promptText="%gui.name.last" GridPane.rowIndex="1" />
+                        <TextField fx:id="phonePrivate" editable="false" promptText="%gui.phone.private" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <TextField fx:id="phoneMobile" editable="false" promptText="%gui.phone.mobile" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <TextField fx:id="phoneWork" editable="false" promptText="%gui.phone.work" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <TextField fx:id="address1" editable="false" promptText="%gui.address" GridPane.rowIndex="4" />
+                        <TextField fx:id="address2" editable="false" promptText="%gui.city" GridPane.rowIndex="5" />
+                        <TextField fx:id="address3" editable="false" promptText="%gui.country" GridPane.rowIndex="6" />
+                        <TextField fx:id="licenseId" editable="false" promptText="%gui.license_id" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2">
                             <children>
-                                <RadioButton fx:id="isMale" disable="true" mnemonicParsing="false" selected="true"
-                                             text="Male">
+                                <RadioButton fx:id="isMale" disable="true" mnemonicParsing="false" selected="true" text="%gui.gender.m">
                                     <toggleGroup>
-                                        <ToggleGroup fx:id="gender"/>
+                                        <ToggleGroup fx:id="gender" />
                                     </toggleGroup>
                                 </RadioButton>
-                                <RadioButton fx:id="isFemale" disable="true" mnemonicParsing="false" text="Female"
-                                             toggleGroup="$gender"/>
+                                <RadioButton fx:id="isFemale" disable="true" mnemonicParsing="false" text="%gui.gender.f" toggleGroup="$gender" />
                             </children>
                         </HBox>
-                        <TextArea fx:id="notes" editable="false" prefHeight="200.0" prefWidth="200.0" promptText="Notes"
-                                  GridPane.columnSpan="2" GridPane.rowIndex="7" GridPane.vgrow="ALWAYS"/>
-                        <TextField fx:id="birthDay" editable="false" promptText="Birthday" GridPane.rowIndex="3"/>
-                        <Hyperlink fx:id="email" onAction="#onEmail" GridPane.columnIndex="1"/>
+                        <TextArea fx:id="notes" editable="false" prefHeight="200.0" prefWidth="200.0" promptText="%gui.notes" GridPane.columnSpan="2" GridPane.rowIndex="7" GridPane.vgrow="ALWAYS" />
+                        <TextField fx:id="birthDay" editable="false" promptText="%gui.birthday" GridPane.rowIndex="3" />
+                        <Hyperlink fx:id="email" onAction="#onEmail" GridPane.columnIndex="1" />
                     </children>
                 </GridPane>
             </children>

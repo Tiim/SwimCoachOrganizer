@@ -1,25 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.BorderPane?>
-<SplitPane xmlns:fx="http://javafx.com/fxml/1" fx:id="root" dividerPositions="0.25" maxHeight="1.7976931348623157E308"
-           maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/8.0.40"
-           fx:controller="ch.tiim.sco.gui.main.TrainingView">
+
+<SplitPane fx:id="root" dividerPositions="0.25" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.tiim.sco.gui.main.TrainingView">
     <items>
-        <ListView fx:id="trainings" prefHeight="200.0" prefWidth="200.0"/>
+        <ListView fx:id="trainings" prefHeight="200.0" prefWidth="200.0" />
         <BorderPane>
             <center>
-                <TableView fx:id="selectedTraining" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
-                           minHeight="-Infinity" minWidth="-Infinity">
+                <TableView fx:id="selectedTraining" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity">
                     <columns>
-                        <TableColumn fx:id="colNr" minWidth="-1.0" prefWidth="25.0" text="i"/>
-                        <TableColumn fx:id="colName" minWidth="-1.0" prefWidth="75.0" text="Name"/>
-                        <TableColumn fx:id="colDistance" minWidth="-1.0" prefWidth="75.0" text="Distance"/>
-                        <TableColumn fx:id="colContent" minWidth="-1.0" prefWidth="75.0" text="Content"/>
-                        <TableColumn fx:id="colIntensity" minWidth="-1.0" prefWidth="75.0" text="Intensity"/>
-                        <TableColumn fx:id="colFocus" minWidth="-1.0" prefWidth="75.0" text="Focus"/>
-                        <TableColumn fx:id="colForm" minWidth="-1.0" prefWidth="75.0" text="Form"/>
-                        <TableColumn fx:id="colTime" minWidth="-1.0" prefWidth="75.0" text="Time"/>
+                        <TableColumn fx:id="colNr" minWidth="-1.0" prefWidth="25.0" text="%gui.nr" />
+                        <TableColumn fx:id="colName" minWidth="-1.0" prefWidth="75.0" text="%gui.name" />
+                        <TableColumn fx:id="colDistance" minWidth="-1.0" prefWidth="75.0" text="%gui.distance" />
+                        <TableColumn fx:id="colContent" minWidth="-1.0" prefWidth="75.0" text="%gui.content" />
+                        <TableColumn fx:id="colIntensity" minWidth="-1.0" prefWidth="75.0" text="%gui.intensity" />
+                        <TableColumn fx:id="colFocus" minWidth="-1.0" prefWidth="75.0" text="%gui.focus" />
+                        <TableColumn fx:id="colForm" minWidth="-1.0" prefWidth="75.0" text="%gui.stroke" />
+                        <TableColumn fx:id="colTime" minWidth="-1.0" prefWidth="75.0" text="%gui.time" />
                     </columns>
                 </TableView>
             </center>

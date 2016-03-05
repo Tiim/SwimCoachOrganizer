@@ -54,13 +54,13 @@ public class FocusView extends MainView {
 
     private void initMenu() {
         getMenu().getItems().addAll(
-                createItem(lang.format("gui.export", "gui.FocusView.focus"), isSelected, event -> {
+                createItem(lang.format("gui.export", "gui.focus"), isSelected, event -> {
                     throw new OutOfCoffeeException("Not implemented");
                 }),
                 new SeparatorMenuItem(),
-                createItem(lang.format("gui.new", "gui.FocusView.focus"), null, event -> onNew()),
-                createItem(lang.format("gui.edit", "gui.FocusView.focus"), isSelected, event1 -> onEdit()),
-                createItem(lang.format("gui.delete", "gui.FocusView.focus"), isSelected, event2 -> onDelete())
+                createItem(lang.format("gui.new", "gui.focus"), null, event -> onNew()),
+                createItem(lang.format("gui.edit", "gui.focus"), isSelected, event1 -> onEdit()),
+                createItem(lang.format("gui.delete", "gui.focus"), isSelected, event2 -> onDelete())
         );
     }
 

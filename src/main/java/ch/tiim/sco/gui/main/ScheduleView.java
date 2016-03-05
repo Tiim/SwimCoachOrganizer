@@ -12,6 +12,7 @@ import ch.tiim.sco.gui.events.TeamEvent;
 import ch.tiim.sco.gui.events.TrainingEvent;
 import ch.tiim.sco.gui.util.ModelCell;
 import ch.tiim.sco.util.ColorUtil;
+import ch.tiim.sco.util.lang.ResourceBundleEx;
 import com.google.common.eventbus.Subscribe;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -35,6 +36,8 @@ public class ScheduleView extends MainView {
     private DatabaseController db;
     @Inject(name = "main-stage")
     private Stage mainStage;
+    @Inject(name = "lang")
+    private ResourceBundleEx lang;
 
     @FXML
     private Parent root;
@@ -64,8 +67,8 @@ public class ScheduleView extends MainView {
 
     private void initMenu() {
         getMenu().getItems().addAll(
-                createItem("Add Schedule", null, event -> onNew()),
-                createItem("Delete Schedule", isScheduleSelected, event1 -> onDelete())
+                createItem(lang.format("gui.new", "gui.schedule"), null, event -> onNew()),
+                createItem(lang.format("gui.delete", "gui.schedule"), isScheduleSelected, event1 -> onDelete())
         );
     }
 
@@ -74,7 +77,7 @@ public class ScheduleView extends MainView {
             try {
                 schedules.getItems().setAll(db.getTblSchedule().getSchedules(newValue));
             } catch (Exception e) {
-                LOGGER.warn("Can't load schedule rules");
+                ExceptionAlert.showError(LOGGER, lang.format("error.load", "error.subj.schedule"), e);
             }
         }
     }
@@ -83,7 +86,7 @@ public class ScheduleView extends MainView {
         try {
             teams.getItems().setAll(db.getTblTeam().getAllTeams());
         } catch (Exception e) {
-            LOGGER.warn("Can't load teams", e);
+            ExceptionAlert.showError(LOGGER,lang.format("error.load", "error.subj.team"), e);
         }
     }
 
@@ -96,7 +99,7 @@ public class ScheduleView extends MainView {
         try {
             db.getTblSchedule().deleteSchedule(item);
         } catch (Exception e) {
-            LOGGER.warn("Can't delete schedule");
+            ExceptionAlert.showError(LOGGER,lang.format("error.delete", "error.subj.schedule"),e);
         }
         eventBus.post(new ScheduleEvent.ScheduleDeleteEvent(item));
     }
@@ -106,7 +109,7 @@ public class ScheduleView extends MainView {
         try {
             t = db.getTblTraining().getTrainingFromSchedule(ld, scheduleRule);
         } catch (Exception e) {
-            ExceptionAlert.showError(LOGGER, "Can't load training for schedule", e);
+            ExceptionAlert.showError(LOGGER, lang.format("error.load", "error.subj.schedule"), e);
         }
         if (t == null) {
             eventBus.post(new TrainingEvent.TrainingOpenEvent(
@@ -122,7 +125,7 @@ public class ScheduleView extends MainView {
                     .map(it -> new CalendarControl.CalendarEvent<>(it.getTime(), it.getTeam().getName(),
                             ColorUtil.getPastelColorHash(it.getTeam().getName()), it)).collect(Collectors.toList());
         } catch (Exception e) {
-            LOGGER.warn("Can't load trainings for day " + localDate, e);
+            ExceptionAlert.showError(LOGGER,lang.format("error.load", "error.subj.training"), e);
             return new ArrayList<>(0);
         }
     }

@@ -7,6 +7,7 @@ import ch.tiim.sco.gui.alert.ExceptionAlert;
 import ch.tiim.sco.gui.events.SetEvent;
 import ch.tiim.sco.gui.util.ModelCell;
 import ch.tiim.sco.util.OutOfCoffeeException;
+import ch.tiim.sco.util.lang.ResourceBundleEx;
 import com.google.common.eventbus.Subscribe;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -23,6 +24,8 @@ public class SetView extends MainView {
     private Stage mainStage;
     @Inject(name = "db-controller")
     private DatabaseController db;
+    @Inject(name = "lang")
+    private ResourceBundleEx lang;
 
     @FXML
     private Parent root;
@@ -61,13 +64,13 @@ public class SetView extends MainView {
 
     private void initMenu() {
         getMenu().getItems().setAll(
-                createItem("Export Set", isSelected, event -> {
+                createItem(lang.format("gui.export", "gui.set"), isSelected, event -> {
                     throw new OutOfCoffeeException("Not implemented");
                 }),
                 new SeparatorMenuItem(),
-                createItem("New Set", null, event1 -> onNew()),
-                createItem("Edit Set", isSelected, event2 -> onEdit()),
-                createItem("Delete Set", isSelected, event3 -> onEdit())
+                createItem(lang.format("gui.new", "gui.set"), null, event1 -> onNew()),
+                createItem(lang.format("gui.edit", "gui.set"), isSelected, event2 -> onEdit()),
+                createItem(lang.format("gui.delete", "gui.set"), isSelected, event3 -> onDelete())
         );
     }
 
@@ -88,7 +91,7 @@ public class SetView extends MainView {
         try {
             sets.getItems().setAll(db.getTblSet().getAllSets());
         } catch (Exception e) {
-            ExceptionAlert.showError(LOGGER, "Can't load sets.", e);
+            ExceptionAlert.showError(LOGGER, lang.format("error.load", "error.subj.set"), e);
         }
     }
 
@@ -109,7 +112,7 @@ public class SetView extends MainView {
             try {
                 db.getTblSet().deleteSet(set);
             } catch (Exception e) {
-                ExceptionAlert.showError(LOGGER, "Can't delete set", e);
+                ExceptionAlert.showError(LOGGER, lang.format("error.delete", "error.subj.set"), e);
             }
             eventBus.post(new SetEvent.SetDeleteEvent(set));
         }

@@ -9,6 +9,7 @@ import ch.tiim.sco.gui.alert.ExceptionAlert;
 import ch.tiim.sco.gui.events.TeamEvent;
 import ch.tiim.sco.gui.util.ModelCell;
 import ch.tiim.sco.util.OutOfCoffeeException;
+import ch.tiim.sco.util.lang.ResourceBundleEx;
 import com.google.common.eventbus.Subscribe;
 import javafx.application.HostServices;
 import javafx.beans.property.BooleanProperty;
@@ -29,6 +30,8 @@ public class TeamView extends MainView {
     private DatabaseController db;
     @Inject(name = "host")
     private HostServices host;
+    @Inject(name = "lang")
+    private ResourceBundleEx lang;
 
     @FXML
     private SplitPane root;
@@ -70,15 +73,15 @@ public class TeamView extends MainView {
 
     private void initMenu() {
         getMenu().getItems().addAll(
-                createItem("Export Team", isSelected, event -> {
+                createItem(lang.format("gui.export", "gui.team"), isSelected, event -> {
                     throw new OutOfCoffeeException("Not implemented yet");
                 }),
                 new SeparatorMenuItem(),
-                createItem("Sent E-Mail To All Team Members", isSelected, event1 -> onEmail()),
+                createItem(lang.getString("gui.email.team"), isSelected, event1 -> onEmail()),
                 new SeparatorMenuItem(),
-                createItem("New Team", null, event2 -> onNew()),
-                createItem("Edit Team", isSelected, event3 -> onEdit()),
-                createItem("Delete Team", isSelected, event4 -> onDelete())
+                createItem(lang.format("gui.new", "gui.team"), null, event2 -> onNew()),
+                createItem(lang.format("gui.edit", "gui.team"), isSelected, event3 -> onEdit()),
+                createItem(lang.format("gui.delete", "gui.team"), isSelected, event4 -> onDelete())
         );
     }
 
@@ -87,7 +90,7 @@ public class TeamView extends MainView {
             try {
                 swimmers.getItems().setAll(db.getTblTeamContent().getSwimmers(team));
             } catch (Exception e) {
-                ExceptionAlert.showError(LOGGER, "Can't load swimmers", e);
+                ExceptionAlert.showError(LOGGER, lang.format("error.load", "error.subj.swimmer"), e);
             }
         }
     }
@@ -96,7 +99,7 @@ public class TeamView extends MainView {
         try {
             teams.getItems().setAll(db.getTblTeam().getAllTeams());
         } catch (Exception e) {
-            ExceptionAlert.showError(LOGGER, "Can't load teams", e);
+            ExceptionAlert.showError(LOGGER, lang.format("error.load", "error.subj.team"), e);
         }
     }
 
@@ -109,7 +112,7 @@ public class TeamView extends MainView {
                 eventBus.post(event);
             }
         } catch (Exception e) {
-            ExceptionAlert.showError(LOGGER, "Can't load swimmers", e);
+            ExceptionAlert.showError(LOGGER, lang.format("error.load", "error.subj.swimmer"), e);
         }
     }
 
@@ -130,7 +133,7 @@ public class TeamView extends MainView {
             try {
                 db.getTblTeam().deleteTeam(team);
             } catch (Exception e) {
-                ExceptionAlert.showError(LOGGER, "Can't delete team", e);
+                ExceptionAlert.showError(LOGGER, lang.format("error.delete", "error.subj.team"), e);
             }
             eventBus.post(new TeamEvent.TeamDeleteEvent(team));
         }

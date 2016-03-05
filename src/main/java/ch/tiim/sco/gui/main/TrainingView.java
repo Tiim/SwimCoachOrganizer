@@ -8,6 +8,7 @@ import ch.tiim.sco.gui.events.SetEvent;
 import ch.tiim.sco.gui.events.TrainingEvent;
 import ch.tiim.sco.print.PrintTask;
 import ch.tiim.sco.util.OutOfCoffeeException;
+import ch.tiim.sco.util.lang.ResourceBundleEx;
 import com.google.common.eventbus.Subscribe;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -15,10 +16,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
-import javafx.scene.control.ListView;
-import javafx.scene.control.SeparatorMenuItem;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
@@ -32,6 +30,8 @@ public class TrainingView extends MainView {
     private Stage mainStage;
     @Inject(name = "db-controller")
     private DatabaseController db;
+    @Inject(name = "lang")
+    private ResourceBundleEx lang;
 
     @FXML
     private Parent root;
@@ -85,14 +85,14 @@ public class TrainingView extends MainView {
 
     private void initMenu() {
         getMenu().getItems().setAll(
-                createItem("Export Training", isSelected, event -> {
+                createItem(lang.format("gui.export", "gui.training"), isSelected, event -> {
                     throw new OutOfCoffeeException("Not implemented yet");
                 }),
-                createItem("Export to PDF", isSelected, event -> onPDF()),
+                createItem(lang.getString("gui.export.pdf"), isSelected, event -> onPDF()),
                 new SeparatorMenuItem(),
-                createItem("New Training", null, event -> onNew()),
-                createItem("Edit Selected Training", isSelected, event -> onEdit()),
-                createItem("Delete Selected Training", isSelected, event -> onDelete())
+                createItem(lang.format("gui.new", "gui.training"), null, event -> onNew()),
+                createItem(lang.format("gui.edit", "gui.training"), isSelected, event -> onEdit()),
+                createItem(lang.format("gui.delete", "gui.training"), isSelected, event -> onDelete())
         );
     }
 
@@ -101,7 +101,7 @@ public class TrainingView extends MainView {
             try {
                 selectedTraining.getItems().setAll(db.getTblTrainingContent().getSets(newValue));
             } catch (Exception e) {
-                LOGGER.warn("Can't load sets of " + newValue);
+                ExceptionAlert.showError(LOGGER, lang.format("error.load", "error.subj.set"), e);
             }
         } else {
             selectedTraining.getItems().setAll();
@@ -119,7 +119,7 @@ public class TrainingView extends MainView {
         try {
             trainings.getItems().setAll(db.getTblTraining().getAllTrainings());
         } catch (Exception e) {
-            LOGGER.warn("Can't load Trainings");
+            ExceptionAlert.showError(LOGGER, lang.format("error.load", "error.subj.training"),e);
         }
     }
 
@@ -152,7 +152,7 @@ public class TrainingView extends MainView {
             try {
                 db.getTblTraining().deleteTraining(item);
             } catch (Exception e) {
-                ExceptionAlert.showError(LOGGER, "Can't delete training", e);
+                ExceptionAlert.showError(LOGGER, lang.format("error.delete", "error.subj.training"), e);
             }
             eventBus.post(new TrainingEvent.TrainingDeleteEvent(item));
         }

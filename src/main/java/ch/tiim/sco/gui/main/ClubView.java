@@ -76,15 +76,15 @@ public class ClubView extends MainView {
 
     private void initMenu() {
         getMenu().getItems().addAll(
-                createItem(lang.format("gui.export", "gui.ClubView.club"), isSelected, event -> {
+                createItem(lang.format("gui.export", "gui.club"), isSelected, event -> {
                     throw new OutOfCoffeeException("Not implemented yet");
                 }),
                 new SeparatorMenuItem(),
-                createItem(lang.getString("gui.ClubView.menu.email"), isSelected, event4 -> onEmail()),
+                createItem(lang.getString("gui.email.club"), isSelected, event4 -> onEmail()),
                 new SeparatorMenuItem(),
-                createItem(lang.format("gui.new", "gui.ClubView.club"), null, event1 -> onNew()),
-                createItem(lang.format("gui.edit", "gui.ClubView.club"), isSelected, event2 -> onEdit()),
-                createItem(lang.format("gui.delete", "gui.ClubView.club"), isSelected, event3 -> onDelete())
+                createItem(lang.format("gui.new", "gui.club"), null, event1 -> onNew()),
+                createItem(lang.format("gui.edit", "gui.club"), isSelected, event2 -> onEdit()),
+                createItem(lang.format("gui.delete", "gui.club"), isSelected, event3 -> onDelete())
         );
     }
 

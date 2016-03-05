@@ -13,13 +13,13 @@
             <top>
                 <MenuBar fx:id="menu" BorderPane.alignment="CENTER">
                     <menus>
-                        <Menu mnemonicParsing="false" text="%gui.MainWindow.file">
+                        <Menu mnemonicParsing="false" text="%gui.file">
                             <items>
                                 <MenuItem mnemonicParsing="false" onAction="#onClose" text="Close"/>
                             </items>
                         </Menu>
-                        <Menu mnemonicParsing="false" text="%gui.MainWindow.edit" />
-                        <Menu mnemonicParsing="false" text="%gui.MainWindow.help">
+                        <Menu mnemonicParsing="false" text="%gui.edit.2" />
+                        <Menu mnemonicParsing="false" text="%gui.help">
                             <items>
                                 <MenuItem mnemonicParsing="false" onAction="#onAbout" text="About"/>
                             </items>

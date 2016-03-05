@@ -8,6 +8,7 @@ import ch.tiim.sco.gui.alert.ExceptionAlert;
 import ch.tiim.sco.gui.events.SwimmerEvent;
 import ch.tiim.sco.gui.util.ModelCell;
 import ch.tiim.sco.util.OutOfCoffeeException;
+import ch.tiim.sco.util.lang.ResourceBundleEx;
 import com.google.common.eventbus.Subscribe;
 import javafx.application.HostServices;
 import javafx.beans.property.BooleanProperty;
@@ -29,6 +30,8 @@ public class SwimmerView extends MainView {
     private Stage mainStage;
     @Inject(name = "host")
     private HostServices host;
+    @Inject(name = "lang")
+    private ResourceBundleEx lang;
 
     @FXML
     private SplitPane root;
@@ -77,15 +80,15 @@ public class SwimmerView extends MainView {
 
     private void initMenu() {
         getMenu().getItems().addAll(
-                createItem("Export Swimmer", isSelected, event -> {
+                createItem(lang.format("gui.export", "gui.swimmer"), isSelected, event -> {
                     throw new OutOfCoffeeException("Not implemented yet");
                 }),
                 new SeparatorMenuItem(),
-                createItem("Send E-Mail", isSelected, event1 -> onEmail()),
+                createItem(lang.getString("gui.email.swimmer"), isSelected, event1 -> onEmail()),
                 new SeparatorMenuItem(),
-                createItem("New Swimmer", null, event2 -> onNew()),
-                createItem("Edit Swimmer", isSelected, event3 -> onEdit()),
-                createItem("Delete Swimmer", isSelected, event4 -> onDelete())
+                createItem(lang.format("gui.new", "gui.swimmer"), null, event2 -> onNew()),
+                createItem(lang.format("gui.edit", "gui.swimmer"), isSelected, event3 -> onEdit()),
+                createItem(lang.format("gui.delete", "gui.swimmer"), isSelected, event4 -> onDelete())
         );
     }
 
@@ -121,7 +124,7 @@ public class SwimmerView extends MainView {
         try {
             swimmers.getItems().setAll(db.getTblSwimmer().getAllSwimmers());
         } catch (Exception e) {
-            ExceptionAlert.showError(LOGGER, "Can't load swimmers", e);
+            ExceptionAlert.showError(LOGGER, lang.format("error.load", "error.subj.swimmer"), e);
         }
     }
 
@@ -152,7 +155,7 @@ public class SwimmerView extends MainView {
             try {
                 db.getTblSwimmer().deleteSwimmer(sw);
             } catch (Exception e) {
-                ExceptionAlert.showError(LOGGER, "Can't delete swimmer", e);
+                ExceptionAlert.showError(LOGGER, lang.format("error.delete", "error.subj.swimmer"), e);
             }
             eventBus.post(new SwimmerEvent.SwimmerDeleteEvent(sw));
         }
