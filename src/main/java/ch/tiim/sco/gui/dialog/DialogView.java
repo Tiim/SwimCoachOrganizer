@@ -24,7 +24,6 @@ public abstract class DialogView extends View {
             }
             String css = getClass().getCanonicalName().replace('.', '/') + ".css";
             if (DialogView.class.getResource('/' + css) != null) {
-                LOGGER.info("Loading " + css);
                 root.getStylesheets().add(css);
             }
             Scene scene = new Scene(root);

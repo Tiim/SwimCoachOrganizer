@@ -10,6 +10,7 @@ import ch.tiim.sco.gui.events.OpenEvent;
 import ch.tiim.sco.gui.util.UIException;
 import ch.tiim.sco.gui.util.Validator;
 import ch.tiim.sco.lenex.model.Nation;
+import ch.tiim.sco.util.lang.ResourceBundleEx;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -33,6 +34,8 @@ public class ClubDialog extends DialogView {
     private final HashMap<Team, ObservableValue<Boolean>> selected = new HashMap<>();
     @Inject(name = "db-controller")
     private DatabaseController db;
+    @Inject(name = "lang")
+    private ResourceBundleEx lang;
     @FXML
     private Parent root;
     @FXML
@@ -86,7 +89,7 @@ public class ClubDialog extends DialogView {
         try {
             currentClub = getClub();
         } catch (UIException e) {
-            e.showDialog("Missing Setting");
+            e.showDialog(lang.getString("gui.missing"));
             return;
         }
         try {
@@ -97,7 +100,7 @@ public class ClubDialog extends DialogView {
             }
             db.getTblClubContent().setTeams(currentClub, teams);
         } catch (Exception e) {
-            ExceptionAlert.showError(LOGGER, "Can't save club", e);
+            ExceptionAlert.showError(LOGGER, lang.format("error.save", "error.subj.club"), e);
         }
         eventBus.post(new ClubEvent.ClubSaveEvent(currentClub));
         close();
@@ -107,12 +110,12 @@ public class ClubDialog extends DialogView {
         if (currentClub == null) {
             currentClub = new Club();
         }
-        String name = Validator.strNotEmpty(this.name.getText(), "Name");
+        String name = Validator.strNotEmpty(this.name.getText(), lang.getString("gui.name"));
         currentClub.setName(name);
         currentClub.setNameShort(nameShort.getText());
         currentClub.setNameEn(nameEn.getText());
         currentClub.setNameShortEn(nameShortEn.getText());
-        Nation value = Validator.nonNull(country.getValue(), "Country");
+        Nation value = Validator.nonNull(country.getValue(), lang.getString("gui.country"));
         currentClub.setNationality(value.toString());
         currentClub.setCode(code.getText());
         currentClub.setExternId(externid.getValue());
@@ -149,7 +152,7 @@ public class ClubDialog extends DialogView {
                 notInClub = db.getTblTeam().getAllTeams();
             }
         } catch (Exception e) {
-            ExceptionAlert.showError(LOGGER, "Can't load teams", e);
+            ExceptionAlert.showError(LOGGER, lang.format("error.load", "error.subj.team"), e);
             return;
         }
         inClub.forEach(team -> selected.put(team, new SimpleBooleanProperty(true)));

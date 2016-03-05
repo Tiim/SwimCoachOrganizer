@@ -1,8 +1,10 @@
 package ch.tiim.sco.gui.dialog;
 
+import ch.tiim.inject.Inject;
 import ch.tiim.sco.gui.events.ErrorReportEvent;
 import ch.tiim.sco.gui.events.OpenEvent;
 import ch.tiim.sco.util.error.ErrorReport;
+import ch.tiim.sco.util.lang.ResourceBundleEx;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -16,6 +18,9 @@ import java.io.IOException;
 public class ErrorReportingDialog extends DialogView {
 
     private static final String NON_WORD_CHARS = " .,-+\"*%&/()=?'[]{}<>\\_:;\n\r\t";
+
+    @Inject(name = "lang")
+    private ResourceBundleEx lang;
 
     @FXML
     private Parent root;
@@ -84,7 +89,9 @@ public class ErrorReportingDialog extends DialogView {
             try {
                 report.send();
             } catch (IOException e) {
-                Platform.runLater(() -> new Alert(Alert.AlertType.ERROR, "Can't send error report.\n" + e.getMessage(), ButtonType.OK));
+                Platform.runLater(() -> new Alert(Alert.AlertType.ERROR,
+                        lang.format("error.send", "error.subj.error_report") + ": "
+                                + e.getMessage(), ButtonType.OK));
             }
         }).start();
         close();

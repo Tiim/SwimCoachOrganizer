@@ -11,6 +11,7 @@ import ch.tiim.sco.gui.events.SetEvent;
 import ch.tiim.sco.gui.util.UIException;
 import ch.tiim.sco.gui.util.Validator;
 import ch.tiim.sco.util.DurationFormatter;
+import ch.tiim.sco.util.lang.ResourceBundleEx;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -24,6 +25,9 @@ import java.time.Duration;
 public class SetDialog extends DialogView {
     private static final Logger LOGGER = LoggerFactory.getLogger(SetDialog.class);
     private Set currentSet;
+
+    @Inject(name = "lang")
+    private ResourceBundleEx lang;
 
     @FXML
     private Parent root;
@@ -63,7 +67,7 @@ public class SetDialog extends DialogView {
             focus.setItems(FXCollections.observableArrayList(db.getTblSetFocus().getAllFoci()));
             stroke.setItems(FXCollections.observableArrayList(db.getTblSetStroke().getAllStrokes()));
         } catch (Exception e) {
-            ExceptionAlert.showError(LOGGER, "Can't query database", e);
+            ExceptionAlert.showError(LOGGER, lang.format("error.load", "error.subj.database"), e);
         }
     }
 
@@ -72,7 +76,7 @@ public class SetDialog extends DialogView {
         try {
             currentSet = getSet(currentSet);
         } catch (UIException e) {
-            e.showDialog("Missing Setting");
+            e.showDialog(lang.getString("gui.missing"));
             return;
         }
 
@@ -83,7 +87,7 @@ public class SetDialog extends DialogView {
                 db.getTblSet().addSet(currentSet);
             }
         } catch (Exception e) {
-            LOGGER.warn("Can't save set");
+            ExceptionAlert.showError(LOGGER,lang.format("error.save", "error.subj.set"),e);
         }
 
         eventBus.post(new SetEvent.SetSaveEvent(currentSet));
@@ -94,9 +98,9 @@ public class SetDialog extends DialogView {
         if (currentSet == null) {
             currentSet = new Set();
         }
-        String name = Validator.strNotEmpty(this.name.getText(), "Name");
+        String name = Validator.strNotEmpty(this.name.getText(), lang.getString("gui.name"));
         set.setName(name);
-        String content = Validator.strNotEmpty(this.content.getText(), "Content");
+        String content = Validator.strNotEmpty(this.content.getText(), lang.getString("gui.content"));
         set.setContent(content);
         set.setDistance1(distance1.getValue());
         set.setDistance2(distance2.getValue());

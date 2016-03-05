@@ -11,6 +11,7 @@ import ch.tiim.sco.lenex.ImportResultsTask;
 import ch.tiim.sco.lenex.LenexLoadTask;
 import ch.tiim.sco.lenex.model.Lenex;
 import ch.tiim.sco.util.DurationFormatter;
+import ch.tiim.sco.util.lang.ResourceBundleEx;
 import javafx.beans.property.*;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -38,6 +39,9 @@ public class ResultImportDialog extends DialogView {
     private final HashMap<Pair<Swimmer, Result>, BooleanProperty> selected = new HashMap<>();
     @Inject(name = "db-controller")
     private DatabaseController db;
+    @Inject(name = "lang")
+    private ResourceBundleEx lang;
+
     @FXML
     private BorderPane root;
     @FXML
@@ -79,7 +83,7 @@ public class ResultImportDialog extends DialogView {
             loadTask.setOnSucceeded(event -> onLenexLoaded(loadTask.getValue()));
             loadTask.setOnFailed(event ->
                     ExceptionAlert.showError(LOGGER,
-                            "Failed to load lenex file", event.getSource().getException()));
+                            lang.format("error.load", "error.subj.lenex"), event.getSource().getException()));
             eventBus.post(loadTask);
         }
     }
@@ -89,13 +93,14 @@ public class ResultImportDialog extends DialogView {
         try {
             swimmers = db.getTblSwimmer().getAllSwimmers();
         } catch (Exception e) {
-            LOGGER.warn("Can't load swimmers");
+            ExceptionAlert.showError(LOGGER, lang.format("error.load", "error.subj.swimmer"), e);
             return;
         }
         ImportResultsTask importTask = new ImportResultsTask(swimmers, lenex);
         importTask.setOnSucceeded(event -> onResultsLoaded(importTask.getValue()));
         importTask.setOnFailed(event ->
-                ExceptionAlert.showError(LOGGER, "Failed to load lenex file", event.getSource().getException()));
+                ExceptionAlert.showError(LOGGER, lang.format("error.load", "error.subj.lenex"),
+                        event.getSource().getException()));
         eventBus.post(importTask);
     }
 
@@ -109,7 +114,7 @@ public class ResultImportDialog extends DialogView {
     @FXML
     private void onBrowse() {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Open Lenex File");
+        fileChooser.setTitle(lang.getString("gui.open.lenex"));
         fileChooser.setSelectedExtensionFilter(new FileChooser.ExtensionFilter("LENEX", "*.lxf", "*.lef"));
         File file = fileChooser.showOpenDialog(getStage());
         if (file != null) {
@@ -132,7 +137,7 @@ public class ResultImportDialog extends DialogView {
                 db.getTblResult().addResult(sw.getKey(), sw.getValue());
             }
         } catch (Exception e) {
-            LOGGER.warn("Can't save result");
+            ExceptionAlert.showError(LOGGER, lang.format("error.save", "error.subj.result"), e);
         }
         if (!s.isEmpty()) {
             eventBus.post(new ResultEvent.ResultSaveEvent(s.get(0).getValue(), s.get(0).getKey()));

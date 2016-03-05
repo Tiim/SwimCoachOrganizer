@@ -3,10 +3,12 @@ package ch.tiim.sco.gui.dialog;
 import ch.tiim.inject.Inject;
 import ch.tiim.sco.database.DatabaseController;
 import ch.tiim.sco.database.model.SetStroke;
+import ch.tiim.sco.gui.alert.ExceptionAlert;
 import ch.tiim.sco.gui.events.OpenEvent;
 import ch.tiim.sco.gui.events.StrokeEvent;
 import ch.tiim.sco.gui.util.UIException;
 import ch.tiim.sco.gui.util.Validator;
+import ch.tiim.sco.util.lang.ResourceBundleEx;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.TextArea;
@@ -19,6 +21,8 @@ public class StrokeDialog extends DialogView {
     private static final Logger LOGGER = LoggerFactory.getLogger(StrokeDialog.class);
     @Inject(name = "db-controller")
     private DatabaseController db;
+    @Inject(name = "lang")
+    private ResourceBundleEx lang;
 
     @FXML
     private Parent root;
@@ -56,7 +60,7 @@ public class StrokeDialog extends DialogView {
         try {
             currentStroke = getStroke(currentStroke);
         } catch (UIException e) {
-            e.showDialog("Missing Setting");
+            e.showDialog(lang.getString("gui.missing"));
             return;
         }
         try {
@@ -66,15 +70,15 @@ public class StrokeDialog extends DialogView {
                 db.getTblSetStroke().updateSetStroke(currentStroke);
             }
         } catch (Exception e) {
-            LOGGER.warn("Can't save stroke");
+            ExceptionAlert.showError(LOGGER, lang.format("error.save", "error.stroke"), e);
         }
         close();
         eventBus.post(new StrokeEvent.StrokeSaveEvent(currentStroke));
     }
 
     private SetStroke getStroke(SetStroke f) throws UIException {
-        String name = Validator.strNotEmpty(this.name.getText(), "Name");
-        String abbr = Validator.strNotEmpty(this.abbr.getText(), "Abbr");
+        String name = Validator.strNotEmpty(this.name.getText(), lang.getString("gui.name"));
+        String abbr = Validator.strNotEmpty(this.abbr.getText(), lang.getString("gui.abbr"));
         if (f == null) {
             f = new SetStroke(name, abbr, notes.getText());
         } else {

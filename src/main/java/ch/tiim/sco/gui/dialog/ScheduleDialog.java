@@ -4,11 +4,13 @@ import ch.tiim.inject.Inject;
 import ch.tiim.sco.database.DatabaseController;
 import ch.tiim.sco.database.model.ScheduleRule;
 import ch.tiim.sco.database.model.Team;
+import ch.tiim.sco.gui.alert.ExceptionAlert;
 import ch.tiim.sco.gui.events.OpenEvent;
 import ch.tiim.sco.gui.events.ScheduleEvent;
 import ch.tiim.sco.gui.util.ModelConverter;
 import ch.tiim.sco.gui.util.UIException;
 import ch.tiim.sco.gui.util.Validator;
+import ch.tiim.sco.util.lang.ResourceBundleEx;
 import javafx.beans.InvalidationListener;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -26,6 +28,8 @@ public class ScheduleDialog extends DialogView {
 
     @Inject(name = "db-controller")
     private DatabaseController db;
+    @Inject(name = "lang")
+    private ResourceBundleEx lang;
 
     @FXML
     private Parent root;
@@ -49,7 +53,7 @@ public class ScheduleDialog extends DialogView {
         try {
             team.getItems().setAll(db.getTblTeam().getAllTeams());
         } catch (Exception e) {
-            LOGGER.warn("Can't load teams", e);
+            ExceptionAlert.showError(LOGGER, lang.format("error.load", "error.subj.team"), e);
         }
         startHour.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 23, 18));
         startMinute.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 59, 15));
@@ -75,9 +79,9 @@ public class ScheduleDialog extends DialogView {
     }
 
     private ScheduleRule getScheduleRule() throws UIException {
-        LocalDate day = Validator.nonNull(startDay.getValue(), "Start Day");
+        LocalDate day = Validator.nonNull(startDay.getValue(), lang.getString("gui.start.day"));
         LocalTime time = LocalTime.of(startHour.getValue(), startMinute.getValue());
-        Team team = Validator.nonNull(this.team.getValue(), "Team");
+        Team team = Validator.nonNull(this.team.getValue(), lang.getString("gui.team"));
         return new ScheduleRule(day, time, interval.getValue(), duration.getValue(), team);
     }
 
@@ -106,9 +110,9 @@ public class ScheduleDialog extends DialogView {
             eventBus.post(new ScheduleEvent.ScheduleSaveEvent(schedule));
             close();
         } catch (UIException e) {
-            e.showDialog("Missing settings:");
+            e.showDialog(lang.getString("gui.missing"));
         } catch (Exception e) {
-            LOGGER.warn("Can't save schedule", e);
+            ExceptionAlert.showError(LOGGER, lang.format("error.save", "error.subj.schedule"), e);
         }
     }
 

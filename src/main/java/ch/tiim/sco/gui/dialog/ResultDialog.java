@@ -11,6 +11,7 @@ import ch.tiim.sco.gui.events.OpenEvent;
 import ch.tiim.sco.gui.events.ResultEvent;
 import ch.tiim.sco.gui.util.UIException;
 import ch.tiim.sco.util.DurationFormatter;
+import ch.tiim.sco.util.lang.ResourceBundleEx;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
@@ -22,6 +23,8 @@ public class ResultDialog extends DialogView {
     private static final Logger LOGGER = LoggerFactory.getLogger(ResultDialog.class);
     @Inject(name = "db-controller")
     private DatabaseController db;
+    @Inject(name = "lang")
+    private ResourceBundleEx lang;
 
     @FXML
     private Parent root;
@@ -54,7 +57,7 @@ public class ResultDialog extends DialogView {
         try {
             currentResult = getResult();
         } catch (UIException e) {
-            e.showDialog("Invalid Settings");
+            e.showDialog(lang.getString("gui.missing"));
         }
         try {
             if (currentResult.getId() == null) {
@@ -63,7 +66,7 @@ public class ResultDialog extends DialogView {
                 db.getTblResult().updateResult(currentResult);
             }
         } catch (Exception e) {
-            ExceptionAlert.showError(LOGGER, "Can't save result", e);
+            ExceptionAlert.showError(LOGGER, lang.format("error.save", "error.subj.result"), e);
         }
         eventBus.post(new ResultEvent.ResultSaveEvent(currentResult, currentSwimmer));
         close();
@@ -78,7 +81,7 @@ public class ResultDialog extends DialogView {
         try {
             currentResult.setSwimTime(DurationFormatter.parse(time.getText()));
         } catch (IllegalArgumentException e) {
-            throw new UIException("Swim Time must be in the format hh:mm:ss.nn");
+            throw new UIException(lang.getString("gui.time_format"));
         }
         currentResult.setReactionTime(DurationFormatter.parse(reactionTime.getText()));
         currentResult.setCourse(course.getValue());
