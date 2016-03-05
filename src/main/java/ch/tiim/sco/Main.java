@@ -14,6 +14,7 @@ import ch.tiim.sco.update.VersionCheckTask;
 import ch.tiim.sco.update.VersionChecker;
 import ch.tiim.sco.util.async.DaemonFactory;
 import ch.tiim.sco.util.async.ExecutorEventListener;
+import ch.tiim.sco.util.lang.ResourceBundleEx;
 import ch.tiim.sco.util.lang.ResourceBundleUtil;
 import com.github.zafarkhaja.semver.Version;
 import com.google.common.eventbus.DeadEvent;
@@ -52,7 +53,7 @@ public class Main extends Application {
         eventBus.register(this);
 
         Locale locale = Settings.INSTANCE.getLocale("default_locale", Locale.getDefault());
-        ResourceBundle bundle = ResourceBundleUtil.getResourceBundle(locale);
+        ResourceBundle bundle = new ResourceBundleEx(ResourceBundleUtil.getResourceBundle(locale));
         ViewLoader.setBundle(bundle);
 
         ExceptionAlert.setEventBus(eventBus);
