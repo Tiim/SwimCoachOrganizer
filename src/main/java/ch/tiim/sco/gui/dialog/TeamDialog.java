@@ -9,6 +9,7 @@ import ch.tiim.sco.gui.events.OpenEvent;
 import ch.tiim.sco.gui.events.TeamEvent;
 import ch.tiim.sco.gui.util.UIException;
 import ch.tiim.sco.gui.util.Validator;
+import ch.tiim.sco.util.lang.ResourceBundleEx;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -32,6 +33,9 @@ public class TeamDialog extends DialogView {
     private final HashMap<Swimmer, ObservableValue<Boolean>> selected = new HashMap<>();
     @Inject(name = "db-controller")
     private DatabaseController db;
+    @Inject(name = "lang")
+    private ResourceBundleEx lang;
+
     @FXML
     private VBox root;
     @FXML
@@ -65,7 +69,7 @@ public class TeamDialog extends DialogView {
         try {
             currentTeam = getTeam();
         } catch (UIException e) {
-            e.showDialog("Missing Setting");
+            e.showDialog(lang.str("gui.missing"));
             return;
         }
         List<Swimmer> swimmers = selected.keySet().stream()
@@ -79,14 +83,14 @@ public class TeamDialog extends DialogView {
             }
             db.getTblTeamContent().setSwimmers(currentTeam, swimmers);
         } catch (Exception e) {
-            ExceptionAlert.showError(LOGGER, "Can't save team", e);
+            ExceptionAlert.showError(LOGGER, lang.format("error.save", "error.subj.team"), e);
         }
         close();
         eventBus.post(new TeamEvent.TeamSaveEvent(currentTeam));
     }
 
     private Team getTeam() throws UIException {
-        String name = Validator.strNotEmpty(this.name.getText(), "Name");
+        String name = Validator.strNotEmpty(this.name.getText(), lang.str("gui.name"));
         if (currentTeam == null) {
             currentTeam = new Team(name);
         } else {
@@ -115,7 +119,7 @@ public class TeamDialog extends DialogView {
                 notInTeam = db.getTblSwimmer().getAllSwimmers();
             }
         } catch (Exception e) {
-            ExceptionAlert.showError(LOGGER, "Can't load swimmers", e);
+            ExceptionAlert.showError(LOGGER, lang.format("error.load", "error.subj.swimmer"), e);
             return;
         }
         inTeam.forEach(swimmer -> selected.put(swimmer, new SimpleBooleanProperty(true)));

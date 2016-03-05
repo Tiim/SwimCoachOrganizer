@@ -11,6 +11,7 @@ import ch.tiim.sco.gui.util.ModelCell;
 import ch.tiim.sco.gui.util.ModelConverter;
 import ch.tiim.sco.gui.util.UIException;
 import ch.tiim.sco.gui.util.Validator;
+import ch.tiim.sco.util.lang.ResourceBundleEx;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
@@ -28,6 +29,8 @@ public class TrainingDialog extends DialogView {
     private static final Logger LOGGER = LoggerFactory.getLogger(TrainingDialog.class);
     @Inject(name = "db-controller")
     private DatabaseController db;
+    @Inject(name = "lang")
+    private ResourceBundleEx lang;
 
     @FXML
     private Parent root;
@@ -66,7 +69,7 @@ public class TrainingDialog extends DialogView {
         try {
             teams.getItems().setAll(db.getTblTeam().getAllTeams());
         } catch (Exception e) {
-            ExceptionAlert.showError(LOGGER, "Can't load teams", e);
+            ExceptionAlert.showError(LOGGER, lang.format("error.load", "error.subj.team"), e);
         }
     }
 
@@ -80,7 +83,7 @@ public class TrainingDialog extends DialogView {
             }
             schedules.getItems().setAll(t);
         } catch (Exception e) {
-            ExceptionAlert.showError(LOGGER, "Can't load schedules", e);
+            ExceptionAlert.showError(LOGGER, lang.format("error.load", "error.subj.schedule"), e);
         }
     }
 
@@ -142,7 +145,7 @@ public class TrainingDialog extends DialogView {
         try {
             currentTraining = getTraining(currentTraining);
         } catch (UIException e) {
-            e.showDialog("Missing settings:");
+            e.showDialog(lang.str("gui.missing"));
             return;
         }
         try {
@@ -153,7 +156,7 @@ public class TrainingDialog extends DialogView {
             }
             db.getTblTrainingContent().setSets(currentTraining, training.getItems());
         } catch (Exception e) {
-            ExceptionAlert.showError(LOGGER, "can't save training", e);
+            ExceptionAlert.showError(LOGGER, lang.format("error.save", "error.subj.training"), e);
             return;
         }
         close();
@@ -161,7 +164,7 @@ public class TrainingDialog extends DialogView {
     }
 
     private Training getTraining(Training t) throws UIException {
-        LocalDate d = Validator.nonNull(date.getValue(), "Date");
+        LocalDate d = Validator.nonNull(date.getValue(), lang.str("gui.date"));
         Team team = teams.getValue();
         ScheduleRule schedule = schedules.getValue();
         if (t == null) {
@@ -202,7 +205,7 @@ public class TrainingDialog extends DialogView {
                     training.getItems().setAll(sets);
                 }
             } catch (Exception e) {
-                ExceptionAlert.showError(LOGGER, "Can't load sets for training", e);
+                ExceptionAlert.showError(LOGGER, lang.format("error.load", "error.subj.set"), e);
             }
         }
     }
@@ -211,7 +214,7 @@ public class TrainingDialog extends DialogView {
         try {
             sets.getItems().setAll(db.getTblSet().getAllSets());
         } catch (Exception e) {
-            ExceptionAlert.showError(LOGGER, "Can't load sets", e);
+            ExceptionAlert.showError(LOGGER, lang.format("error.load", "error.subj.set"), e);
         }
     }
 

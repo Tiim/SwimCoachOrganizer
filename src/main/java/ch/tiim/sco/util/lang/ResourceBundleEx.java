@@ -1,5 +1,8 @@
 package ch.tiim.sco.util.lang;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.annotation.Nonnull;
 import java.util.Enumeration;
 import java.util.Locale;
@@ -7,7 +10,7 @@ import java.util.ResourceBundle;
 import java.util.Set;
 
 public class ResourceBundleEx extends ResourceBundle {
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(ResourceBundleEx.class);
 
     private final ResourceBundle rb;
 
@@ -28,7 +31,8 @@ public class ResourceBundleEx extends ResourceBundle {
         try {
             return getString(key);
         } catch (Exception e) {
-            return key;
+            LOGGER.warn("Localisation for [" + key + "] does not exist.");
+            return "[" + key + "]";
         }
     }
 

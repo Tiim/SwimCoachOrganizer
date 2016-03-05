@@ -71,7 +71,7 @@ public class SwimmerDialog extends DialogView {
         try {
             currentSwimmer = getSwimmer();
         } catch (UIException e) {
-            e.showDialog("Missing Setting");
+            e.showDialog(lang.str("gui.missing"));
             return;
         }
         try {
@@ -81,7 +81,7 @@ public class SwimmerDialog extends DialogView {
                 db.getTblSwimmer().updateSwimmer(currentSwimmer);
             }
         } catch (Exception e) {
-            ExceptionAlert.showError(LOGGER, "Can't save swimmer", e);
+            ExceptionAlert.showError(LOGGER, lang.format("error.save", "error.subj.swimmer"), e);
         }
         eventBus.post(new SwimmerEvent.SwimmerSaveEvent(currentSwimmer));
         close();
@@ -91,9 +91,9 @@ public class SwimmerDialog extends DialogView {
         if (currentSwimmer == null) {
             currentSwimmer = new Swimmer();
         }
-        currentSwimmer.setFirstName(strNotEmpty(this.firstName.getText(), "First Name"));
+        currentSwimmer.setFirstName(strNotEmpty(this.firstName.getText(), lang.str("gui.name.first")));
         currentSwimmer.setEmail(email.getText());
-        currentSwimmer.setLastName(strNotEmpty(lastName.getText(), "Last Name"));
+        currentSwimmer.setLastName(strNotEmpty(lastName.getText(), lang.str("gui.name.last")));
         currentSwimmer.setPhonePrivate(phonePrivate.getText());
         currentSwimmer.setPhoneMobile(phoneMobile.getText());
         currentSwimmer.setPhoneWork(phoneWork.getText());
@@ -102,7 +102,7 @@ public class SwimmerDialog extends DialogView {
             currentSwimmer.setId(Integer.parseInt(licenseId.getText()));
         }
         currentSwimmer.setIsFemale(isFemale.isSelected());
-        currentSwimmer.setBirthDay(nonNull(birthDay.getValue(), "Birthday"));
+        currentSwimmer.setBirthDay(nonNull(birthDay.getValue(), lang.getString("gui.birthday")));
         currentSwimmer.setNotes(notes.getText());
 
         return currentSwimmer;

@@ -1,5 +1,7 @@
 package ch.tiim.sco.gui.dialog;
 
+import ch.tiim.inject.Inject;
+import ch.tiim.sco.util.lang.ResourceBundleEx;
 import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -9,6 +11,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.util.Duration;
 
 public class TaskDialog extends DialogView {
+
+    @Inject(name = "lang")
+    private ResourceBundleEx lang;
 
     @FXML
     private BorderPane root;
@@ -31,7 +36,7 @@ public class TaskDialog extends DialogView {
     public void onFailed() {
         progress.setProgress(-1);
         progress.setDisable(true);
-        message.appendText("Failed");
+        message.appendText(lang.str("gui.failed"));
         PauseTransition pt = new PauseTransition(Duration.seconds(2));
         pt.setOnFinished(event -> close());
         pt.play();
