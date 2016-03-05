@@ -10,6 +10,7 @@ import ch.tiim.sco.gui.alert.ExceptionAlert;
 import ch.tiim.sco.gui.events.ClubEvent;
 import ch.tiim.sco.gui.util.ModelCell;
 import ch.tiim.sco.util.OutOfCoffeeException;
+import ch.tiim.sco.util.lang.ResourceBundleEx;
 import com.google.common.eventbus.Subscribe;
 import javafx.application.HostServices;
 import javafx.beans.property.BooleanProperty;
@@ -34,6 +35,8 @@ public class ClubView extends MainView {
     private DatabaseController db;
     @Inject(name = "host")
     private HostServices host;
+    @Inject(name = "lang")
+    private ResourceBundleEx lang;
 
     @FXML
     private Parent root;
@@ -73,15 +76,15 @@ public class ClubView extends MainView {
 
     private void initMenu() {
         getMenu().getItems().addAll(
-                createItem("Export Club", isSelected, event -> {
+                createItem(lang.format("gui.export", "gui.ClubView.club"), isSelected, event -> {
                     throw new OutOfCoffeeException("Not implemented yet");
                 }),
                 new SeparatorMenuItem(),
-                createItem("Send E-Mail To Club Members", isSelected, event4 -> onEmail()),
+                createItem(lang.getString("gui.ClubView.menu.email"), isSelected, event4 -> onEmail()),
                 new SeparatorMenuItem(),
-                createItem("New Club", null, event1 -> onNew()),
-                createItem("Edit Club", isSelected, event2 -> onEdit()),
-                createItem("Delete Club", isSelected, event3 -> onDelete())
+                createItem(lang.format("gui.new", "gui.ClubView.club"), null, event1 -> onNew()),
+                createItem(lang.format("gui.edit", "gui.ClubView.club"), isSelected, event2 -> onEdit()),
+                createItem(lang.format("gui.delete", "gui.ClubView.club"), isSelected, event3 -> onDelete())
         );
     }
 
@@ -98,7 +101,7 @@ public class ClubView extends MainView {
             try {
                 teams.getItems().setAll(db.getTblClubContent().getTeams(newValue));
             } catch (Exception e) {
-                ExceptionAlert.showError(LOGGER, "Can't load teams", e);
+                ExceptionAlert.showError(LOGGER, lang.format("error.load", "error.subj.team"), e);
             }
         }
     }
@@ -107,7 +110,7 @@ public class ClubView extends MainView {
         try {
             clubs.getItems().setAll(db.getTblClub().getAll());
         } catch (Exception e) {
-            ExceptionAlert.showError(LOGGER, "Can't load clubs", e);
+            ExceptionAlert.showError(LOGGER, lang.format("error.load", "error.subj.club"), e);
         }
     }
 
@@ -125,7 +128,7 @@ public class ClubView extends MainView {
                 eventBus.post(event);
             }
         } catch (Exception e) {
-            ExceptionAlert.showError(LOGGER, "Can't load members of club", e);
+            ExceptionAlert.showError(LOGGER, lang.format("error.load", "error.subj.swimmer"), e);
         }
     }
 
@@ -146,7 +149,7 @@ public class ClubView extends MainView {
             try {
                 db.getTblClub().deleteClub(club);
             } catch (Exception e) {
-                LOGGER.warn("Can't delete club");
+                ExceptionAlert.showError(LOGGER, lang.format("error.delete", "error.subj.club"), e);
             }
             eventBus.post(new ClubEvent.ClubDeleteEvent(club));
         }

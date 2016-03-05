@@ -9,6 +9,7 @@ import ch.tiim.sco.gui.events.ResultEvent;
 import ch.tiim.sco.gui.util.DurationTableCell;
 import ch.tiim.sco.gui.util.ModelCell;
 import ch.tiim.sco.util.OutOfCoffeeException;
+import ch.tiim.sco.util.lang.ResourceBundleEx;
 import com.google.common.eventbus.Subscribe;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -33,6 +34,8 @@ public class ResultView extends MainView {
     private DatabaseController db;
     @Inject(name = "main-stage")
     private Stage mainStage;
+    @Inject(name = "lang")
+    private ResourceBundleEx lang;
 
     @FXML
     private Parent root;
@@ -81,14 +84,14 @@ public class ResultView extends MainView {
 
     private void initMenu() {
         getMenu().getItems().addAll(
-                createItem("Export Results", isSwimmerSelected, event -> {
+                createItem(lang.format("gui.export", "gui.ResultView.result"), isSwimmerSelected, event -> {
                     throw new OutOfCoffeeException("Not implemented yet");
                 }),
-                createItem("Import Results From LENEX", null, event1 -> onImport()),
+                createItem(lang.getString("gui.ResultView.import"), null, event1 -> onImport()),
                 new SeparatorMenuItem(),
-                createItem("New Result", isSwimmerSelected, event2 -> onNew()),
-                createItem("Edit Result", isResultSelected, event3 -> onEdit()),
-                createItem("Delete Reuslt", isResultSelected, event4 -> onDelete())
+                createItem(lang.format("gui.new", "gui.ResultView.result"), isSwimmerSelected, event2 -> onNew()),
+                createItem(lang.format("gui.edit", "gui.ResultView.result"), isResultSelected, event3 -> onEdit()),
+                createItem(lang.format("gui.delete", "gui.ResultView.result"), isResultSelected, event4 -> onDelete())
         );
     }
 
@@ -97,7 +100,7 @@ public class ResultView extends MainView {
             try {
                 results.getItems().setAll(db.getTblResult().getResults(swimmer));
             } catch (Exception e) {
-                ExceptionAlert.showError(LOGGER, "Can't load results", e);
+                ExceptionAlert.showError(LOGGER, lang.format("error.load", "error.subj.result"), e);
             }
         }
     }
@@ -106,7 +109,7 @@ public class ResultView extends MainView {
         try {
             swimmers.getItems().setAll(db.getTblSwimmer().getAllSwimmers());
         } catch (Exception e) {
-            ExceptionAlert.showError(LOGGER, "Can't load swimmers", e);
+            ExceptionAlert.showError(LOGGER, lang.format("error.load", "error.subj.swimmer"), e);
         }
     }
 
@@ -136,7 +139,7 @@ public class ResultView extends MainView {
             try {
                 db.getTblResult().deleteResult(res);
             } catch (Exception e) {
-                ExceptionAlert.showError(LOGGER, "Can't delete result", e);
+                ExceptionAlert.showError(LOGGER, lang.format("error.delete", "error.subj.result"), e);
             }
             eventBus.post(new ResultEvent.ResultDeleteEvent(res, swimmer));
         }
@@ -146,7 +149,6 @@ public class ResultView extends MainView {
     public void onResult(ResultEvent event) {
         populate();
         swimmers.getSelectionModel().select(event.getSwimmer());
-//        results.getSelectionModel().select(event.getObj());
     }
 
     @Override

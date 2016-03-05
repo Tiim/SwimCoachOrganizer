@@ -16,7 +16,7 @@
                 <Label fx:id="name" text="Label"/>
                 <HBox alignment="CENTER">
                     <children>
-                        <Label text="%gui.main.BirthdayView.birthday" />
+                        <Label text="%gui.BirthdayView.birthday" />
                         <Label fx:id="birthday" text="Label" />
                     </children>
                 </HBox>

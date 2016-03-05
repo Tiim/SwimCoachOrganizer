@@ -6,6 +6,7 @@ import ch.tiim.sco.database.model.SetFocus;
 import ch.tiim.sco.gui.alert.ExceptionAlert;
 import ch.tiim.sco.gui.events.FocusEvent;
 import ch.tiim.sco.util.OutOfCoffeeException;
+import ch.tiim.sco.util.lang.ResourceBundleEx;
 import com.google.common.eventbus.Subscribe;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -26,6 +27,8 @@ public class FocusView extends MainView {
     private DatabaseController db;
     @Inject(name = "main-stage")
     private Stage mainStage;
+    @Inject(name = "lang")
+    private ResourceBundleEx lang;
 
     private BooleanProperty isSelected = new SimpleBooleanProperty(false);
 
@@ -51,13 +54,13 @@ public class FocusView extends MainView {
 
     private void initMenu() {
         getMenu().getItems().addAll(
-                createItem("Export Focus", isSelected, event -> {
+                createItem(lang.format("gui.export", "gui.FocusView.focus"), isSelected, event -> {
                     throw new OutOfCoffeeException("Not implemented");
                 }),
                 new SeparatorMenuItem(),
-                createItem("New Focus", null, event -> onNew()),
-                createItem("Edit Focus", isSelected, event1 -> onEdit()),
-                createItem("Delete Focus", isSelected, event2 -> onDelete())
+                createItem(lang.format("gui.new", "gui.FocusView.focus"), null, event -> onNew()),
+                createItem(lang.format("gui.edit", "gui.FocusView.focus"), isSelected, event1 -> onEdit()),
+                createItem(lang.format("gui.delete", "gui.FocusView.focus"), isSelected, event2 -> onDelete())
         );
     }
 
@@ -73,7 +76,7 @@ public class FocusView extends MainView {
         try {
             foci.setItems(FXCollections.observableArrayList(db.getTblSetFocus().getAllFoci()));
         } catch (Exception e) {
-            ExceptionAlert.showError(LOGGER, "Can't load focus", e);
+            ExceptionAlert.showError(LOGGER, lang.format("error.load", "error.subj.focus"), e);
         }
     }
 
@@ -94,7 +97,7 @@ public class FocusView extends MainView {
             try {
                 db.getTblSetFocus().deleteSetFocus(item);
             } catch (Exception e) {
-                ExceptionAlert.showError(LOGGER, "Can't delete focus", e);
+                ExceptionAlert.showError(LOGGER, lang.format("error.delete", "error.subj.focus"), e);
             }
             eventBus.post(new FocusEvent.FocusDeleteEvent(item));
         }
