@@ -16,8 +16,8 @@
                 <Label fx:id="name" text="Label"/>
                 <HBox alignment="CENTER">
                     <children>
-                        <Label text="Birthday:"/>
-                        <Label fx:id="birthday" text="Label"/>
+                        <Label text="%gui.main.BirthdayView.birthday" />
+                        <Label fx:id="birthday" text="Label" />
                     </children>
                 </HBox>
                 <BorderPane prefHeight="200.0" prefWidth="200.0">
