@@ -1,6 +1,9 @@
 package ch.tiim.sco.gui.component;
 
+import ch.tiim.inject.Inject;
+import ch.tiim.inject.Injector;
 import ch.tiim.sco.gui.ViewLoader;
+import ch.tiim.sco.util.lang.ResourceBundleEx;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.StringProperty;
@@ -20,7 +23,6 @@ import java.time.Month;
 import java.time.YearMonth;
 import java.time.format.TextStyle;
 import java.util.List;
-import java.util.Locale;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
@@ -31,6 +33,9 @@ public class CalendarControl<T> extends BorderPane {
     private static final int DAYS_OF_WEEK = 7;
     private static final int WEEKS = 6;
     private static final int DAYS = DAYS_OF_WEEK * WEEKS;
+
+    @Inject(name = "lang")
+    private ResourceBundleEx lang;
 
     @FXML
     private Label title;
@@ -51,6 +56,7 @@ public class CalendarControl<T> extends BorderPane {
 
     public CalendarControl() {
         ViewLoader.load(this, "Calendar.fxml");
+        Injector.getInstance().inject(this, null);
         getStylesheets().add("ch/tiim/sco/gui/component/Calendar.css");
         init();
         selectedDate.addListener(observable -> dateChanged());
@@ -65,7 +71,7 @@ public class CalendarControl<T> extends BorderPane {
         LocalDate localDate = selectedDate.get();
         Month month = localDate.getMonth();
         title.setText(String.format("%s, %d",
-                month.getDisplayName(TextStyle.FULL_STANDALONE, Locale.getDefault()),
+                month.getDisplayName(TextStyle.FULL, lang.getLocale()),
                 localDate.getYear()
         ));
         LocalDate first = localDate.withDayOfMonth(1);
