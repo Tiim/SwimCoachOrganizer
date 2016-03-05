@@ -5,7 +5,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -89,6 +88,8 @@ public class ErrorReport {
         try (PrintWriter wr = new PrintWriter(conn.getOutputStream())) {
             wr.write(report);
         }
-        InputStream is = conn.getInputStream();
+        if (conn.getResponseCode() != 200) {
+            throw new IOException(conn.getResponseMessage());
+        }
     }
 }

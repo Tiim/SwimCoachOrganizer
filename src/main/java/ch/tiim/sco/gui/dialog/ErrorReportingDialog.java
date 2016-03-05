@@ -3,8 +3,11 @@ package ch.tiim.sco.gui.dialog;
 import ch.tiim.sco.gui.events.ErrorReportEvent;
 import ch.tiim.sco.gui.events.OpenEvent;
 import ch.tiim.sco.util.error.ErrorReport;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 
@@ -39,9 +42,9 @@ public class ErrorReportingDialog extends DialogView {
         data.setOnMouseClicked(event -> censorWordUnder(data.getCaretPosition()));
     }
 
+    @SuppressWarnings("StatementWithEmptyBody")
     private void censorWordUnder(int caretPosition) {
         double scrollTop = data.getScrollTop();
-        System.out.println(scrollTop);
         int start = caretPosition;
         int end = caretPosition + 1;
         for (; start >= 0 && isWord(start - 1); start--) {
@@ -81,7 +84,7 @@ public class ErrorReportingDialog extends DialogView {
             try {
                 report.send();
             } catch (IOException e) {
-                //ignore
+                Platform.runLater(() -> new Alert(Alert.AlertType.ERROR, "Can't send error report.\n" + e.getMessage(), ButtonType.OK));
             }
         }).start();
         close();
