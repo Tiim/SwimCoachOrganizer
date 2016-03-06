@@ -7,6 +7,7 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
@@ -15,7 +16,14 @@
 
 <SplitPane fx:id="root" dividerPositions="0.25" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.tiim.sco.gui.main.SwimmerView">
     <items>
-        <ListView fx:id="swimmers" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" />
+      <BorderPane>
+         <center>
+              <ListView fx:id="swimmers" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" />
+         </center>
+         <top>
+            <TextField fx:id="search" promptText="%gui.search" BorderPane.alignment="CENTER" />
+         </top>
+      </BorderPane>
         <VBox alignment="CENTER_RIGHT">
             <children>
                 <GridPane fx:id="root1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" VBox.vgrow="ALWAYS">
