@@ -15,12 +15,11 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
-import javafx.scene.control.ListView;
-import javafx.scene.control.SeparatorMenuItem;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
@@ -42,6 +41,8 @@ public class TrainingView extends MainView {
     @FXML
     private ListView<Training> trainings;
     @FXML
+    private TextField search;
+    @FXML
     private TableView<IndexedSet> selectedTraining;
     @FXML
     private TableColumn<IndexedSet, Number> colNr;
@@ -61,6 +62,7 @@ public class TrainingView extends MainView {
     private TableColumn<IndexedSet, String> colTime;
 
     private BooleanProperty isSelected = new SimpleBooleanProperty(false);
+    private FilteredList<Training> allTrainings;
 
     @FXML
     private void initialize() {
@@ -84,6 +86,14 @@ public class TrainingView extends MainView {
         isSelected.bind(trainings.getSelectionModel().selectedItemProperty().isNotNull());
         selectedTraining.setOnMouseClicked(event -> {
             if (event.getClickCount() == 2) onDoubleClick();
+        });
+        search.textProperty().addListener(observable -> {
+            if (search.getText() == null || search.getText().isEmpty()) {
+                allTrainings.setPredicate(training -> true);
+            } else {
+                allTrainings.setPredicate(training ->
+                        training.uiString(lang).toLowerCase().contains(search.getText().toLowerCase()));
+            }
         });
         populate();
     }
@@ -122,7 +132,9 @@ public class TrainingView extends MainView {
 
     private void populate() {
         try {
-            trainings.getItems().setAll(db.getTblTraining().getAllTrainings());
+            allTrainings = new FilteredList<>(FXCollections.observableArrayList(db.getTblTraining().getAllTrainings()),
+                    training -> true);
+            trainings.setItems(allTrainings);
         } catch (Exception e) {
             ExceptionAlert.showError(LOGGER, lang.format("error.load", "error.subj.training"), e);
         }
