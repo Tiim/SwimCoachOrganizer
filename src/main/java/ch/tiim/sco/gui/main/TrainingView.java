@@ -16,7 +16,10 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
-import javafx.scene.control.*;
+import javafx.scene.control.ListView;
+import javafx.scene.control.SeparatorMenuItem;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
@@ -97,7 +100,6 @@ public class TrainingView extends MainView {
     }
 
     private void selected(Training newValue) {
-        System.out.println(newValue );
         if (newValue != null) {
             try {
                 selectedTraining.getItems().setAll(db.getTblTrainingContent().getSets(newValue));
@@ -120,7 +122,7 @@ public class TrainingView extends MainView {
         try {
             trainings.getItems().setAll(db.getTblTraining().getAllTrainings());
         } catch (Exception e) {
-            ExceptionAlert.showError(LOGGER, lang.format("error.load", "error.subj.training"),e);
+            ExceptionAlert.showError(LOGGER, lang.format("error.load", "error.subj.training"), e);
         }
     }
 
@@ -162,7 +164,9 @@ public class TrainingView extends MainView {
     @Subscribe
     public void onTraining(TrainingEvent event) {
         populate();
-        trainings.getSelectionModel().select(event.getObj());
+        if (event.getObj() != null && event.getObj().getId() != null) {
+            trainings.getSelectionModel().select(event.getObj());
+        }
     }
 
     @Override
