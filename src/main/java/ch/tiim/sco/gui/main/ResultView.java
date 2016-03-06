@@ -15,12 +15,11 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
-import javafx.scene.control.ListView;
-import javafx.scene.control.SeparatorMenuItem;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +39,8 @@ public class ResultView extends MainView {
     @FXML
     private Parent root;
     @FXML
+    private TextField search;
+    @FXML
     private ListView<Swimmer> swimmers;
     @FXML
     private TableView<Result> results;
@@ -58,8 +59,10 @@ public class ResultView extends MainView {
     @FXML
     private TableColumn<Result, Duration> reactionTime;
 
-    BooleanProperty isSwimmerSelected = new SimpleBooleanProperty(false);
-    BooleanProperty isResultSelected = new SimpleBooleanProperty(false);
+    private BooleanProperty isSwimmerSelected = new SimpleBooleanProperty(false);
+    private BooleanProperty isResultSelected = new SimpleBooleanProperty(false);
+
+    private FilteredList<Swimmer> allSwimmers;
 
     @FXML
     private void initialize() {
@@ -79,6 +82,13 @@ public class ResultView extends MainView {
         reactionTime.setCellFactory(param -> new DurationTableCell());
         isSwimmerSelected.bind(swimmers.getSelectionModel().selectedItemProperty().isNotNull());
         isResultSelected.bind(results.getSelectionModel().selectedItemProperty().isNotNull());
+        search.textProperty().addListener(observable -> {
+            if (search.getText() == null || search.getText().isEmpty()) {
+                allSwimmers.setPredicate(set -> true);
+            } else {
+                allSwimmers.setPredicate(set -> set.uiString(lang).toLowerCase().contains(search.getText().toLowerCase()));
+            }
+        });
         populate();
     }
 
@@ -107,7 +117,8 @@ public class ResultView extends MainView {
 
     private void populate() {
         try {
-            swimmers.getItems().setAll(db.getTblSwimmer().getAllSwimmers());
+            allSwimmers = new FilteredList<>(FXCollections.observableArrayList(db.getTblSwimmer().getAllSwimmers()));
+            swimmers.setItems(allSwimmers);
         } catch (Exception e) {
             ExceptionAlert.showError(LOGGER, lang.format("error.load", "error.subj.swimmer"), e);
         }
