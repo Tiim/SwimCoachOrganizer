@@ -6,12 +6,12 @@ import ch.tiim.sco.database.model.Set;
 import ch.tiim.sco.database.model.SetFocus;
 import ch.tiim.sco.database.model.SetStroke;
 import ch.tiim.sco.gui.alert.ExceptionAlert;
+import ch.tiim.sco.gui.component.DurationField;
 import ch.tiim.sco.gui.events.OpenEvent;
 import ch.tiim.sco.gui.events.SetEvent;
 import ch.tiim.sco.gui.util.ModelConverter;
 import ch.tiim.sco.gui.util.UIException;
 import ch.tiim.sco.gui.util.Validator;
-import ch.tiim.sco.util.DurationFormatter;
 import ch.tiim.sco.util.lang.ResourceBundleEx;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -49,7 +49,7 @@ public class SetDialog extends DialogView {
     @FXML
     private ChoiceBox<SetStroke> stroke;
     @FXML
-    private TextField time;
+    private DurationField time;
     @FXML
     private RadioButton isIntervall;
     @FXML
@@ -111,7 +111,7 @@ public class SetDialog extends DialogView {
         currentSet.setIntensity((int) intensity.getValue());
         currentSet.setFocus(focus.getValue());
         currentSet.setStroke(stroke.getValue());
-        currentSet.setInterval((int) DurationFormatter.parse(time.getText()).toMillis());
+        currentSet.setInterval((int) time.getDuration().toMillis());
         currentSet.setIsPause(!isIntervall.isSelected());
         currentSet.setNotes(notes.getText());
         return currentSet;
@@ -139,7 +139,7 @@ public class SetDialog extends DialogView {
             intensity.setValue(.5f);
             focus.getSelectionModel().select(0);
             stroke.getSelectionModel().select(0);
-            time.setText(DurationFormatter.format(Duration.ofMinutes(1)));
+            time.setDuration(Duration.ofMinutes(1));
             isIntervall.setSelected(true);
             notes.setText("");
         } else {
@@ -151,7 +151,7 @@ public class SetDialog extends DialogView {
             intensity.setValue(set.getIntensity());
             focus.getSelectionModel().select(set.getFocus());
             stroke.getSelectionModel().select(set.getStroke());
-            time.setText(DurationFormatter.format(Duration.ofMillis(set.getInterval())));
+            time.setDuration(Duration.ofMillis(set.getInterval()));
             isIntervall.setSelected(!set.isPause());
             notes.setText(set.getNotes());
         }

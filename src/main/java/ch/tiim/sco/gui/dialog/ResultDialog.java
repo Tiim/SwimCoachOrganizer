@@ -7,10 +7,10 @@ import ch.tiim.sco.database.model.Result;
 import ch.tiim.sco.database.model.Stroke;
 import ch.tiim.sco.database.model.Swimmer;
 import ch.tiim.sco.gui.alert.ExceptionAlert;
+import ch.tiim.sco.gui.component.DurationField;
 import ch.tiim.sco.gui.events.OpenEvent;
 import ch.tiim.sco.gui.events.ResultEvent;
 import ch.tiim.sco.gui.util.UIException;
-import ch.tiim.sco.util.DurationFormatter;
 import ch.tiim.sco.util.lang.ResourceBundleEx;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -33,9 +33,9 @@ public class ResultDialog extends DialogView {
     @FXML
     private ChoiceBox<Stroke> stroke;
     @FXML
-    private TextField time;
+    private DurationField time;
     @FXML
-    private TextField reactionTime;
+    private DurationField reactionTime;
     @FXML
     private ChoiceBox<Course> course;
     @FXML
@@ -79,11 +79,11 @@ public class ResultDialog extends DialogView {
         currentResult.setDistance(distance.getValue());
         currentResult.setStroke(stroke.getValue());
         try {
-            currentResult.setSwimTime(DurationFormatter.parse(time.getText()));
+            currentResult.setSwimTime(time.getDuration());
         } catch (IllegalArgumentException e) {
             throw new UIException(lang.str("gui.time_format"));
         }
-        currentResult.setReactionTime(DurationFormatter.parse(reactionTime.getText()));
+        currentResult.setReactionTime(reactionTime.getDuration());
         currentResult.setCourse(course.getValue());
         currentResult.setMeetDate(date.getValue());
         return currentResult;
@@ -107,8 +107,8 @@ public class ResultDialog extends DialogView {
         if (result != null) {
             distance.getValueFactory().setValue(result.getDistance());
             stroke.setValue(result.getStroke());
-            time.setText(DurationFormatter.format(result.getSwimTime()));
-            reactionTime.setText(DurationFormatter.format(result.getReactionTime()));
+            time.setDuration(result.getSwimTime());
+            reactionTime.setDuration(result.getReactionTime());
             course.setValue(result.getCourse());
             date.setValue(result.getMeetDate());
             meet.setText(result.getMeet());
