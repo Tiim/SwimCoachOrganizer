@@ -15,11 +15,14 @@ import com.google.common.eventbus.Subscribe;
 import javafx.application.HostServices;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SeparatorMenuItem;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +43,8 @@ public class ClubView extends MainView {
 
     @FXML
     private Parent root;
+    @FXML
+    private TextField search;
     @FXML
     private ListView<Club> clubs;
     @FXML
@@ -62,6 +67,7 @@ public class ClubView extends MainView {
     private ListView<Team> teams;
 
     private BooleanProperty isSelected = new SimpleBooleanProperty(false);
+    private FilteredList<Club> allClubs;
 
     @FXML
     private void initialize() {
@@ -71,6 +77,13 @@ public class ClubView extends MainView {
                 .addListener((observable, oldValue, newValue) -> selected(newValue));
         teams.setCellFactory(param -> new ModelCell<>(lang));
         isSelected.bind(clubs.getSelectionModel().selectedItemProperty().isNotNull());
+        search.textProperty().addListener(observable -> {
+            if (search.getText() == null || search.getText().isEmpty()) {
+                allClubs.setPredicate(set -> true);
+            } else {
+                allClubs.setPredicate(set -> set.uiString(lang).toLowerCase().contains(search.getText().toLowerCase()));
+            }
+        });
         populate();
     }
 
@@ -108,7 +121,8 @@ public class ClubView extends MainView {
 
     private void populate() {
         try {
-            clubs.getItems().setAll(db.getTblClub().getAll());
+            allClubs = new FilteredList<>(FXCollections.observableArrayList(db.getTblClub().getAll()));
+            clubs.setItems(allClubs);
         } catch (Exception e) {
             ExceptionAlert.showError(LOGGER, lang.format("error.load", "error.subj.club"), e);
         }

@@ -12,12 +12,10 @@ import com.google.common.eventbus.Subscribe;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.SeparatorMenuItem;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +32,8 @@ public class StrokeView extends MainView {
     @FXML
     private Parent root;
     @FXML
+    private TextField search;
+    @FXML
     private ListView<SetStroke> strokes;
     @FXML
     private Label name;
@@ -43,6 +43,7 @@ public class StrokeView extends MainView {
     private TextArea notes;
 
     private BooleanProperty isSelected = new SimpleBooleanProperty(false);
+    private FilteredList<SetStroke> allStrokes;
 
     @FXML
     private void initialize() {
@@ -51,6 +52,13 @@ public class StrokeView extends MainView {
         strokes.getSelectionModel().selectedItemProperty()
                 .addListener((observable, oldValue, newValue) -> onSelect(newValue));
         isSelected.bind(strokes.getSelectionModel().selectedItemProperty().isNotNull());
+        search.textProperty().addListener(observable -> {
+            if (search.getText() == null || search.getText().isEmpty()) {
+                allStrokes.setPredicate(set -> true);
+            } else {
+                allStrokes.setPredicate(set -> set.uiString(lang).toLowerCase().contains(search.getText().toLowerCase()));
+            }
+        });
         populate();
     }
 
@@ -76,7 +84,8 @@ public class StrokeView extends MainView {
 
     private void populate() {
         try {
-            strokes.setItems(FXCollections.observableArrayList(db.getTblSetStroke().getAllStrokes()));
+            allStrokes = new FilteredList<>(FXCollections.observableArrayList(db.getTblSetStroke().getAllStrokes()));
+            strokes.setItems(allStrokes);
         } catch (Exception e) {
             ExceptionAlert.showError(LOGGER, lang.format("error.load", "error.subj.stroke"), e);
         }

@@ -12,12 +12,10 @@ import com.google.common.eventbus.Subscribe;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.SeparatorMenuItem;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,10 +29,10 @@ public class FocusView extends MainView {
     @Inject(name = "lang")
     private ResourceBundleEx lang;
 
-    private BooleanProperty isSelected = new SimpleBooleanProperty(false);
-
     @FXML
     private Parent root;
+    @FXML
+    private TextField search;
     @FXML
     private ListView<SetFocus> foci;
     @FXML
@@ -44,6 +42,9 @@ public class FocusView extends MainView {
     @FXML
     private TextArea notes;
 
+    private BooleanProperty isSelected = new SimpleBooleanProperty(false);
+    private FilteredList<SetFocus> allFoci;
+
     @FXML
     private void initialize() {
         initMenu();
@@ -51,6 +52,13 @@ public class FocusView extends MainView {
         foci.getSelectionModel().selectedItemProperty()
                 .addListener((observable, oldValue, newValue) -> onSelect(newValue));
         isSelected.bind(foci.getSelectionModel().selectedItemProperty().isNotNull());
+        search.textProperty().addListener(observable -> {
+            if (search.getText() == null || search.getText().isEmpty()) {
+                allFoci.setPredicate(set -> true);
+            } else {
+                allFoci.setPredicate(set -> set.uiString(lang).toLowerCase().contains(search.getText().toLowerCase()));
+            }
+        });
         populate();
     }
 
@@ -76,7 +84,8 @@ public class FocusView extends MainView {
 
     private void populate() {
         try {
-            foci.setItems(FXCollections.observableArrayList(db.getTblSetFocus().getAllFoci()));
+            allFoci = new FilteredList<>(FXCollections.observableArrayList(db.getTblSetFocus().getAllFoci()));
+            foci.setItems(allFoci);
         } catch (Exception e) {
             ExceptionAlert.showError(LOGGER, lang.format("error.load", "error.subj.focus"), e);
         }

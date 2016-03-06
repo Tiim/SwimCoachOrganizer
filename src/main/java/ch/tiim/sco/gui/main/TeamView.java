@@ -15,6 +15,8 @@ import javafx.application.HostServices;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
@@ -38,6 +40,8 @@ public class TeamView extends MainView {
     @FXML
     private ListView<Team> teams;
     @FXML
+    private TextField search;
+    @FXML
     private TableView<Swimmer> swimmers;
     @FXML
     private TableColumn<Swimmer, String> firstName;
@@ -54,6 +58,7 @@ public class TeamView extends MainView {
 
 
     private BooleanProperty isSelected = new SimpleBooleanProperty(false);
+    private FilteredList<Team> allTeams;
 
     @FXML
     private void initialize() {
@@ -69,6 +74,13 @@ public class TeamView extends MainView {
         email.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getEmail()));
         birthday.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getBirthDay().toString()));
         isSelected.bind(teams.getSelectionModel().selectedItemProperty().isNotNull());
+        search.textProperty().addListener(observable -> {
+            if (search.getText() == null || search.getText().isEmpty()) {
+                allTeams.setPredicate(set -> true);
+            } else {
+                allTeams.setPredicate(set -> set.uiString(lang).toLowerCase().contains(search.getText().toLowerCase()));
+            }
+        });
         populate();
     }
 
@@ -98,7 +110,8 @@ public class TeamView extends MainView {
 
     private void populate() {
         try {
-            teams.getItems().setAll(db.getTblTeam().getAllTeams());
+            allTeams = new FilteredList<>(FXCollections.observableArrayList(db.getTblTeam().getAllTeams()));
+            teams.setItems(allTeams);
         } catch (Exception e) {
             ExceptionAlert.showError(LOGGER, lang.format("error.load", "error.subj.team"), e);
         }

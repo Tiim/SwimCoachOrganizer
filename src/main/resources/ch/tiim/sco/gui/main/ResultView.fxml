@@ -4,11 +4,20 @@
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
 <SplitPane fx:id="root" dividerPositions="0.25" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.tiim.sco.gui.main.ResultView">
     <items>
-        <ListView fx:id="swimmers" prefHeight="200.0" prefWidth="200.0" />
+      <BorderPane>
+         <center>
+              <ListView fx:id="swimmers" prefHeight="200.0" prefWidth="200.0" />
+         </center>
+         <top>
+            <TextField fx:id="search" promptText="%gui.search" BorderPane.alignment="CENTER" />
+         </top>
+      </BorderPane>
         <VBox>
             <children>
                 <TableView fx:id="results" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">

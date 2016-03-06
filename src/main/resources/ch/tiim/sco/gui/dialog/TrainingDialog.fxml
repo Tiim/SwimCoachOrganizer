@@ -8,8 +8,10 @@
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
@@ -85,7 +87,14 @@
                                 </Button>
                             </children>
                         </VBox>
-                        <ListView fx:id="sets" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                  <BorderPane HBox.hgrow="ALWAYS">
+                     <center>
+                              <ListView fx:id="sets" prefHeight="200.0" prefWidth="200.0" />
+                     </center>
+                     <top>
+                        <TextField fx:id="search" promptText="%gui.search" BorderPane.alignment="CENTER" />
+                     </top>
+                  </BorderPane>
                     </children>
                 </HBox>
             </items>

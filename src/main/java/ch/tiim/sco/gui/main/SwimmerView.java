@@ -13,6 +13,8 @@ import com.google.common.eventbus.Subscribe;
 import javafx.application.HostServices;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
@@ -35,6 +37,8 @@ public class SwimmerView extends MainView {
 
     @FXML
     private SplitPane root;
+    @FXML
+    private TextField search;
     @FXML
     private ListView<Swimmer> swimmers;
     @FXML
@@ -67,6 +71,7 @@ public class SwimmerView extends MainView {
     private TextArea notes;
 
     private BooleanProperty isSelected = new SimpleBooleanProperty(false);
+    private FilteredList<Swimmer> allSwimmers;
 
     @FXML
     private void initialize() {
@@ -75,6 +80,14 @@ public class SwimmerView extends MainView {
         swimmers.getSelectionModel().selectedItemProperty()
                 .addListener((observable, oldValue, newValue) -> selected(newValue));
         isSelected.bind(swimmers.getSelectionModel().selectedItemProperty().isNotNull());
+        search.textProperty().addListener(observable -> {
+            if (search.getText() == null || search.getText().isEmpty()) {
+                allSwimmers.setPredicate(it -> true);
+            } else {
+                allSwimmers.setPredicate(it ->
+                        it.uiString(lang).toLowerCase().contains(search.getText().toLowerCase()));
+            }
+        });
         populate();
     }
 
@@ -122,7 +135,8 @@ public class SwimmerView extends MainView {
 
     private void populate() {
         try {
-            swimmers.getItems().setAll(db.getTblSwimmer().getAllSwimmers());
+            allSwimmers = new FilteredList<>(FXCollections.observableArrayList(db.getTblSwimmer().getAllSwimmers()));
+            swimmers.setItems(allSwimmers);
         } catch (Exception e) {
             ExceptionAlert.showError(LOGGER, lang.format("error.load", "error.subj.swimmer"), e);
         }

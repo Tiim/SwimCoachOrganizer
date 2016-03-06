@@ -11,6 +11,8 @@ import ch.tiim.sco.util.lang.ResourceBundleEx;
 import com.google.common.eventbus.Subscribe;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
@@ -31,6 +33,8 @@ public class SetView extends MainView {
     private Parent root;
     @FXML
     private ListView<Set> sets;
+    @FXML
+    private TextField search;
 
     @FXML
     private Label name;
@@ -51,6 +55,7 @@ public class SetView extends MainView {
 
 
     private BooleanProperty isSelected = new SimpleBooleanProperty(false);
+    private FilteredList<Set> allSets;
 
     @FXML
     private void initialize() {
@@ -59,6 +64,13 @@ public class SetView extends MainView {
         sets.getSelectionModel().selectedItemProperty()
                 .addListener((observable, oldValue, newValue) -> onSelected(newValue));
         isSelected.bind(sets.getSelectionModel().selectedItemProperty().isNotNull());
+        search.textProperty().addListener(observable -> {
+            if (search.getText() == null || search.getText().isEmpty()) {
+                allSets.setPredicate(set -> true);
+            } else {
+                allSets.setPredicate(set -> set.uiString(lang).toLowerCase().contains(search.getText().toLowerCase()));
+            }
+        });
         populate();
     }
 
@@ -89,7 +101,8 @@ public class SetView extends MainView {
 
     private void populate() {
         try {
-            sets.getItems().setAll(db.getTblSet().getAllSets());
+            allSets = new FilteredList<>(FXCollections.observableArrayList(db.getTblSet().getAllSets()));
+            sets.setItems(allSets);
         } catch (Exception e) {
             ExceptionAlert.showError(LOGGER, lang.format("error.load", "error.subj.set"), e);
         }

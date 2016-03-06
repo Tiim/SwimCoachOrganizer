@@ -14,6 +14,8 @@ import ch.tiim.sco.gui.util.Validator;
 import ch.tiim.sco.util.lang.ResourceBundleEx;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
@@ -51,8 +53,11 @@ public class TrainingDialog extends DialogView {
 
     @FXML
     private ListView<Set> sets;
+    @FXML
+    private TextField search;
 
     private Training currentTraining;
+    private FilteredList<Set> allSets;
 
     @FXML
     private void initialize() {
@@ -65,7 +70,13 @@ public class TrainingDialog extends DialogView {
         colContent.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getSet().getContent()));
 
         date.valueProperty().addListener(observable -> populateSchedules());
-
+        search.textProperty().addListener(observable -> {
+            if (search.getText() == null || search.getText().isEmpty()) {
+                allSets.setPredicate(set -> true);
+            } else {
+                allSets.setPredicate(set -> set.uiString(lang).toLowerCase().contains(search.getText().toLowerCase()));
+            }
+        });
         try {
             teams.getItems().setAll(db.getTblTeam().getAllTeams());
         } catch (Exception e) {
@@ -212,7 +223,8 @@ public class TrainingDialog extends DialogView {
 
     private void populateSets() {
         try {
-            sets.getItems().setAll(db.getTblSet().getAllSets());
+            allSets = new FilteredList<>(FXCollections.observableArrayList(db.getTblSet().getAllSets()));
+            sets.setItems(allSets);
         } catch (Exception e) {
             ExceptionAlert.showError(LOGGER, lang.format("error.load", "error.subj.set"), e);
         }

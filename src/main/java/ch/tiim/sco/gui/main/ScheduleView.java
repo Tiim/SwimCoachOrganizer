@@ -16,9 +16,12 @@ import ch.tiim.sco.util.lang.ResourceBundleEx;
 import com.google.common.eventbus.Subscribe;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,12 +47,15 @@ public class ScheduleView extends MainView {
     @FXML
     private ListView<Team> teams;
     @FXML
+    private TextField search;
+    @FXML
     private ListView<ScheduleRule> schedules;
     @FXML
     private CalendarControl<ScheduleRule> calendar;
 
     private BooleanProperty isTeamSelected = new SimpleBooleanProperty(false);
     private BooleanProperty isScheduleSelected = new SimpleBooleanProperty(false);
+    private FilteredList<Team> allTeams;
 
     @FXML
     private void initialize() {
@@ -62,6 +68,13 @@ public class ScheduleView extends MainView {
                 .addListener((observable, oldValue, newValue) -> selected(newValue));
         calendar.setCallback(this::getEvents);
         calendar.setOnEventCallback(this::onEventClicked);
+        search.textProperty().addListener(observable -> {
+            if (search.getText() == null || search.getText().isEmpty()) {
+                allTeams.setPredicate(set -> true);
+            } else {
+                allTeams.setPredicate(set -> set.uiString(lang).toLowerCase().contains(search.getText().toLowerCase()));
+            }
+        });
         populate();
     }
 
@@ -84,9 +97,10 @@ public class ScheduleView extends MainView {
 
     private void populate() {
         try {
-            teams.getItems().setAll(db.getTblTeam().getAllTeams());
+            allTeams = new FilteredList<>(FXCollections.observableArrayList(db.getTblTeam().getAllTeams()));
+            teams.setItems(allTeams);
         } catch (Exception e) {
-            ExceptionAlert.showError(LOGGER,lang.format("error.load", "error.subj.team"), e);
+            ExceptionAlert.showError(LOGGER, lang.format("error.load", "error.subj.team"), e);
         }
     }
 
@@ -99,7 +113,7 @@ public class ScheduleView extends MainView {
         try {
             db.getTblSchedule().deleteSchedule(item);
         } catch (Exception e) {
-            ExceptionAlert.showError(LOGGER,lang.format("error.delete", "error.subj.schedule"),e);
+            ExceptionAlert.showError(LOGGER, lang.format("error.delete", "error.subj.schedule"), e);
         }
         eventBus.post(new ScheduleEvent.ScheduleDeleteEvent(item));
     }
@@ -125,7 +139,7 @@ public class ScheduleView extends MainView {
                     .map(it -> new CalendarControl.CalendarEvent<>(it.getTime(), it.getTeam().getName(),
                             ColorUtil.getPastelColorHash(it.getTeam().getName()), it)).collect(Collectors.toList());
         } catch (Exception e) {
-            ExceptionAlert.showError(LOGGER,lang.format("error.load", "error.subj.training"), e);
+            ExceptionAlert.showError(LOGGER, lang.format("error.load", "error.subj.training"), e);
             return new ArrayList<>(0);
         }
     }

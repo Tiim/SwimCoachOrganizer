@@ -9,10 +9,13 @@ import ch.tiim.sco.gui.util.BaseCell;
 import ch.tiim.sco.util.BirthdayUtil;
 import ch.tiim.sco.util.lang.ResourceBundleEx;
 import com.google.common.eventbus.Subscribe;
+import javafx.collections.FXCollections;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +33,8 @@ public class BirthdayView extends MainView {
     @FXML
     private Parent root;
     @FXML
+    private TextField search;
+    @FXML
     private ListView<Swimmer> swimmers;
     @FXML
     private Label name;
@@ -37,6 +42,9 @@ public class BirthdayView extends MainView {
     private Label birthday;
     @FXML
     private ImageView image;
+
+
+    private FilteredList<Swimmer> allSwimmers;
 
     @FXML
     private void initialize() {
@@ -48,10 +56,18 @@ public class BirthdayView extends MainView {
         ));
         swimmers.getSelectionModel().selectedItemProperty()
                 .addListener((observable, oldValue, newValue) -> selected(newValue));
+        search.textProperty().addListener(observable -> {
+            if (search.getText() == null || search.getText().isEmpty()) {
+                allSwimmers.setPredicate(set -> true);
+            } else {
+                allSwimmers.setPredicate(set -> set.uiString(lang).toLowerCase().contains(search.getText().toLowerCase()));
+            }
+        });
         populate();
     }
 
     private void selected(Swimmer swimmer) {
+        if (swimmer == null) return;
         name.setText(String.format(lang.str("gui.name.format"), swimmer.getFirstName(), swimmer.getLastName()));
         int days = BirthdayUtil.daysUntilBirthday(swimmer.getBirthDay());
         if (days == 0) {
@@ -73,7 +89,9 @@ public class BirthdayView extends MainView {
         }
         Collections.sort(s, (o1, o2) ->
                 BirthdayUtil.daysUntilBirthday(o1.getBirthDay()) - BirthdayUtil.daysUntilBirthday(o2.getBirthDay()));
-        swimmers.getItems().setAll(s);
+
+        allSwimmers = new FilteredList<>(FXCollections.observableArrayList(s));
+        swimmers.setItems(allSwimmers);
     }
 
     @Subscribe
