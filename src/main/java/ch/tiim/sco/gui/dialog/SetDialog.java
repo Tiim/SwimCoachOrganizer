@@ -8,6 +8,7 @@ import ch.tiim.sco.database.model.SetStroke;
 import ch.tiim.sco.gui.alert.ExceptionAlert;
 import ch.tiim.sco.gui.events.OpenEvent;
 import ch.tiim.sco.gui.events.SetEvent;
+import ch.tiim.sco.gui.util.ModelConverter;
 import ch.tiim.sco.gui.util.UIException;
 import ch.tiim.sco.gui.util.Validator;
 import ch.tiim.sco.util.DurationFormatter;
@@ -60,6 +61,8 @@ public class SetDialog extends DialogView {
 
     @FXML
     private void initialize() {
+        focus.setConverter(new ModelConverter<>(lang));
+        stroke.setConverter(new ModelConverter<>(lang));
         distance1.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, Integer.MAX_VALUE, 1));
         distance2.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, Integer.MAX_VALUE, 1));
         distance3.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, Integer.MAX_VALUE, 100, 25));
@@ -74,7 +77,7 @@ public class SetDialog extends DialogView {
     @FXML
     private void onSave() {
         try {
-            currentSet = getSet(currentSet);
+            currentSet = getSet();
         } catch (UIException e) {
             e.showDialog(lang.str("gui.missing"));
             return;
@@ -87,31 +90,31 @@ public class SetDialog extends DialogView {
                 db.getTblSet().addSet(currentSet);
             }
         } catch (Exception e) {
-            ExceptionAlert.showError(LOGGER,lang.format("error.save", "error.subj.set"),e);
+            ExceptionAlert.showError(LOGGER, lang.format("error.save", "error.subj.set"), e);
         }
 
         eventBus.post(new SetEvent.SetSaveEvent(currentSet));
         close();
     }
 
-    private Set getSet(Set set) throws UIException {
+    private Set getSet() throws UIException {
         if (currentSet == null) {
             currentSet = new Set();
         }
         String name = Validator.strNotEmpty(this.name.getText(), lang.str("gui.name"));
-        set.setName(name);
+        currentSet.setName(name);
         String content = Validator.strNotEmpty(this.content.getText(), lang.str("gui.content"));
-        set.setContent(content);
-        set.setDistance1(distance1.getValue());
-        set.setDistance2(distance2.getValue());
-        set.setDistance3(distance3.getValue());
-        set.setIntensity((int) intensity.getValue());
-        set.setFocus(focus.getValue());
-        set.setStroke(stroke.getValue());
-        set.setInterval((int) DurationFormatter.parse(time.getText()).toMillis());
-        set.setIsPause(!isIntervall.isSelected());
-        set.setNotes(notes.getText());
-        return set;
+        currentSet.setContent(content);
+        currentSet.setDistance1(distance1.getValue());
+        currentSet.setDistance2(distance2.getValue());
+        currentSet.setDistance3(distance3.getValue());
+        currentSet.setIntensity((int) intensity.getValue());
+        currentSet.setFocus(focus.getValue());
+        currentSet.setStroke(stroke.getValue());
+        currentSet.setInterval((int) DurationFormatter.parse(time.getText()).toMillis());
+        currentSet.setIsPause(!isIntervall.isSelected());
+        currentSet.setNotes(notes.getText());
+        return currentSet;
     }
 
     @FXML
