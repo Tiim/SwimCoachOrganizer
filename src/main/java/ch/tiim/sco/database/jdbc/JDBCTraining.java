@@ -15,6 +15,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("HardCodedStringLiteral")
 public class JDBCTraining extends Table implements ch.tiim.sco.database.TableTraining {
     private static final Logger LOGGER = LoggerFactory.getLogger(JDBCTraining.class);
 
@@ -50,7 +51,7 @@ public class JDBCTraining extends Table implements ch.tiim.sco.database.TableTra
         } else {
             add.setNull("schedule_id", Types.INTEGER);
         }
-        LOGGER.debug(MARKER_QUERRY, add.toString());
+        LOGGER.debug(MARKER_QUERY, add.toString());
         testUpdate(add);
         t.setId(getGenKey(add));
     }
@@ -69,14 +70,14 @@ public class JDBCTraining extends Table implements ch.tiim.sco.database.TableTra
         } else {
             update.setNull("schedule_id", Types.INTEGER);
         }
-        LOGGER.debug(MARKER_QUERRY, update.toString());
+        LOGGER.debug(MARKER_QUERY, update.toString());
         testUpdate(update);
     }
 
     @Override
     public void deleteTraining(Training t) throws SQLException {
         delete.setInt("id", t.getId());
-        LOGGER.debug(MARKER_QUERRY, delete.toString());
+        LOGGER.debug(MARKER_QUERY, delete.toString());
         testUpdate(delete);
     }
 
@@ -84,7 +85,7 @@ public class JDBCTraining extends Table implements ch.tiim.sco.database.TableTra
     public Training getTrainingFromSchedule(LocalDate ld, ScheduleRule sr) throws SQLException {
         getFromSchedule.setInt("schedule_id", sr.getId());
         getFromSchedule.setDate("date", Date.valueOf(ld));
-        LOGGER.debug(MARKER_QUERRY, getFromSchedule.toString());
+        LOGGER.debug(MARKER_QUERY, getFromSchedule.toString());
         ResultSet rs = getFromSchedule.executeQuery();
         if (rs.next()) {
             return getTraining(rs);
@@ -96,7 +97,7 @@ public class JDBCTraining extends Table implements ch.tiim.sco.database.TableTra
     @Override
     public List<Training> getAllTrainings() throws SQLException {
         ResultSet rs = getAll.executeQuery();
-        LOGGER.debug(MARKER_QUERRY, getAll.toString());
+        LOGGER.debug(MARKER_QUERY, getAll.toString());
         List<Training> l = new ArrayList<>();
         while (rs.next()) {
             l.add(getTraining(rs));

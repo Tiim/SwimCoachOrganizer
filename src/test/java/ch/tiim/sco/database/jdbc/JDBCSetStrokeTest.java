@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
+@SuppressWarnings("HardCodedStringLiteral")
 public class JDBCSetStrokeTest {
 
     private DatabaseController db;

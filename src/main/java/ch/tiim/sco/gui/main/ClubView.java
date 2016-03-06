@@ -123,7 +123,7 @@ public class ClubView extends MainView {
                 for (Team t : teams) {
                     swimmers.addAll(db.getTblTeamContent().getSwimmers(t));
                 }
-                EmailEvent event = new EmailEvent(swimmers);
+                EmailEvent event = new EmailEvent(swimmers, lang);
                 event.setOnSucceeded(event1 -> host.showDocument(event.getValue()));
                 eventBus.post(event);
             }

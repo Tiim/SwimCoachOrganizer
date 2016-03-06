@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+@SuppressWarnings("HardCodedStringLiteral")
 public class JDBCSetFocusTest {
 
     private DatabaseController db;

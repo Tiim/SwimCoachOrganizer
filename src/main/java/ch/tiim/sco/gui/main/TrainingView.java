@@ -97,6 +97,7 @@ public class TrainingView extends MainView {
     }
 
     private void selected(Training newValue) {
+        System.out.println(newValue );
         if (newValue != null) {
             try {
                 selectedTraining.getItems().setAll(db.getTblTrainingContent().getSets(newValue));
@@ -127,10 +128,10 @@ public class TrainingView extends MainView {
         Training item = trainings.getSelectionModel().getSelectedItem();
         if (item != null) {
             FileChooser fc = new FileChooser();
-            fc.setInitialFileName("Training.pdf");
+            fc.setInitialFileName("Training.pdf"); //NON-NLS
             File file = fc.showSaveDialog(mainStage);
             if (file != null) {
-                eventBus.post(new PrintTask(item, file.toPath(), db));
+                eventBus.post(new PrintTask(item, file.toPath(), db, lang));
             }
         }
     }

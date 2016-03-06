@@ -79,7 +79,7 @@ public class ScheduleDialog extends DialogView {
     }
 
     private ScheduleRule getScheduleRule() throws UIException {
-        LocalDate day = Validator.nonNull(startDay.getValue(), lang.str("gui.start.day"));
+        LocalDate day = Validator.nonNull(startDay.getValue(), lang.str("gui.day.start"));
         LocalTime time = LocalTime.of(startHour.getValue(), startMinute.getValue());
         Team team = Validator.nonNull(this.team.getValue(), lang.str("gui.team"));
         return new ScheduleRule(day, time, interval.getValue(), duration.getValue(), team);

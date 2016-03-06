@@ -4,6 +4,7 @@ import ch.tiim.sco.database.model.SetStroke;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+@SuppressWarnings("HardCodedStringLiteral")
 public class StrokeExporter extends XMLExporter<SetStroke> {
 
     @Override

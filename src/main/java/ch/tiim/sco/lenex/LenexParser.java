@@ -18,6 +18,7 @@ import java.nio.file.PathMatcher;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+@SuppressWarnings("HardCodedStringLiteral")
 public class LenexParser {
     private static final Logger LOGGER = LoggerFactory.getLogger(LenexParser.class);
     private static final PathMatcher LENEX_XML = FileSystems.getDefault().getPathMatcher("regex:.*\\.lef");

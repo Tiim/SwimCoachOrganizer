@@ -21,6 +21,7 @@ import java.util.ArrayDeque;
 import java.util.HashMap;
 import java.util.Queue;
 
+@SuppressWarnings("HardCodedStringLiteral")
 public class ExportController {
     private static final Logger LOGGER = LoggerFactory.getLogger(ExportController.class);
     private static final HashMap<Class<? extends Model>, XMLExporter> EXPORTERS = new HashMap<>();

@@ -8,6 +8,7 @@ import java.util.Collections;
 
 import static org.junit.Assert.assertThat;
 
+@SuppressWarnings("HardCodedStringLiteral")
 public class MailtoTest {
 
     @Test

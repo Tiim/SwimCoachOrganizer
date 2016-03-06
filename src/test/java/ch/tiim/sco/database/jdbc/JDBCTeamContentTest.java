@@ -14,6 +14,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
+@SuppressWarnings("HardCodedStringLiteral")
 public class JDBCTeamContentTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(JDBCTeamContentTest.class);
     private DatabaseController db;

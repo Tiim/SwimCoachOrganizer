@@ -21,6 +21,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+@SuppressWarnings("HardCodedStringLiteral")
 public class DatabaseController implements Closeable {
     private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseController.class);
     private static final String VERSION = "1";

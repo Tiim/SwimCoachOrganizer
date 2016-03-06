@@ -31,7 +31,7 @@ public class ResourceBundleEx extends ResourceBundle {
         try {
             return getString(key);
         } catch (Exception e) {
-            LOGGER.warn("Localisation for [" + key + "] does not exist.");
+            LOGGER.warn("Localisation for [" + key + "] does not exist."); //NON-NLS
             return "[" + key + "]";
         }
     }

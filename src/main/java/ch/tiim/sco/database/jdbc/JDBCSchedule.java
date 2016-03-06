@@ -16,6 +16,7 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("HardCodedStringLiteral")
 public class JDBCSchedule extends Table implements TableSchedule {
     private static final Logger LOGGER = LoggerFactory.getLogger(JDBCSchedule.class);
     private NamedParameterPreparedStatement addSchedule;
@@ -53,7 +54,7 @@ public class JDBCSchedule extends Table implements TableSchedule {
         addSchedule.setInt("inter", s.getInterval());
         addSchedule.setInt("duration", s.getDuration());
         addSchedule.setInt("team_id", s.getTeam().getId());
-        LOGGER.debug(MARKER_QUERRY, addSchedule.toString());
+        LOGGER.debug(MARKER_QUERY, addSchedule.toString());
         testUpdate(addSchedule);
         s.setId(getGenKey(addSchedule));
     }
@@ -61,7 +62,7 @@ public class JDBCSchedule extends Table implements TableSchedule {
     @Override
     public void deleteSchedule(ScheduleRule s) throws Exception {
         deleteSchedule.setInt("schedule_id", s.getId());
-        LOGGER.debug(MARKER_QUERRY, deleteSchedule.toString());
+        LOGGER.debug(MARKER_QUERY, deleteSchedule.toString());
         testUpdate(deleteSchedule);
     }
 
@@ -73,14 +74,14 @@ public class JDBCSchedule extends Table implements TableSchedule {
         updateSchedule.setInt("inter", s.getInterval());
         updateSchedule.setInt("duration", s.getDuration());
         updateSchedule.setInt("team_id", s.getTeam().getId());
-        LOGGER.debug(MARKER_QUERRY, updateSchedule.toString());
+        LOGGER.debug(MARKER_QUERY, updateSchedule.toString());
         testUpdate(updateSchedule);
     }
 
     @Override
     public List<ScheduleRule> getSchedules(Team team) throws Exception {
         getSchedule.setInt("team_id", team.getId());
-        LOGGER.debug(MARKER_QUERRY, getSchedule.toString());
+        LOGGER.debug(MARKER_QUERY, getSchedule.toString());
         ResultSet rs = getSchedule.executeQuery();
         List<ScheduleRule> s = new ArrayList<>();
         while (rs.next()) {
@@ -91,7 +92,7 @@ public class JDBCSchedule extends Table implements TableSchedule {
 
     @Override
     public List<ScheduleRule> getAllSchedules() throws Exception {
-        LOGGER.debug(MARKER_QUERRY, getAllSchedules.toString());
+        LOGGER.debug(MARKER_QUERY, getAllSchedules.toString());
         ResultSet rs = getAllSchedules.executeQuery();
         List<ScheduleRule> s = new ArrayList<>();
         while (rs.next()) {
@@ -104,7 +105,7 @@ public class JDBCSchedule extends Table implements TableSchedule {
     public void addException(ScheduleException e) throws Exception {
         addException.setInt("schedule_id", e.getSchedule().getId());
         addException.setDate("day", Date.valueOf(e.getDay()));
-        LOGGER.debug(MARKER_QUERRY, addException.toString());
+        LOGGER.debug(MARKER_QUERY, addException.toString());
         testUpdate(addException);
         e.setId(getGenKey(addException));
     }
@@ -112,7 +113,7 @@ public class JDBCSchedule extends Table implements TableSchedule {
     @Override
     public void deleteException(ScheduleException e) throws Exception {
         deleteException.setInt("exception_id", e.getId());
-        LOGGER.debug(MARKER_QUERRY, deleteException.toString());
+        LOGGER.debug(MARKER_QUERY, deleteException.toString());
         testUpdate(deleteException);
     }
 
@@ -121,14 +122,14 @@ public class JDBCSchedule extends Table implements TableSchedule {
         updateException.setInt("exception_id", e.getId());
         updateException.setInt("schedule_id", e.getSchedule().getId());
         updateException.setDate("day", Date.valueOf(e.getDay()));
-        LOGGER.debug(MARKER_QUERRY, updateException.toString());
+        LOGGER.debug(MARKER_QUERY, updateException.toString());
         testUpdate(updateException);
     }
 
     @Override
     public List<ScheduleException> getExceptionsForRule(ScheduleRule rule) throws Exception {
         getExceptionForRule.setInt("schedule_id", rule.getId());
-        LOGGER.debug(MARKER_QUERRY, updateException.toString());
+        LOGGER.debug(MARKER_QUERY, updateException.toString());
         ResultSet rs = getExceptionForRule.executeQuery();
         List<ScheduleException> exceptions = new ArrayList<>();
         while (rs.next()) {

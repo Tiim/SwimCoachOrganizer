@@ -132,7 +132,7 @@ public class SwimmerView extends MainView {
     private void onEmail() {
         Swimmer sw = swimmers.getSelectionModel().getSelectedItem();
         if (sw != null) {
-            EmailEvent event = new EmailEvent(Collections.singletonList(sw));
+            EmailEvent event = new EmailEvent(Collections.singletonList(sw), lang);
             event.setOnSucceeded(event1 -> host.showDocument(event.getValue()));
             eventBus.post(event);
         }

@@ -12,6 +12,7 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
+@SuppressWarnings("HardCodedStringLiteral")
 public class NamedParameterPreparedStatementTest {
     @Test
     public void testParsing() {

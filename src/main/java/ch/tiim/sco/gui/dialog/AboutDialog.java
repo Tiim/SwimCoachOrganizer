@@ -3,6 +3,7 @@ package ch.tiim.sco.gui.dialog;
 import ch.tiim.inject.Inject;
 import ch.tiim.sco.gui.alert.ExceptionAlert;
 import ch.tiim.sco.gui.events.TextOpenEvent;
+import ch.tiim.sco.util.lang.ResourceBundleEx;
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
 import javafx.application.HostServices;
@@ -27,12 +28,15 @@ public class AboutDialog extends DialogView {
     private static final Logger LOGGER = LoggerFactory.getLogger(AboutDialog.class);
     @Inject(name = "host")
     private HostServices host;
+    @Inject(name = "lang")
+    private ResourceBundleEx lang;
 
     @FXML
     private BorderPane root;
     @FXML
     private VBox pane;
 
+    @SuppressWarnings("HardCodedStringLiteral")
     @FXML
     private void initialize() {
         List<Credit> credits = new ArrayList<>();
@@ -49,9 +53,9 @@ public class AboutDialog extends DialogView {
     private void openDocument(String s) {
         String str;
         try {
-            str = Resources.toString(AboutDialog.class.getResource("about/" + s), Charsets.UTF_8);
+            str = Resources.toString(AboutDialog.class.getResource("about/" + s), Charsets.UTF_8);  //NON-NLS
         } catch (IOException e) {
-            ExceptionAlert.showError(LOGGER, "Can't read file from classpath", e);
+            ExceptionAlert.showError(LOGGER, lang.format("error.load", "error.subj.file"), e);
             return;
         }
         eventBus.post(new TextOpenEvent(str, getStage()));
@@ -73,7 +77,7 @@ public class AboutDialog extends DialogView {
     }
 
     private Image getImage(String path, int maxWidth, int maxHeight) {
-        return new Image(AboutDialog.class.getResource("about/" + path).toString(),
+        return new Image(AboutDialog.class.getResource("about/" + path).toString(), //NON-NLS
                 maxWidth, maxHeight, true, true, true);
     }
 

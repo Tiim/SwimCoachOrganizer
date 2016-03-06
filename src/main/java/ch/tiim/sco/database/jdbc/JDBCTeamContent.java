@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("HardCodedStringLiteral")
 public class JDBCTeamContent extends Table implements ch.tiim.sco.database.TableTeamContent {
     private static final Logger LOGGER = LoggerFactory.getLogger(JDBCTeamContent.class);
 
@@ -37,7 +38,7 @@ public class JDBCTeamContent extends Table implements ch.tiim.sco.database.Table
     @Override
     public List<Swimmer> getSwimmers(Team t) throws SQLException {
         get.setInt("team_id", t.getId());
-        LOGGER.debug(MARKER_QUERRY, get.toString());
+        LOGGER.debug(MARKER_QUERY, get.toString());
         ResultSet rs = get.executeQuery();
         List<Swimmer> l = new ArrayList<>();
         while (rs.next()) {
@@ -50,7 +51,7 @@ public class JDBCTeamContent extends Table implements ch.tiim.sco.database.Table
     public void addSwimmer(Team t, Swimmer m) throws SQLException {
         add.setInt("team_id", t.getId());
         add.setInt("swimmer_id", m.getId());
-        LOGGER.debug(MARKER_QUERRY, add.toString());
+        LOGGER.debug(MARKER_QUERY, add.toString());
         testUpdate(add);
     }
 
@@ -58,14 +59,14 @@ public class JDBCTeamContent extends Table implements ch.tiim.sco.database.Table
     public void deleteSwimmer(Team t, Swimmer m) throws SQLException {
         delete.setInt("team_id", t.getId());
         delete.setInt("swimmer_id", m.getId());
-        LOGGER.debug(MARKER_QUERRY, delete.toString());
+        LOGGER.debug(MARKER_QUERY, delete.toString());
         testUpdate(delete);
     }
 
     @Override
     public List<Swimmer> getSwimmersNotInTeam(Team t) throws SQLException {
         getNot.setInt("team_id", t.getId());
-        LOGGER.debug(MARKER_QUERRY, getNot.toString());
+        LOGGER.debug(MARKER_QUERY, getNot.toString());
         ResultSet rs = getNot.executeQuery();
         List<Swimmer> l = new ArrayList<>();
         while (rs.next()) {
@@ -77,7 +78,7 @@ public class JDBCTeamContent extends Table implements ch.tiim.sco.database.Table
     @Override
     public void setSwimmers(Team t, List<Swimmer> swimmers) throws Exception {
         deleteAll.setInt("team_id", t.getId());
-        LOGGER.debug(MARKER_QUERRY, deleteAll.toString());
+        LOGGER.debug(MARKER_QUERY, deleteAll.toString());
         deleteAll.executeUpdate(); //Might affect zero rows
         if (!swimmers.isEmpty()) {
             for (Swimmer s : swimmers) {

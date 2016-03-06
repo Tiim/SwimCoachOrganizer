@@ -7,6 +7,7 @@ import ch.tiim.sco.util.DurationFormatter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+@SuppressWarnings("HardCodedStringLiteral")
 public class ResultExporter extends XMLExporter<Result> {
     @Override
     public void export(Result data, int id, Document doc, ExportController exp) throws Exception {

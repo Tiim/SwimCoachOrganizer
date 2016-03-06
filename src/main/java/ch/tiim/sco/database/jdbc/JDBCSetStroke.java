@@ -13,6 +13,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 
+@SuppressWarnings("HardCodedStringLiteral")
 public class JDBCSetStroke extends Table implements TableSetStroke {
     private static final Logger LOGGER = LoggerFactory.getLogger(JDBCSetStroke.class);
     private NamedParameterPreparedStatement add;
@@ -37,7 +38,7 @@ public class JDBCSetStroke extends Table implements TableSetStroke {
         add.setString("name", stroke.getName());
         add.setString("abbr", stroke.getAbbr());
         add.setString("notes", stroke.getNotes());
-        LOGGER.debug(MARKER_QUERRY, add.toString());
+        LOGGER.debug(MARKER_QUERY, add.toString());
         testUpdate(add);
         stroke.setId(getGenKey(add));
     }
@@ -48,21 +49,21 @@ public class JDBCSetStroke extends Table implements TableSetStroke {
         update.setString("abbr", stroke.getAbbr());
         update.setString("notes", stroke.getNotes());
         update.setInt("id", stroke.getId());
-        LOGGER.debug(MARKER_QUERRY, update.toString());
+        LOGGER.debug(MARKER_QUERY, update.toString());
         testUpdate(update);
     }
 
     @Override
     public void deleteSetStroke(SetStroke stroke) throws SQLException {
         delete.setInt("id", stroke.getId());
-        LOGGER.debug(MARKER_QUERRY, delete.toString());
+        LOGGER.debug(MARKER_QUERY, delete.toString());
         testUpdate(delete);
     }
 
     @Override
     public List<SetStroke> getAllStrokes() throws SQLException {
         ResultSet rs = getAll.executeQuery();
-        LOGGER.debug(MARKER_QUERRY, getAll.toString());
+        LOGGER.debug(MARKER_QUERY, getAll.toString());
         List<SetStroke> l = new LinkedList<>();
         while (rs.next()) {
             l.add(getSetStroke(rs));

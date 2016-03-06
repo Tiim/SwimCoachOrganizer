@@ -17,6 +17,7 @@ import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
+@SuppressWarnings("HardCodedStringLiteral")
 public class JDBCResultTest {
 
     private DatabaseController db;

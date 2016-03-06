@@ -3,6 +3,7 @@ package ch.tiim.sco.lenex.model;
 import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlType;
 
+@SuppressWarnings("HardCodedStringLiteral")
 @XmlType
 @XmlEnum
 public enum Currency {

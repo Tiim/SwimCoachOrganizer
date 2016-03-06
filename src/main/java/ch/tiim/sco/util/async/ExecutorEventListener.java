@@ -16,7 +16,7 @@ public class ExecutorEventListener {
 
     @Subscribe
     public void onRunnable(Runnable r) {
-        LOGGER.trace("Running " + r);
+        LOGGER.trace("Running " + r); //NON-NLS
         e.execute(r);
     }
 }

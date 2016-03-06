@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("HardCodedStringLiteral")
 public class JDBCClub extends Table implements ch.tiim.sco.database.TableClub {
     private static final Logger LOGGER = LoggerFactory.getLogger(JDBCClub.class);
 
@@ -41,7 +42,7 @@ public class JDBCClub extends Table implements ch.tiim.sco.database.TableClub {
         add.setString("code", c.getCode());
         add.setString("nationality", c.getNationality());
         add.setInt("externId", c.getExternId());
-        LOGGER.debug(MARKER_QUERRY, add.toString());
+        LOGGER.debug(MARKER_QUERY, add.toString());
         testUpdate(add);
         c.setId(getGenKey(add));
     }
@@ -49,7 +50,7 @@ public class JDBCClub extends Table implements ch.tiim.sco.database.TableClub {
     @Override
     public void deleteClub(Club c) throws SQLException {
         delete.setInt("id", c.getId());
-        LOGGER.debug(MARKER_QUERRY, delete.toString());
+        LOGGER.debug(MARKER_QUERY, delete.toString());
         testUpdate(delete);
     }
 
@@ -63,13 +64,13 @@ public class JDBCClub extends Table implements ch.tiim.sco.database.TableClub {
         update.setString("nationality", c.getNationality());
         update.setInt("externId", c.getExternId());
         update.setInt("id", c.getId());
-        LOGGER.debug(MARKER_QUERRY, update.toString());
+        LOGGER.debug(MARKER_QUERY, update.toString());
         testUpdate(update);
     }
 
     @Override
     public List<Club> getAll() throws SQLException {
-        LOGGER.debug(MARKER_QUERRY, getAll.toString());
+        LOGGER.debug(MARKER_QUERY, getAll.toString());
         ResultSet rs = getAll.executeQuery();
         List<Club> l = new ArrayList<>();
         while (rs.next()) {

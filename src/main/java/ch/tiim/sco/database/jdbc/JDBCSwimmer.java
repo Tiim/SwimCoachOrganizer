@@ -13,6 +13,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("HardCodedStringLiteral")
 public class JDBCSwimmer extends Table implements TableSwimmer {
     private static final Logger LOGGER = LoggerFactory.getLogger(JDBCSwimmer.class);
 
@@ -49,7 +50,7 @@ public class JDBCSwimmer extends Table implements TableSwimmer {
         add.setString("license", m.getLicense());
         add.setBoolean("is_female", m.isFemale());
         add.setString("notes", m.getNotes());
-        LOGGER.debug(MARKER_QUERRY, add.toString());
+        LOGGER.debug(MARKER_QUERY, add.toString());
         testUpdate(add);
         m.setId(getGenKey(add));
     }
@@ -57,7 +58,7 @@ public class JDBCSwimmer extends Table implements TableSwimmer {
     @Override
     public void deleteSwimmer(Swimmer m) throws SQLException {
         delete.setInt("id", m.getId());
-        LOGGER.debug(MARKER_QUERRY, delete.toString());
+        LOGGER.debug(MARKER_QUERY, delete.toString());
         testUpdate(delete);
     }
 
@@ -75,7 +76,7 @@ public class JDBCSwimmer extends Table implements TableSwimmer {
         update.setBoolean("is_female", m.isFemale());
         update.setString("notes", m.getNotes());
         update.setInt("id", m.getId());
-        LOGGER.debug(MARKER_QUERRY, update.toString());
+        LOGGER.debug(MARKER_QUERY, update.toString());
         testUpdate(update);
     }
 
@@ -83,7 +84,7 @@ public class JDBCSwimmer extends Table implements TableSwimmer {
     public List<Swimmer> getSwimmersWithBirthdayBetween(LocalDate begin, LocalDate end) throws SQLException {
         getBetween.setString("before", begin.toString());
         getBetween.setString("after", end.toString());
-        LOGGER.debug(MARKER_QUERRY, getBetween.toString());
+        LOGGER.debug(MARKER_QUERY, getBetween.toString());
         ResultSet rs = getBetween.executeQuery();
         List<Swimmer> l = new ArrayList<>();
         while (rs.next()) {
@@ -95,7 +96,7 @@ public class JDBCSwimmer extends Table implements TableSwimmer {
     @Override
     public List<Swimmer> getAllSwimmers() throws SQLException {
         ResultSet rs = getAll.executeQuery();
-        LOGGER.debug(MARKER_QUERRY, getAll.toString());
+        LOGGER.debug(MARKER_QUERY, getAll.toString());
         List<Swimmer> l = new ArrayList<>();
         while (rs.next()) {
             l.add(getSwimmer(rs));

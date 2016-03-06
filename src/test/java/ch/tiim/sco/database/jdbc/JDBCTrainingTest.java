@@ -10,6 +10,7 @@ import org.junit.Test;
 import java.time.LocalDate;
 import java.util.List;
 
+@SuppressWarnings("HardCodedStringLiteral")
 public class JDBCTrainingTest {
 
     private DatabaseController db;

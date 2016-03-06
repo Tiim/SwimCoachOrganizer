@@ -13,6 +13,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("HardCodedStringLiteral")
 public class ErrorReport {
     private static final Logger LOGGER = LoggerFactory.getLogger(ErrorReport.class);
     private static final String SERVER_URL = "https://n.ethz.ch/student/batim/php/sco_report.php";

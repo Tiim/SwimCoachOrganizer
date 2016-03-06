@@ -144,7 +144,7 @@ public class NamedParameterPreparedStatement extends DelegatingPreparedStatement
             }
         }
         if (indexes.isEmpty()) {
-            throw new IllegalArgumentException(String.format("SQL statement doesn't contain the parameter '%s'",
+            throw new IllegalArgumentException(String.format("SQL statement doesn't contain the parameter '%s'", //NON-NLS
                     parameter));
         }
         return indexes;

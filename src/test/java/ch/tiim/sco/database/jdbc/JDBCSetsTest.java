@@ -15,7 +15,7 @@ import java.sql.SQLException;
 
 import static org.junit.Assert.assertEquals;
 
-@SuppressWarnings("SpellCheckingInspection")
+@SuppressWarnings({"SpellCheckingInspection", "HardCodedStringLiteral"})
 public class JDBCSetsTest {
     private TableSets sets;
 

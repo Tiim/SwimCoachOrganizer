@@ -10,6 +10,7 @@ import java.lang.reflect.Method;
  * @since 07 - 2014
  */
 
+@SuppressWarnings("HardCodedStringLiteral")
 public final class MainWrapper {
     private static final float MIN_JAVA_VERSION_REQUIRED = 1.8f;
 

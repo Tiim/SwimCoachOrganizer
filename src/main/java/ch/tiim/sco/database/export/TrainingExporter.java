@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
  * Exports all trainings and it's dependent sets, setfoci and setstrokes
  * to xml
  */
+@SuppressWarnings("HardCodedStringLiteral")
 public class TrainingExporter extends XMLExporter<Training> {
 
     private DatabaseController db;

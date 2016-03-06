@@ -18,6 +18,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+@SuppressWarnings("HardCodedStringLiteral")
 public class ConsoleView extends MainView {
     private static final Logger LOGGER = LoggerFactory.getLogger(ConsoleView.class);
     private final NashornScriptEngine engine;

@@ -44,19 +44,19 @@ public class DurationFormatter {
         }
         if (minutes > 0) {
             if (hours > 0) {
-                b.append(String.format("%02d", minutes));
+                b.append(String.format("%02d", minutes)); //NON-NLS
             } else {
                 b.append(minutes);
             }
-            b.append(':').append(String.format("%02d", secs));
+            b.append(':').append(String.format("%02d", secs)); //NON-NLS
         } else if (hours > 0) {
             b.append("00:");
-            b.append(String.format("%02d", secs));
+            b.append(String.format("%02d", secs)); //NON-NLS
 
         } else {
             b.append(secs);
         }
-        b.append('.').append(String.format("%02d", zenti));
+        b.append('.').append(String.format("%02d", zenti)); //NON-NLS
         return b.toString();
     }
 

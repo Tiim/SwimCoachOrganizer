@@ -63,6 +63,6 @@ public class SqlLoader {
                 }
             }
         }
-        throw new OutOfCoffeeException(String.format("%s/%s does not exist", module, name));
+        throw new OutOfCoffeeException(String.format("%s/%s does not exist", module, name)); //NON-NLS
     }
 }

@@ -28,8 +28,8 @@ import java.util.function.Function;
 
 public class CalendarControl<T> extends BorderPane {
     private static final Logger LOGGER = LoggerFactory.getLogger(CalendarControl.class);
-    private static final PseudoClass NON_EMPTY = PseudoClass.getPseudoClass("non-empty");
-    private static final PseudoClass IN_MONTH = PseudoClass.getPseudoClass("in-month");
+    private static final PseudoClass NON_EMPTY = PseudoClass.getPseudoClass("non-empty"); //NON-NLS
+    private static final PseudoClass IN_MONTH = PseudoClass.getPseudoClass("in-month"); //NON-NLS
     private static final int DAYS_OF_WEEK = 7;
     private static final int WEEKS = 6;
     private static final int DAYS = DAYS_OF_WEEK * WEEKS;
@@ -55,9 +55,9 @@ public class CalendarControl<T> extends BorderPane {
             new SimpleObjectProperty<>();
 
     public CalendarControl() {
-        ViewLoader.load(this, "Calendar.fxml");
+        ViewLoader.load(this, "Calendar.fxml"); //NON-NLS
         Injector.getInstance().inject(this, null);
-        getStylesheets().add("ch/tiim/sco/gui/component/Calendar.css");
+        getStylesheets().add("ch/tiim/sco/gui/component/Calendar.css"); //NON-NLS
         init();
         selectedDate.addListener(observable -> dateChanged());
         callback.addListener(observable -> dateChanged());
@@ -70,7 +70,7 @@ public class CalendarControl<T> extends BorderPane {
     private void dateChanged() {
         LocalDate localDate = selectedDate.get();
         Month month = localDate.getMonth();
-        title.setText(String.format("%s, %d",
+        title.setText(String.format(lang.str("gui.date.format"),
                 month.getDisplayName(TextStyle.FULL, lang.getLocale()),
                 localDate.getYear()
         ));
@@ -123,14 +123,14 @@ public class CalendarControl<T> extends BorderPane {
             bp.setOnMouseClicked(event -> {
                 if (!eventBoxes[y].getChildren().isEmpty()) {
                     popOver = new PopOver(vb);
-                    popOver.getRoot().getStylesheets().addAll("ch/tiim/sco/gui/component/CalendarPopup.css");
+                    popOver.getRoot().getStylesheets().addAll("ch/tiim/sco/gui/component/CalendarPopup.css"); //NON-NLS
                     popOver.show(bp);
                 }
             });
 
-            l.getStyleClass().add("day");
-            vb.getStyleClass().add("vbox-events");
-            bp.getStyleClass().add("day-box");
+            l.getStyleClass().add("day"); //NON-NLS
+            vb.getStyleClass().add("vbox-events"); //NON-NLS
+            bp.getStyleClass().add("day-box"); //NON-NLS
         }
         dateChanged();
     }
@@ -199,10 +199,10 @@ public class CalendarControl<T> extends BorderPane {
             this.color.set(color);
             this.localTime.set(time);
             this.localTime.addListener(observable -> this.time.setText(localTime.get().toString()));
-            this.time.getStyleClass().add("time");
-            this.text.getStyleClass().add("name");
+            this.time.getStyleClass().add("time"); //NON-NLS
+            this.text.getStyleClass().add("name"); //NON-NLS
             this.object = object;
-            getStyleClass().add("event");
+            getStyleClass().add("event"); //NON-NLS
             getChildren().addAll(this.time, this.text);
         }
 

@@ -5,8 +5,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 
 import javax.annotation.Nonnull;
-import java.util.ResourceBundle;
 import java.io.IOException;
+import java.util.ResourceBundle;
 
 public class ViewLoader {
 
@@ -24,7 +24,7 @@ public class ViewLoader {
     public static <T extends View> T load(@Nonnull Class<T> clazz) {
         T c;
         try {
-            FXMLLoader loader = new FXMLLoader(clazz.getResource(clazz.getSimpleName() + ".fxml"));
+            FXMLLoader loader = new FXMLLoader(clazz.getResource(clazz.getSimpleName() + ".fxml")); //NON-NLS
             loader.setResources(bundle);
             loader.load();
             c = loader.getController();
@@ -42,7 +42,7 @@ public class ViewLoader {
     }
 
     public static void load(Parent parent, String path) {
-        FXMLLoader loader = new FXMLLoader(parent.getClass().getResource("Calendar.fxml"));
+        FXMLLoader loader = new FXMLLoader(parent.getClass().getResource(path));
         loader.setRoot(parent);
         loader.setResources(bundle);
         loader.setController(parent);

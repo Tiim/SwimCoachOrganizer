@@ -11,7 +11,7 @@ import java.sql.SQLException;
 
 abstract class Table {
 
-    static final Marker MARKER_QUERRY = MarkerFactory.getMarker("SQL_QUERRY");
+    static final Marker MARKER_QUERY = MarkerFactory.getMarker("SQL_QUERY"); //NON-NLS
 
     protected final DatabaseController db;
 
@@ -23,7 +23,7 @@ abstract class Table {
     protected abstract void loadStatements() throws SQLException;
 
     protected String getSql(String name) {
-        String module = getClass().getSimpleName().replace("JDBC", "");
+        String module = getClass().getSimpleName().replace("JDBC", ""); //NON-NLS
         return db.getSqlLoader().getValue(module, name);
     }
 

@@ -4,6 +4,7 @@ import ch.tiim.sco.database.model.Model;
 
 import javax.xml.bind.annotation.*;
 
+@SuppressWarnings("HardCodedStringLiteral")
 @XmlRootElement(name = "AGEGROUP")
 public class AgeGroup implements Model {
 

@@ -31,17 +31,19 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Locale;
 import java.util.Optional;
-import java.util.ResourceBundle;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 
 public class Main extends Application {
     private static final Logger LOGGER = LoggerFactory.getLogger(Application.class);
 
-    private final EventBus eventBus = new EventBus("Main");
+    private final EventBus eventBus = new EventBus("Main"); //NON-NLS
+
+    private ResourceBundleEx bundle;
+
 
     public static void main(final String[] args) {
-        LOGGER.trace("Starting up");
+        LOGGER.trace("Starting up"); //NON-NLS
         launch(args);
     }
 
@@ -53,15 +55,15 @@ public class Main extends Application {
         eventBus.register(this);
 
         Locale locale = Settings.INSTANCE.getLocale("default_locale", Locale.getDefault());
-        ResourceBundle bundle = new ResourceBundleEx(ResourceBundleUtil.getResourceBundle(locale));
+        bundle = new ResourceBundleEx(ResourceBundleUtil.getResourceBundle(locale));
         ViewLoader.setBundle(bundle);
 
-        ExceptionAlert.setEventBus(eventBus);
+        ExceptionAlert.init(eventBus, bundle);
 
         Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
             try {
                 ExceptionAlert.showError(LOGGER,
-                        String.format("Uncaught exception in thread: %s.\nThis is a bug! Please report it.", t.getName()),
+                        bundle.str("error.bug.exception"),
                         e);
             } catch (Throwable ex) {
                 LOGGER.error(ex.getMessage(), ex);
@@ -69,22 +71,22 @@ public class Main extends Application {
             }
         });
 
-        DatabaseController db = new DatabaseController("./file.db");
+        DatabaseController db = new DatabaseController("./file.db"); //NON-NLS
         db.initializeDefaultValues();
 
         Injector.getInstance().addInjectable(bundle, "lang");
-        Injector.getInstance().addInjectable(getHostServices(), "host");
-        Injector.getInstance().addInjectable(Config.INSTANCE, "config");
-        Injector.getInstance().addInjectable(db, "db-controller");
-        Injector.getInstance().addInjectable(primaryStage, "main-stage");
-        Injector.getInstance().addInjectable(this, "app");
-        Injector.getInstance().addInjectable(eventBus, "event-bus");
-        Injector.getInstance().addInjectable(VersionChecker.getCurrentVersion(), "version");
+        Injector.getInstance().addInjectable(getHostServices(), "host"); //NON-NLS
+        Injector.getInstance().addInjectable(Config.INSTANCE, "config"); //NON-NLS
+        Injector.getInstance().addInjectable(db, "db-controller"); //NON-NLS
+        Injector.getInstance().addInjectable(primaryStage, "main-stage"); //NON-NLS
+        Injector.getInstance().addInjectable(this, "app"); //NON-NLS
+        Injector.getInstance().addInjectable(eventBus, "event-bus"); //NON-NLS
+        Injector.getInstance().addInjectable(VersionChecker.getCurrentVersion(), "version"); //NON-NLS
 
         initRootLayout();
-        if (getParameters().getNamed().containsKey("version")) {
+        if (getParameters().getNamed().containsKey("version")) { //NON-NLS
             VersionChecker.overrideCurrentVersion(Version.valueOf(
-                    getParameters().getNamed().get("version")
+                    getParameters().getNamed().get("version") //NON-NLS
             ));
         }
         eventBus.post(new VersionCheckTask(eventBus));
@@ -110,20 +112,19 @@ public class Main extends Application {
     public void askForUpdate(NewVersionEvent event) {
         Platform.runLater(() -> {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
-                    "The new version " + VersionChecker.getRemoteVersion() + " is available.\n" +
-                            "Your version is " + VersionChecker.getCurrentVersion() + ".\n" +
-                            "Would you like to update?", ButtonType.YES, ButtonType.NO
+                    String.format(bundle.str("text.update"), VersionChecker.getRemoteVersion(), VersionChecker.getCurrentVersion()),
+                    ButtonType.YES, ButtonType.NO
             );
             alert.initModality(Modality.APPLICATION_MODAL);
             Optional<ButtonType> t = alert.showAndWait();
             if (t.get() == ButtonType.YES) {
-                eventBus.post(new UpdatePerformer(eventBus));
+                eventBus.post(new UpdatePerformer(eventBus, bundle));
             }
         });
     }
 
     @Subscribe
     public void handleDeadEvents(DeadEvent event) {
-        LOGGER.warn("Dead event received: " + event.getEvent());
+        LOGGER.warn("Dead event received: " + event.getEvent()); //NON-NLS
     }
 }

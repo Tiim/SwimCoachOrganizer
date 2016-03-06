@@ -79,7 +79,7 @@ public class ResultImportDialog extends DialogView {
             return;
         }
         if (path != null && Files.isRegularFile(path)) {
-            LenexLoadTask loadTask = new LenexLoadTask(path);
+            LenexLoadTask loadTask = new LenexLoadTask(path, lang);
             loadTask.setOnSucceeded(event -> onLenexLoaded(loadTask.getValue()));
             loadTask.setOnFailed(event ->
                     ExceptionAlert.showError(LOGGER,
@@ -115,7 +115,7 @@ public class ResultImportDialog extends DialogView {
     private void onBrowse() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle(lang.str("gui.open.lenex"));
-        fileChooser.setSelectedExtensionFilter(new FileChooser.ExtensionFilter("LENEX", "*.lxf", "*.lef"));
+        fileChooser.setSelectedExtensionFilter(new FileChooser.ExtensionFilter("LENEX", "*.lxf", "*.lef"));  //NON-NLS
         File file = fileChooser.showOpenDialog(getStage());
         if (file != null) {
             path.setText(file.getAbsolutePath());

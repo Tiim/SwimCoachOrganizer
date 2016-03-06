@@ -10,6 +10,7 @@ import org.w3c.dom.Text;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@SuppressWarnings("HardCodedStringLiteral")
 public class TeamExporter extends XMLExporter<Team> {
 
     @Override

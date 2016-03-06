@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 /**
  * This class is used to register objects to be injected into classes
  */
+@SuppressWarnings("HardCodedStringLiteral")
 public class Injector {
     private static final Logger LOGGER = LoggerFactory.getLogger(Injector.class);
     private static final Injector INSTANCE = new Injector();

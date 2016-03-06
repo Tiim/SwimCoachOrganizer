@@ -63,7 +63,8 @@ public class TeamView extends MainView {
                 .addListener((observable, oldValue, newValue) -> select(newValue));
         firstName.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getFirstName()));
         name.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getLastName()));
-        gender.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().isFemale() ? "F" : "M"));
+        gender.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().isFemale() ?
+                lang.str("gui.gender.f.short") : lang.str("gui.gender.m.short")));
         address.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getAddress()));
         email.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getEmail()));
         birthday.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getBirthDay().toString()));
@@ -107,7 +108,7 @@ public class TeamView extends MainView {
         Team t = teams.getSelectionModel().getSelectedItem();
         try {
             if (t != null) {
-                EmailEvent event = new EmailEvent(db.getTblTeamContent().getSwimmers(t));
+                EmailEvent event = new EmailEvent(db.getTblTeamContent().getSwimmers(t), lang);
                 event.setOnSucceeded(event1 -> host.showDocument(event.getValue()));
                 eventBus.post(event);
             }

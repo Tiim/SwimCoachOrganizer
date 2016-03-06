@@ -44,9 +44,9 @@ public class Debug {
 
     private static String filter(String string) {
         if (string == null) return "null";
-        string = string.replace("\n", "\\n");
-        string = string.replace("\r", "\\r");
-        string = string.replace("\t", "\\t");
+        string = string.replace("\n", "\\n"); //NON-NLS
+        string = string.replace("\r", "\\r"); //NON-NLS
+        string = string.replace("\t", "\\t"); //NON-NLS
         return string;
     }
 }

@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
+@SuppressWarnings("HardCodedStringLiteral")
 public class JDBCSetFocus extends Table implements ch.tiim.sco.database.TableSetFocus {
     private static final Logger LOGGER = LoggerFactory.getLogger(JDBCSetFocus.class);
     private NamedParameterPreparedStatement add;
@@ -35,7 +36,7 @@ public class JDBCSetFocus extends Table implements ch.tiim.sco.database.TableSet
         add.setString("name", focus.getName());
         add.setString("abbr", focus.getAbbr());
         add.setString("notes", focus.getNotes());
-        LOGGER.debug(MARKER_QUERRY, add.toString());
+        LOGGER.debug(MARKER_QUERY, add.toString());
         testUpdate(add);
         focus.setId(getGenKey(add));
     }
@@ -46,21 +47,21 @@ public class JDBCSetFocus extends Table implements ch.tiim.sco.database.TableSet
         update.setString("abbr", focus.getAbbr());
         update.setString("notes", focus.getNotes());
         update.setInt("id", focus.getId());
-        LOGGER.debug(MARKER_QUERRY, update.toString());
+        LOGGER.debug(MARKER_QUERY, update.toString());
         testUpdate(update);
     }
 
     @Override
     public void deleteSetFocus(SetFocus focus) throws SQLException {
         delete.setInt("id", focus.getId());
-        LOGGER.debug(MARKER_QUERRY, delete.toString());
+        LOGGER.debug(MARKER_QUERY, delete.toString());
         testUpdate(delete);
     }
 
     @Override
     public List<SetFocus> getAllFoci() throws SQLException {
         ResultSet rs = getAll.executeQuery();
-        LOGGER.debug(MARKER_QUERRY, getAll.toString());
+        LOGGER.debug(MARKER_QUERY, getAll.toString());
         List<SetFocus> l = new LinkedList<>();
         while (rs.next()) {
             l.add(getSetFocus(rs));

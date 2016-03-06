@@ -84,7 +84,7 @@ public class ErrorReportingDialog extends DialogView {
 
     @FXML
     private void onReport() {
-        report.setReport(data.getText() + "\n\n=== USER ===\n" + input.getText());
+        report.setReport(data.getText() + "\n\n=== USER ===\n" + input.getText()); //NON-NLS
         new Thread(() -> {
             try {
                 report.send();

@@ -2,6 +2,7 @@ package ch.tiim.sco.lenex;
 
 import ch.tiim.sco.lenex.model.Lenex;
 import ch.tiim.sco.util.ByteCountingInputStream;
+import ch.tiim.sco.util.lang.ResourceBundleEx;
 import javafx.concurrent.Task;
 
 import java.nio.file.Path;
@@ -9,17 +10,19 @@ import java.nio.file.Path;
 public class LenexLoadTask extends Task<Lenex> {
 
     private final Path path;
+    private final ResourceBundleEx lang;
 
-    public LenexLoadTask(Path path) {
+    public LenexLoadTask(Path path, ResourceBundleEx lang) {
         this.path = path;
+        this.lang = lang;
     }
 
     @Override
     protected Lenex call() throws Exception {
         LenexParser parser = new LenexParser();
-        updateMessage("Parsing LENEX");
+        updateMessage(lang.str("task.lenex.parse"));
         Lenex lenex = parser.read(path, new Updater());
-        updateMessage("Done");
+        updateMessage(lang.str("task.done"));
         return lenex;
     }
 

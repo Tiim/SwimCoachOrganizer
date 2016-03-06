@@ -114,7 +114,7 @@ public class MainWindow extends View {
 
     private void showPrivacyDialog() {
         if (Settings.INSTANCE.getBoolean("show_privacy_dialog", true)) {
-            URL uri = MainWindow.class.getResource("main/text/privacy.txt");
+            URL uri = MainWindow.class.getResource("main/text/privacy.txt"); //NON-NLS
             Alert alert = null;
             try {
                 alert = new Alert(
@@ -133,7 +133,6 @@ public class MainWindow extends View {
                 }
                 Logging.reloadLoggerConfig();
             }
-            LOGGER.info("Logging with loggly: " + Settings.INSTANCE.getBoolean("loggly.enabled", false));
         }
     }
 

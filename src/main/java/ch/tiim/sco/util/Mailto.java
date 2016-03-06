@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@SuppressWarnings("HardCodedStringLiteral")
 public class Mailto {
 
     private static final String MAILTO = "mailto:";

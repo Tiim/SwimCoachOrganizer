@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("HardCodedStringLiteral")
 public class JDBCClubContent extends Table implements ch.tiim.sco.database.TableClubContent {
     private static final Logger LOGGER = LoggerFactory.getLogger(JDBCClubContent.class);
     private NamedParameterPreparedStatement add;
@@ -37,7 +38,7 @@ public class JDBCClubContent extends Table implements ch.tiim.sco.database.Table
     public void addTeam(Club c, Team t) throws SQLException {
         add.setInt("club_id", c.getId());
         add.setInt("team_id", t.getId());
-        LOGGER.debug(MARKER_QUERRY, add.toString());
+        LOGGER.debug(MARKER_QUERY, add.toString());
         testUpdate(add);
     }
 
@@ -45,14 +46,14 @@ public class JDBCClubContent extends Table implements ch.tiim.sco.database.Table
     public void deleteTeam(Club c, Team t) throws SQLException {
         delete.setInt("club_id", c.getId());
         delete.setInt("team_id", t.getId());
-        LOGGER.debug(MARKER_QUERRY, delete.toString());
+        LOGGER.debug(MARKER_QUERY, delete.toString());
         testUpdate(delete);
     }
 
     @Override
     public List<Team> getTeams(Club c) throws SQLException {
         get.setInt("club_id", c.getId());
-        LOGGER.debug(MARKER_QUERRY, get.toString());
+        LOGGER.debug(MARKER_QUERY, get.toString());
         ResultSet rs = get.executeQuery();
         List<Team> l = new ArrayList<>();
         while (rs.next()) {
@@ -64,7 +65,7 @@ public class JDBCClubContent extends Table implements ch.tiim.sco.database.Table
     @Override
     public List<Team> getNotTeams(Club c) throws SQLException {
         getNot.setInt("club_id", c.getId());
-        LOGGER.debug(MARKER_QUERRY, getNot.toString());
+        LOGGER.debug(MARKER_QUERY, getNot.toString());
         ResultSet rs = getNot.executeQuery();
         List<Team> l = new ArrayList<>();
         while (rs.next()) {
@@ -76,7 +77,7 @@ public class JDBCClubContent extends Table implements ch.tiim.sco.database.Table
     @Override
     public void setTeams(Club club, List<Team> teams) throws SQLException {
         deleteAll.setInt("club_id", club.getId());
-        LOGGER.debug(MARKER_QUERRY, deleteAll.toString());
+        LOGGER.debug(MARKER_QUERY, deleteAll.toString());
         deleteAll.executeUpdate(); //Might affect zero rows
         if (!teams.isEmpty()) {
             for (Team t : teams) {

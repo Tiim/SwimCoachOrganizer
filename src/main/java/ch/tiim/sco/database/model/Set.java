@@ -97,12 +97,12 @@ public class Set implements Model {
     public String getDistance() {
         StringBuilder b = new StringBuilder();
         if (getDistance1() > 1) {
-            b.append(getDistance1()).append("x");
+            b.append(getDistance1()).append("x"); //NON-NLS
         }
         if (getDistance2() > 1) {
-            b.append(getDistance2()).append("x");
+            b.append(getDistance2()).append("x"); //NON-NLS
         }
-        b.append(getDistance3()).append("m");
+        b.append(getDistance3()).append("m"); //NON-NLS
         return b.toString();
     }
 

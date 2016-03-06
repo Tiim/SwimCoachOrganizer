@@ -8,7 +8,7 @@ public class DaemonFactory implements ThreadFactory {
     public Thread newThread(@Nonnull Runnable r) {
         Thread t = new Thread(r);
         t.setDaemon(true);
-        t.setName("EXECUTOR THREAD");
+        t.setName("EXECUTOR THREAD"); //NON-NLS
         return t;
     }
 }

@@ -10,7 +10,7 @@ import java.util.Properties;
 
 public class Settings {
 
-    private static final String CONFIG = "settings.properties";
+    private static final String CONFIG = "settings.properties"; //NON-NLS
     public static final Settings INSTANCE = new Settings(Paths.get(CONFIG));
 
     private Properties config;
@@ -40,7 +40,7 @@ public class Settings {
     public synchronized void setString(String key, String value) {
         config.setProperty(key, value);
         try (OutputStream os = Files.newOutputStream(file)) {
-            config.store(os, "User settings");
+            config.store(os, "User settings"); //NON-NLS
         } catch (IOException e) {
             //ignore
         }

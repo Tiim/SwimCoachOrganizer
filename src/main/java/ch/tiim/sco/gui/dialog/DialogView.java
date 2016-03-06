@@ -22,7 +22,7 @@ public abstract class DialogView extends View {
             if (root == null) {
                 throw new NullPointerException("Root can't be null!");
             }
-            String css = getClass().getCanonicalName().replace('.', '/') + ".css";
+            String css = getClass().getCanonicalName().replace('.', '/') + ".css"; //NON-NLS
             if (DialogView.class.getResource('/' + css) != null) {
                 root.getStylesheets().add(css);
             }

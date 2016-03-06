@@ -16,14 +16,14 @@ public class VersionCheckTask implements Runnable {
 
     @Override
     public void run() {
-        LOGGER.info(String.format("Version %s --> %s",
+        LOGGER.info(String.format("Version %s --> %s", //NON-NLS
                 VersionChecker.getCurrentVersion(),
                 VersionChecker.getRemoteVersion()));
         if (VersionChecker.isNewVersionAvailable()) {
             try {
                 Thread.sleep(5000); //Wait a bit to not overwhelm the user.
             } catch (InterruptedException e) {
-                LOGGER.info("Interrupted");
+                LOGGER.info("Interrupted"); //NON-NLS
             }
             eventBus.post(new NewVersionEvent(
                     VersionChecker.getCurrentVersion(),

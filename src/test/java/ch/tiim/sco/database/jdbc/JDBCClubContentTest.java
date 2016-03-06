@@ -8,6 +8,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+@SuppressWarnings("HardCodedStringLiteral")
 public class JDBCClubContentTest {
 
     private DatabaseController db;

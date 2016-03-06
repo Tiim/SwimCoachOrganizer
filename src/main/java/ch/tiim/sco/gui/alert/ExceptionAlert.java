@@ -2,6 +2,7 @@ package ch.tiim.sco.gui.alert;
 
 import ch.tiim.sco.gui.events.ErrorReportEvent;
 import ch.tiim.sco.util.error.ErrorReport;
+import ch.tiim.sco.util.lang.ResourceBundleEx;
 import com.google.common.eventbus.EventBus;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
@@ -19,7 +20,8 @@ import java.nio.file.Paths;
 import java.util.Optional;
 
 public class ExceptionAlert extends Alert {
-    public static final ButtonType BUTTON_REPORT = new ButtonType("Report");
+    public static ButtonType buttonReport;
+    private static ResourceBundleEx lang;
     private static EventBus eventBus;
 
     private Throwable throwable;
@@ -28,11 +30,11 @@ public class ExceptionAlert extends Alert {
                            @Nullable Throwable t) {
         super(AlertType.ERROR);
         this.throwable = t;
-        getButtonTypes().setAll(BUTTON_REPORT, ButtonType.CLOSE);
-        setTitle("Error");
-        setHeaderText(String.format("%s: %s", message, t != null ? t.getMessage() : ""));
+        getButtonTypes().setAll(buttonReport, ButtonType.CLOSE);
+        setTitle(lang.str("error"));
+        setHeaderText(String.format(lang.str("error.format"), message, t != null ? t.getMessage() : ""));
         if (t != null) {
-            setContentText("If you think this is a bug, feel free to report it.");
+            setContentText(lang.str("error.bug.info"));
             TextArea text = new TextArea(getStackTrace(t));
             text.setEditable(false);
             text.setWrapText(true);
@@ -40,7 +42,6 @@ public class ExceptionAlert extends Alert {
             text.setMaxHeight(Double.MAX_VALUE);
             getDialogPane().setExpandableContent(text);
         }
-        logger.info("[ALERT] - displaying...");
     }
 
     private String getStackTrace(Throwable t) {
@@ -50,7 +51,7 @@ public class ExceptionAlert extends Alert {
     }
 
     public static void showError(Logger logger, String message, Throwable t) {
-        logger.error(String.format("[ALERT] -> %s", message), t);
+        logger.error(message, t);
         Platform.runLater(() -> {
             ExceptionAlert alert = new ExceptionAlert(logger, message, t);
             alert.handle();
@@ -60,10 +61,10 @@ public class ExceptionAlert extends Alert {
 
     public void handle() {
         Optional<ButtonType> buttonType = showAndWait();
-        if (buttonType.isPresent() && buttonType.get() == BUTTON_REPORT) {
+        if (buttonType.isPresent() && buttonType.get() == buttonReport) {
             ErrorReport report = new ErrorReport();
-            Path logfile = Paths.get("logfile.log");
-            Path traceFile = Paths.get("file.db.trace.db");
+            Path logfile = Paths.get("logfile.log"); //NON-NLS
+            Path traceFile = Paths.get("file.db.trace.db"); //NON-NLS
             if (Files.exists(logfile)) {
                 report.addFile(logfile);
             }
@@ -76,7 +77,9 @@ public class ExceptionAlert extends Alert {
         }
     }
 
-    public static void setEventBus(EventBus eventBus) {
+    public static void init(EventBus eventBus, ResourceBundleEx lang) {
+        ExceptionAlert.lang = lang;
         ExceptionAlert.eventBus = eventBus;
+        buttonReport = new ButtonType(lang.str("gui.report"));
     }
 }
