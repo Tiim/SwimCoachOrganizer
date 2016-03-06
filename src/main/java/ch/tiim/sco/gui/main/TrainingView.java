@@ -6,6 +6,7 @@ import ch.tiim.sco.database.model.*;
 import ch.tiim.sco.gui.alert.ExceptionAlert;
 import ch.tiim.sco.gui.events.SetEvent;
 import ch.tiim.sco.gui.events.TrainingEvent;
+import ch.tiim.sco.gui.util.ModelCell;
 import ch.tiim.sco.print.PrintTask;
 import ch.tiim.sco.util.OutOfCoffeeException;
 import ch.tiim.sco.util.lang.ResourceBundleEx;
@@ -64,6 +65,7 @@ public class TrainingView extends MainView {
     @FXML
     private void initialize() {
         initMenu();
+        trainings.setCellFactory(param1 -> new ModelCell<>(lang));
         colNr.setCellValueFactory(param -> new SimpleIntegerProperty(param.getValue().getIndex()));
         colName.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getSet().getName()));
         colDistance.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getSet().getDistance()));

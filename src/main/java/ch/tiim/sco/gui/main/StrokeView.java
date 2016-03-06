@@ -5,6 +5,7 @@ import ch.tiim.sco.database.DatabaseController;
 import ch.tiim.sco.database.model.SetStroke;
 import ch.tiim.sco.gui.alert.ExceptionAlert;
 import ch.tiim.sco.gui.events.StrokeEvent;
+import ch.tiim.sco.gui.util.ModelCell;
 import ch.tiim.sco.util.OutOfCoffeeException;
 import ch.tiim.sco.util.lang.ResourceBundleEx;
 import com.google.common.eventbus.Subscribe;
@@ -46,6 +47,7 @@ public class StrokeView extends MainView {
     @FXML
     private void initialize() {
         initMenu();
+        strokes.setCellFactory(param -> new ModelCell<>(lang));
         strokes.getSelectionModel().selectedItemProperty()
                 .addListener((observable, oldValue, newValue) -> onSelect(newValue));
         isSelected.bind(strokes.getSelectionModel().selectedItemProperty().isNotNull());
