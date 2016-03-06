@@ -1,5 +1,7 @@
 package ch.tiim.sco.database.model;
 
+import ch.tiim.sco.util.lang.ResourceBundleEx;
+
 import java.util.Objects;
 
 public class SetFocus implements Model {
@@ -38,12 +40,17 @@ public class SetFocus implements Model {
 
     @Override
     public String toString() {
-        return name + " [" + abbr + "]";
+        return "SetFocus{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", abbr='" + abbr + '\'' +
+                ", notes='" + notes + '\'' +
+                '}';
     }
 
     @Override
-    public String uiString() {
-        return toString();
+    public String uiString(ResourceBundleEx lang) {
+        return String.format(lang.str("model.focus.format"), name, abbr);
     }
 
     public String getAbbr() {

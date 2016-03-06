@@ -1,6 +1,8 @@
 package ch.tiim.sco.database.model;
 
 
+import ch.tiim.sco.util.lang.ResourceBundleEx;
+
 import java.util.Objects;
 
 public class Set implements Model {
@@ -90,8 +92,8 @@ public class Set implements Model {
     }
 
     @Override
-    public String uiString() {
-        return name + " [" + getDistance() + "]";
+    public String uiString(ResourceBundleEx lang) {
+        return String.format(lang.str("model.set.format"), name, getDistance());
     }
 
     public String getDistance() {

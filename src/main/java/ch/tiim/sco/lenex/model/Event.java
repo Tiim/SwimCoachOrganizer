@@ -2,6 +2,7 @@ package ch.tiim.sco.lenex.model;
 
 import ch.tiim.sco.database.model.Model;
 import ch.tiim.sco.lenex.adapder.LocalTimeAdapter;
+import ch.tiim.sco.util.lang.ResourceBundleEx;
 
 import javax.annotation.Nonnull;
 import javax.xml.bind.annotation.*;
@@ -45,8 +46,8 @@ public class Event implements Model, Comparable<Event> {
     public TypeEvent type;
 
     @Override
-    public String uiString() {
-        return String.format("%s: %s - %s", daytime.toString(), gender.toString(), swimstyle.uiString());
+    public String uiString(ResourceBundleEx lang) {
+        return String.format(lang.str("model.lenex.event.format"), daytime.toString(), gender.toString(), swimstyle.uiString(lang));
     }
 
     @Override

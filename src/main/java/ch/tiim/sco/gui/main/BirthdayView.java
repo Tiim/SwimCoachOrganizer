@@ -24,7 +24,7 @@ public class BirthdayView extends MainView {
     private static final Logger LOGGER = LoggerFactory.getLogger(BirthdayView.class);
     @Inject(name = "db-controller")
     private DatabaseController db;
-    @Inject
+    @Inject(name = "lang")
     private ResourceBundleEx lang;
 
     @FXML
@@ -68,7 +68,7 @@ public class BirthdayView extends MainView {
         try {
             s = db.getTblSwimmer().getAllSwimmers();
         } catch (Exception e) {
-            ExceptionAlert.showError(LOGGER,lang.format("error.load", "error.subj.swimmer"), e);
+            ExceptionAlert.showError(LOGGER, lang.format("error.load", "error.subj.swimmer"), e);
             return;
         }
         Collections.sort(s, (o1, o2) ->

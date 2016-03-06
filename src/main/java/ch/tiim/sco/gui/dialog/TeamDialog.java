@@ -7,6 +7,7 @@ import ch.tiim.sco.database.model.Team;
 import ch.tiim.sco.gui.alert.ExceptionAlert;
 import ch.tiim.sco.gui.events.OpenEvent;
 import ch.tiim.sco.gui.events.TeamEvent;
+import ch.tiim.sco.gui.util.ModelConverter;
 import ch.tiim.sco.gui.util.UIException;
 import ch.tiim.sco.gui.util.Validator;
 import ch.tiim.sco.util.lang.ResourceBundleEx;
@@ -46,17 +47,7 @@ public class TeamDialog extends DialogView {
 
     @FXML
     private void initialize() {
-        swimmers.setCellFactory(CheckBoxListCell.forListView(selected::get, new StringConverter<Swimmer>() {
-            @Override
-            public String toString(Swimmer object) {
-                return object.uiString();
-            }
-
-            @Override
-            public Swimmer fromString(String string) {
-                return null;
-            }
-        }));
+        swimmers.setCellFactory(CheckBoxListCell.forListView(selected::get, new ModelConverter<>(lang)));
     }
 
     @FXML

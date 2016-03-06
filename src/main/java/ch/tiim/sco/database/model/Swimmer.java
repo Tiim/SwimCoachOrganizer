@@ -1,5 +1,7 @@
 package ch.tiim.sco.database.model;
 
+import ch.tiim.sco.util.lang.ResourceBundleEx;
+
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -55,8 +57,9 @@ public class Swimmer implements Model {
     }
 
     @Override
-    public String uiString() {
-        return firstName + " " + lastName + " [" + (isFemale ? "f" : "m") + "]";
+    public String uiString(ResourceBundleEx lang) {
+        return String.format(lang.str("model.swimmer.format"), firstName, lastName, isFemale ?
+                lang.getString("gui.gender.f.short") : lang.getString("gui.gender.m.short"));
     }
 
     @Override

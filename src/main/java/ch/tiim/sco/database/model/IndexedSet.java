@@ -1,6 +1,8 @@
 package ch.tiim.sco.database.model;
 
 
+import ch.tiim.sco.util.lang.ResourceBundleEx;
+
 import java.util.Objects;
 
 public class IndexedSet implements Model {
@@ -13,7 +15,7 @@ public class IndexedSet implements Model {
     }
 
     @Override
-    public String uiString() {
+    public String uiString(ResourceBundleEx lang) {
         return toString();
     }
 

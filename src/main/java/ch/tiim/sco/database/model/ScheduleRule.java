@@ -1,6 +1,8 @@
 package ch.tiim.sco.database.model;
 
 
+import ch.tiim.sco.util.lang.ResourceBundleEx;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Objects;
@@ -45,20 +47,32 @@ public class ScheduleRule implements Model {
     }
 
     @Override
-    public String uiString() {
+    public String uiString(ResourceBundleEx lang) {
         if (interval == 1) {
-            return String.format("Every day at %s for %d:%d", time,
+            return String.format(lang.str("model.schedule.format.day"), time,
                     duration / 60, duration % 60);
         } else if (interval == 7) {
-            return String.format("Every %s at %s for %d:%d", start.getDayOfWeek(), time,
+            return String.format(lang.str("model.schedule.format.week"), start.getDayOfWeek(), time,
                     duration / 60, duration % 60);
         } else if (interval % 7 == 0) {
-            return String.format("Every %d %ss at %s for %d:%d", interval / 7, start.getDayOfWeek(), time,
+            return String.format(lang.str("model.schedule.format.week.mul"), interval / 7, start.getDayOfWeek(), time,
                     duration / 60, duration % 60);
         } else {
-            return String.format("Every %d days at %s for %d:%d starting from %s",
+            return String.format(lang.str("model.schedule.format.day.mul"),
                     interval, time, duration / 60, duration % 60, start);
         }
+    }
+
+    @Override
+    public String toString() {
+        return "ScheduleRule{" +
+                "id=" + id +
+                ", start=" + start +
+                ", time=" + time +
+                ", interval=" + interval +
+                ", duration=" + duration +
+                ", team=" + team +
+                '}';
     }
 
     public int getDuration() {

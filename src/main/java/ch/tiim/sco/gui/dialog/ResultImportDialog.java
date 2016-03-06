@@ -63,7 +63,7 @@ public class ResultImportDialog extends DialogView {
     private void initialize() {
         isImport.setCellFactory(CheckBoxTableCell.forTableColumn(isImport));
         isImport.setCellValueFactory(param1 -> selected.get(param1.getValue()));
-        swimmer.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getKey().uiString()));
+        swimmer.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getKey().uiString(lang)));
         time.setCellValueFactory(param ->
                 new SimpleStringProperty(DurationFormatter.format(param.getValue().getValue().getSwimTime())));
         distance.setCellValueFactory(param -> new SimpleIntegerProperty(param.getValue().getValue().getDistance()));

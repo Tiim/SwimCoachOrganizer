@@ -56,8 +56,8 @@ public class ScheduleView extends MainView {
         initMenu();
         isTeamSelected.bind(teams.getSelectionModel().selectedItemProperty().isNotNull());
         isScheduleSelected.bind(schedules.getSelectionModel().selectedItemProperty().isNotNull());
-        teams.setCellFactory(param -> new ModelCell<>());
-        schedules.setCellFactory(param -> new ModelCell<>());
+        teams.setCellFactory(param -> new ModelCell<>(lang));
+        schedules.setCellFactory(param -> new ModelCell<>(lang));
         teams.getSelectionModel().selectedItemProperty()
                 .addListener((observable, oldValue, newValue) -> selected(newValue));
         calendar.setCallback(this::getEvents);

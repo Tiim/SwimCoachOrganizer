@@ -1,5 +1,7 @@
 package ch.tiim.sco.database.model;
 
+import ch.tiim.sco.util.lang.ResourceBundleEx;
+
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -38,8 +40,8 @@ public class Result implements Model {
     }
 
     @Override
-    public String uiString() {
-        return String.format("%dm %s: %s - %s %s", distance, stroke, swimTime, meetDate.toString(), meet);
+    public String uiString(ResourceBundleEx lang) {
+        return String.format(lang.str("model.result.format"), distance, stroke, swimTime, meetDate.toString(), meet);
     }
 
     @Override

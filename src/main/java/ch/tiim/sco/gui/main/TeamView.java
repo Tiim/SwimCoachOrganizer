@@ -58,7 +58,7 @@ public class TeamView extends MainView {
     @FXML
     private void initialize() {
         initMenu();
-        teams.setCellFactory(param1 -> new ModelCell<>());
+        teams.setCellFactory(param1 -> new ModelCell<>(lang));
         teams.getSelectionModel().selectedItemProperty()
                 .addListener((observable, oldValue, newValue) -> select(newValue));
         firstName.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getFirstName()));

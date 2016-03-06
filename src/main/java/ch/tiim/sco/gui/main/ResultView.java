@@ -64,7 +64,7 @@ public class ResultView extends MainView {
     @FXML
     private void initialize() {
         initMenu();
-        swimmers.setCellFactory(param1 -> new ModelCell<>());
+        swimmers.setCellFactory(param1 -> new ModelCell<>(lang));
         swimmers.getSelectionModel().selectedItemProperty()
                 .addListener((observable, oldValue, newValue) -> selected(newValue));
         distance.setCellValueFactory(param -> new SimpleStringProperty(String.valueOf(param.getValue().getDistance())));

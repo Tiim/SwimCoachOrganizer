@@ -1,6 +1,8 @@
 package ch.tiim.sco.database.model;
 
 
+import ch.tiim.sco.util.lang.ResourceBundleEx;
+
 import java.util.Objects;
 
 public class Team implements Model {
@@ -17,7 +19,7 @@ public class Team implements Model {
     }
 
     @Override
-    public String uiString() {
+    public String uiString(ResourceBundleEx lang) {
         return name;
     }
 

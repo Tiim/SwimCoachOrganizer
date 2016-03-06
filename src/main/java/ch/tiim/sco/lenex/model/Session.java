@@ -3,6 +3,7 @@ package ch.tiim.sco.lenex.model;
 import ch.tiim.sco.database.model.Model;
 import ch.tiim.sco.lenex.adapder.LocalDateAdapter;
 import ch.tiim.sco.lenex.adapder.LocalTimeAdapter;
+import ch.tiim.sco.util.lang.ResourceBundleEx;
 
 import javax.annotation.Nonnull;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -57,7 +58,7 @@ public class Session implements Model, Comparable<Session> {
     }
 
     @Override
-    public String uiString() {
-        return String.format("%s %s", date, daytime);
+    public String uiString(ResourceBundleEx lang) {
+        return String.format(lang.str("model.lenex.session.format"), date, daytime);
     }
 }

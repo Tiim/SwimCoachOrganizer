@@ -59,7 +59,7 @@ public class ScheduleDialog extends DialogView {
         startMinute.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 59, 15));
         duration.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, Integer.MAX_VALUE, 90));
         interval.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, Integer.MAX_VALUE, 7));
-        team.setConverter(new ModelConverter<>());
+        team.setConverter(new ModelConverter<>(lang));
         InvalidationListener l = observable -> onChange();
 
         team.valueProperty().addListener(l);
@@ -72,7 +72,7 @@ public class ScheduleDialog extends DialogView {
 
     private void onChange() {
         try {
-            text.setText(getScheduleRule().uiString());
+            text.setText(getScheduleRule().uiString(lang));
         } catch (Exception e) {
             //Ignore
         }

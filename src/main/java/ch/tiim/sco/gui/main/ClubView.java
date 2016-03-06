@@ -66,10 +66,10 @@ public class ClubView extends MainView {
     @FXML
     private void initialize() {
         initMenu();
-        clubs.setCellFactory(param -> new ModelCell<>());
+        clubs.setCellFactory(param -> new ModelCell<>(lang));
         clubs.getSelectionModel().selectedItemProperty()
                 .addListener((observable, oldValue, newValue) -> selected(newValue));
-        teams.setCellFactory(param -> new ModelCell<>());
+        teams.setCellFactory(param -> new ModelCell<>(lang));
         isSelected.bind(clubs.getSelectionModel().selectedItemProperty().isNotNull());
         populate();
     }

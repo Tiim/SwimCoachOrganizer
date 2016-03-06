@@ -71,7 +71,7 @@ public class SwimmerView extends MainView {
     @FXML
     private void initialize() {
         initMenu();
-        swimmers.setCellFactory(param -> new ModelCell<>());
+        swimmers.setCellFactory(param -> new ModelCell<>(lang));
         swimmers.getSelectionModel().selectedItemProperty()
                 .addListener((observable, oldValue, newValue) -> selected(newValue));
         isSelected.bind(swimmers.getSelectionModel().selectedItemProperty().isNotNull());

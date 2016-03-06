@@ -55,7 +55,7 @@ public class SetView extends MainView {
     @FXML
     private void initialize() {
         initMenu();
-        sets.setCellFactory(param -> new ModelCell<>());
+        sets.setCellFactory(param -> new ModelCell<>(lang));
         sets.getSelectionModel().selectedItemProperty()
                 .addListener((observable, oldValue, newValue) -> onSelected(newValue));
         isSelected.bind(sets.getSelectionModel().selectedItemProperty().isNotNull());
@@ -80,8 +80,8 @@ public class SetView extends MainView {
             intensity.setText(String.valueOf(set.getIntensity()));
             distance.setText(set.getDistance());
             time.setText(set.getIntervalString());
-            focus.setText(set.getFocus().uiString());
-            stroke.setText(set.getStroke().uiString());
+            focus.setText(set.getFocus().uiString(lang));
+            stroke.setText(set.getStroke().uiString(lang));
             content.setText(set.getContent());
             notes.setText(set.getNotes());
         }

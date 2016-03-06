@@ -56,9 +56,9 @@ public class TrainingDialog extends DialogView {
 
     @FXML
     private void initialize() {
-        sets.setCellFactory(param -> new ModelCell<>());
-        teams.setConverter(new ModelConverter<>());
-        schedules.setConverter(new ModelConverter<>());
+        sets.setCellFactory(param -> new ModelCell<>(lang));
+        teams.setConverter(new ModelConverter<>(lang));
+        schedules.setConverter(new ModelConverter<>(lang));
 
         colNr.setCellValueFactory(d -> new SimpleIntegerProperty(d.getValue().getIndex()));
         colName.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getSet().getName()));

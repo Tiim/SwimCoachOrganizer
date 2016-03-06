@@ -1,6 +1,8 @@
 package ch.tiim.sco.database.model;
 
 
+import ch.tiim.sco.util.lang.ResourceBundleEx;
+
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -38,12 +40,18 @@ public class Training implements Model {
 
     @Override
     public String toString() {
-        return String.format("%s - %s", date.toString(), team == null ? "No Team" : team.getName());
+        return "Training{" +
+                "id=" + id +
+                ", date=" + date +
+                ", team=" + team +
+                ", schedule=" + schedule +
+                '}';
     }
 
     @Override
-    public String uiString() {
-        return toString();
+    public String uiString(ResourceBundleEx lang) {
+        return String.format(lang.str("model.training.format"), date.toString(),
+                team == null ? lang.str("model.training.no_team") : team.getName());
     }
 
     public LocalDate getDate() {

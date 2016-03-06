@@ -1,6 +1,7 @@
 package ch.tiim.sco.lenex.model;
 
 import ch.tiim.sco.database.model.Model;
+import ch.tiim.sco.util.lang.ResourceBundleEx;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlEnum;
@@ -25,24 +26,24 @@ public class SwimStyle implements Model {
     public Technique technique;
 
     @Override
-    public String uiString() {
+    public String uiString(ResourceBundleEx lang) {
         StringBuilder b = new StringBuilder();
         if (name != null) {
             return name;
         }
-        b.append(Integer.toString(distance)).append("m ");
+        b.append(Integer.toString(distance)).append(lang.str("model.lenex.swimstyle.meter")).append(" ");
         if (stroke != Stroke.UNKNOWN) {
             b.append(stroke);
         } else {
             b.append(code);
         }
         if (relaycount == 1 && stroke == Stroke.MEDLEY) {
-            b.append(" INDIVIDUAL");
+            b.append(" ").append(lang.str("model.lenex.swimstyle.individual"));
         } else if (relaycount > 1) {
-            b.append(" RELAY(").append(relaycount).append(") ");
+            b.append(" ").append(lang.str("model.lenex.swimstyle.relay")).append("(").append(relaycount).append(") ");
         }
         if (technique != null) {
-            b.append(technique).append(" only");
+            b.append(technique).append(" ").append(lang.str("model.lenex.swimstyle.only"));
         }
         return b.toString();
     }

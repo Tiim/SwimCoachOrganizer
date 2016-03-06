@@ -1,10 +1,10 @@
 package ch.tiim.sco.lenex.model;
 
 import ch.tiim.sco.database.model.Model;
+import ch.tiim.sco.util.lang.ResourceBundleEx;
 
 import javax.xml.bind.annotation.*;
 
-@SuppressWarnings("HardCodedStringLiteral")
 @XmlRootElement(name = "AGEGROUP")
 public class AgeGroup implements Model {
 
@@ -35,20 +35,21 @@ public class AgeGroup implements Model {
     public Rankings rankings;
 
     @Override
-    public String uiString() {
+    public String uiString(ResourceBundleEx lang) {
         StringBuilder b = new StringBuilder();
+        String year = lang.str("model.lenex.year.short");
         if (agemin > 0) {
-            b.append(agemin).append("J ");
+            b.append(agemin).append(year);
         }
-        b.append("- ");
+        b.append(" - ");
         if (agemax > 0) {
-            b.append(agemax).append("J");
+            b.append(agemax).append(year);
         }
         if (name != null) {
             b.append(" ").append(name);
         }
         if (handicap != 0) {
-            b.append("hc: ").append(handicap);
+            b.append(lang.str("model.lenex.handy_cap.short")).append(handicap);
         }
         return b.toString();
     }

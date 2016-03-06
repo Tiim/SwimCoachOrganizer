@@ -1,8 +1,10 @@
 package ch.tiim.sco.gui.dialog;
 
+import ch.tiim.inject.Inject;
 import ch.tiim.sco.database.model.Set;
 import ch.tiim.sco.gui.events.OpenEvent;
 import ch.tiim.sco.gui.events.SetEvent;
+import ch.tiim.sco.util.lang.ResourceBundleEx;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
@@ -11,6 +13,9 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 public class SetInspectDialog extends DialogView {
+
+    @Inject(name = "lang")
+    private ResourceBundleEx lang;
 
     @FXML
     private Parent root;
@@ -44,8 +49,8 @@ public class SetInspectDialog extends DialogView {
         distance.setText(set.getDistance());
         intensity.setText(set.getIntensity() + "%");
         time.setText(set.getIntervalString());
-        stroke.setText(set.getStroke().uiString());
-        focus.setText(set.getFocus().uiString());
+        stroke.setText(set.getStroke().uiString(lang));
+        focus.setText(set.getFocus().uiString(lang));
     }
 
     @Override

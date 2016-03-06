@@ -7,6 +7,7 @@ import ch.tiim.sco.database.model.Team;
 import ch.tiim.sco.gui.alert.ExceptionAlert;
 import ch.tiim.sco.gui.events.ClubEvent;
 import ch.tiim.sco.gui.events.OpenEvent;
+import ch.tiim.sco.gui.util.ModelConverter;
 import ch.tiim.sco.gui.util.UIException;
 import ch.tiim.sco.gui.util.Validator;
 import ch.tiim.sco.lenex.model.Nation;
@@ -63,17 +64,7 @@ public class ClubDialog extends DialogView {
         country.getItems().setAll(nations);
         externid.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, Integer.MAX_VALUE));
 
-        teams.setCellFactory(CheckBoxListCell.forListView(selected::get, new StringConverter<Team>() {
-            @Override
-            public String toString(Team object) {
-                return object.uiString();
-            }
-
-            @Override
-            public Team fromString(String string) {
-                return null;
-            }
-        }));
+        teams.setCellFactory(CheckBoxListCell.forListView(selected::get, new ModelConverter<>(lang)));
     }
 
     @FXML
