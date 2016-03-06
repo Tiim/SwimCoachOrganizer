@@ -1,5 +1,6 @@
 package ch.tiim.sco.util.error;
 
+import ch.tiim.sco.update.VersionChecker;
 import ch.tiim.sco.util.StringBuilderWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,21 +36,20 @@ public class ErrorReport {
     }
 
     private String osInfo() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("\n\n=== SPEC ===\n");
-        sb.append("Java Version ").append(System.getProperty("java.version")).append("\n");
-        sb.append("User Name ").append(System.getProperty("user.name")).append("\n");
-        sb.append("OS ").append(System.getProperty("os.name")).append(" ").append(System.getProperty("os.version"))
-                .append("\n");
-        sb.append("JavaFx ").append(System.getProperty("javafx.version")).append("\n");
-        sb.append("JVM ").append(System.getProperty("java.vm.vendor")).append(" ")
-                .append(System.getProperty("java.vm.version")).append("\n");
-        sb.append("Arch ").append(System.getProperty("os.arch")).append("\n");
-        return sb.toString();
+        return "\n\n=== SPEC ===\n" +
+                "Java Version " + System.getProperty("java.version") + "\n" +
+                "User Name " + System.getProperty("user.name") + "\n" +
+                "OS " + System.getProperty("os.name") + " " + System.getProperty("os.version") +
+                "\n" +
+                "JavaFx " + System.getProperty("javafx.version") + "\n" +
+                "JVM " + System.getProperty("java.vm.vendor") + " " +
+                System.getProperty("java.vm.version") + "\n" +
+                "Arch " + System.getProperty("os.arch") + "\n";
     }
 
     public String generateReport() {
         StringBuilder sb = new StringBuilder();
+        sb.append("Version: ").append(VersionChecker.getCurrentVersion()).append("\n\n");
         throwable.printStackTrace(new PrintWriter(new StringBuilderWriter(sb)));
         sb.append("\n");
         sb.append(osInfo());
