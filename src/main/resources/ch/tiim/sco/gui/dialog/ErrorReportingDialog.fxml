@@ -9,15 +9,15 @@
 
 <VBox fx:id="root" alignment="TOP_CENTER" prefHeight="502.0" prefWidth="666.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.tiim.sco.gui.dialog.ErrorReportingDialog">
    <children>
-      <Label text="Crash Data" />
-      <Label text="Click on words to censor them. This data will be publicly available." />
+      <Label text="%gui.error.data" />
+      <Label text="%gui.error.instruction" />
       <TextArea fx:id="data" editable="false" prefHeight="200.0" prefWidth="200.0" styleClass="crash-text-area" VBox.vgrow="ALWAYS" />
-      <Label text="Your Comment" />
+      <Label text="%gui.error.comment" />
       <TextArea fx:id="input" prefHeight="106.0" prefWidth="608.0" />
       <HBox alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" VBox.vgrow="NEVER">
          <children>
-            <Button mnemonicParsing="false" onAction="#onCancel" text="Cancel" />
-            <Button mnemonicParsing="false" onAction="#onReport" text="Report" />
+            <Button mnemonicParsing="false" onAction="#onCancel" text="%gui.cancel" />
+            <Button mnemonicParsing="false" onAction="#onReport" text="%gui.report" />
          </children>
          <VBox.margin>
             <Insets top="5.0" />
