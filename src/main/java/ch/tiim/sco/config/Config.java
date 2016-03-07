@@ -6,12 +6,11 @@ import java.util.Properties;
 
 public class Config {
 
-    public static final Config INSTANCE = new Config();
     private static final String CONFIG = "private.properties";  //NON-NLS
     private static final String ALTERNATE = "public.properties"; //NON-NLS
     private Properties config;
 
-    private Config() {
+    public Config() {
         InputStream res = Config.class.getResourceAsStream(CONFIG);
         if (res == null) {
             res = Config.class.getResourceAsStream(ALTERNATE);

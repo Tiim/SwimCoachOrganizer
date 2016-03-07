@@ -82,7 +82,7 @@ public class Main extends Application {
         Injector.getInstance().addInjectable(viewLoader, "view-loader");
         Injector.getInstance().addInjectable(bundle, "lang");
         Injector.getInstance().addInjectable(getHostServices(), "host"); //NON-NLS
-        Injector.getInstance().addInjectable(Config.INSTANCE, "config"); //NON-NLS
+        Injector.getInstance().addInjectable(new Config(), "config"); //NON-NLS
         Injector.getInstance().addInjectable(db, "db-controller"); //NON-NLS
         Injector.getInstance().addInjectable(primaryStage, "main-stage"); //NON-NLS
         Injector.getInstance().addInjectable(this, "app"); //NON-NLS
