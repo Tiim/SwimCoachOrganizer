@@ -20,7 +20,7 @@ public class DurationField extends HBox {
     @FXML
     private TextField sec;
     @FXML
-    private TextField ms;
+    private TextField hs;
 
 
     private final ObjectProperty<Duration> duration;
@@ -35,18 +35,18 @@ public class DurationField extends HBox {
         hour.focusedProperty().addListener(event -> onChange(hour));
         min.focusedProperty().addListener(event -> onChange(min));
         sec.focusedProperty().addListener(event -> onChange(sec));
-        ms.focusedProperty().addListener(event -> onChange(ms));
+        hs.focusedProperty().addListener(event -> onChange(hs));
         hour.textProperty().addListener(observable -> hour.setPrefColumnCount(hour.getText().length() ));
         min.textProperty().addListener(observable -> min.setPrefColumnCount(min.getText().length() ));
         sec.textProperty().addListener(observable -> sec.setPrefColumnCount(sec.getText().length() ));
-        ms.textProperty().addListener(observable -> ms.setPrefColumnCount(ms.getText().length() ));
+        hs.textProperty().addListener(observable -> hs.setPrefColumnCount(hs.getText().length() ));
     }
 
     private void populate() {
         hour.setText(String.format(FORMAT, (int) duration.get().toHours()));
         min.setText(String.format(FORMAT, (int) duration.get().toMinutes() % 60));
         sec.setText(String.format(FORMAT, (int) duration.get().getSeconds() % 60));
-        ms.setText(String.format(FORMAT, (int) duration.get().toMillis()/10 % 100));
+        hs.setText(String.format(FORMAT, (int) duration.get().toMillis()/10 % 100));
     }
 
     private void onChange(TextField t) {
@@ -64,7 +64,7 @@ public class DurationField extends HBox {
         int hour = Integer.parseInt(this.hour.getText());
         int min = Integer.parseInt(this.min.getText());
         int sec = Integer.parseInt(this.sec.getText());
-        int ms = Integer.parseInt(this.ms.getText()) * 10;
+        int ms = Integer.parseInt(this.hs.getText()) * 10;
         Duration d = Duration.ofMillis(ms + sec * 1000 + min * 1000 * 60 + hour * 1000 * 60 * 60);
         duration.setValue(d);
     }

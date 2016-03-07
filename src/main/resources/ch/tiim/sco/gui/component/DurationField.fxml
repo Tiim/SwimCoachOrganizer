@@ -4,14 +4,14 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
 
-<fx:root alignment="BASELINE_CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" type="HBox" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root styleClass="box" alignment="BASELINE_CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" type="HBox" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <TextField fx:id="hour" prefWidth="40.0" HBox.hgrow="SOMETIMES" />
-      <Label text=":" HBox.hgrow="NEVER" />
-      <TextField fx:id="min" prefWidth="40.0" HBox.hgrow="SOMETIMES" />
-      <Label text=":" HBox.hgrow="NEVER" />
-      <TextField fx:id="sec" prefWidth="40.0" HBox.hgrow="SOMETIMES" />
-      <Label text="." HBox.hgrow="NEVER" />
-      <TextField fx:id="ms" prefWidth="40.0" HBox.hgrow="SOMETIMES" />
+      <TextField styleClass="time, hour" fx:id="hour" prefWidth="40.0" HBox.hgrow="SOMETIMES" />
+      <Label styleClass="separator, h-m" text=":" HBox.hgrow="NEVER" />
+      <TextField styleClass="time, minute" fx:id="min" prefWidth="40.0" HBox.hgrow="SOMETIMES" />
+      <Label styleClass="separator, m-s" text=":" HBox.hgrow="NEVER" />
+      <TextField styleClass="time, second" fx:id="sec" prefWidth="40.0" HBox.hgrow="SOMETIMES" />
+      <Label styleClass="separator, s-hs" text="." HBox.hgrow="NEVER" />
+      <TextField styleClass="time, hs" fx:id="hs" prefWidth="40.0" HBox.hgrow="SOMETIMES" />
    </children>
 </fx:root>
