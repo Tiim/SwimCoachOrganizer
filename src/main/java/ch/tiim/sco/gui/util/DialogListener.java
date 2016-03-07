@@ -11,15 +11,21 @@ import javafx.event.EventHandler;
 
 public class DialogListener {
 
+    private final ViewLoader viewLoader;
+
+    public DialogListener(ViewLoader viewLoader){
+        this.viewLoader = viewLoader;
+    }
+
     @Subscribe
     public void onOpen(OpenEvent event) {
-        DialogView dv = ViewLoader.load(event.getDialog());
+        DialogView dv = viewLoader.load(event.getDialog());
         dv.open(event, event.getParent());
     }
 
     @Subscribe
     public void onTask(Task<?> event) {
-        TaskDialog dialog = ViewLoader.load(TaskDialog.class);
+        TaskDialog dialog = viewLoader.load(TaskDialog.class);
         EventHandler<WorkerStateEvent> onSucceeded = event.getOnSucceeded();
         EventHandler<WorkerStateEvent> onFailed = event.getOnFailed();
         event.setOnSucceeded(event1 -> {

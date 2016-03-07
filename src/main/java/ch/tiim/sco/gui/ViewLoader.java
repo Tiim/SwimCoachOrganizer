@@ -1,6 +1,7 @@
 package ch.tiim.sco.gui;
 
 import ch.tiim.sco.util.OutOfCoffeeException;
+import ch.tiim.sco.util.lang.ResourceBundleEx;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 
@@ -10,7 +11,11 @@ import java.util.ResourceBundle;
 
 public class ViewLoader {
 
-    private static ResourceBundle bundle;
+    private ResourceBundle bundle;
+
+    public ViewLoader(ResourceBundleEx bundle) {
+        this.bundle = bundle;
+    }
 
     /**
      * Loads a .fxml file and returns the controller that is associated with it.
@@ -21,7 +26,7 @@ public class ViewLoader {
      * @return the controller, loaded from the .fxml
      */
     @Nonnull
-    public static <T extends View> T load(@Nonnull Class<T> clazz) {
+    public <T extends View> T load(@Nonnull Class<T> clazz) {
         T c;
         try {
             FXMLLoader loader = new FXMLLoader(clazz.getResource(clazz.getSimpleName() + ".fxml")); //NON-NLS
@@ -37,11 +42,11 @@ public class ViewLoader {
         return c;
     }
 
-    public static void setBundle(ResourceBundle bundle) {
-        ViewLoader.bundle = bundle;
+    public void setBundle(ResourceBundle bundle) {
+        this.bundle = bundle;
     }
 
-    public static void load(Parent parent, String path) {
+    public void load(Parent parent, String path) {
         FXMLLoader loader = new FXMLLoader(parent.getClass().getResource(path));
         loader.setRoot(parent);
         loader.setResources(bundle);
@@ -49,7 +54,7 @@ public class ViewLoader {
         try {
             loader.load();
         } catch (IOException e) {
-            throw new RuntimeException("Can't load Calendar.fxml", e);
+            throw new RuntimeException("Can't load " + path, e);
         }
     }
 }

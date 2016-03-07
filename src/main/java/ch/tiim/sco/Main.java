@@ -1,5 +1,6 @@
 package ch.tiim.sco;
 
+import ch.tiim.inject.Inject;
 import ch.tiim.inject.Injector;
 import ch.tiim.sco.config.Config;
 import ch.tiim.sco.config.Settings;
@@ -40,6 +41,7 @@ public class Main extends Application {
     private final EventBus eventBus = new EventBus("Main"); //NON-NLS
 
     private ResourceBundleEx bundle;
+    private ViewLoader viewLoader;
 
 
     public static void main(final String[] args) {
@@ -56,7 +58,7 @@ public class Main extends Application {
 
         Locale locale = Settings.INSTANCE.getLocale("default_locale", Locale.getDefault());
         bundle = new ResourceBundleEx(ResourceBundleUtil.getResourceBundle(locale));
-        ViewLoader.setBundle(bundle);
+        viewLoader = new ViewLoader(bundle);
 
         ExceptionAlert.init(eventBus, bundle);
 
@@ -74,6 +76,7 @@ public class Main extends Application {
         DatabaseController db = new DatabaseController("./file.db"); //NON-NLS
         db.initializeDefaultValues();
 
+        Injector.getInstance().addInjectable(viewLoader, "view-loader");
         Injector.getInstance().addInjectable(bundle, "lang");
         Injector.getInstance().addInjectable(getHostServices(), "host"); //NON-NLS
         Injector.getInstance().addInjectable(Config.INSTANCE, "config"); //NON-NLS
@@ -94,7 +97,7 @@ public class Main extends Application {
 
 
     private void initRootLayout() {
-        MainWindow mainWindow = ViewLoader.load(MainWindow.class);
+        MainWindow mainWindow = viewLoader.load(MainWindow.class);
         mainWindow.show();
     }
 

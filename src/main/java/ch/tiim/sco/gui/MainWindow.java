@@ -40,6 +40,8 @@ public class MainWindow extends View {
     private Stage mainStage;
     @Inject(name = "version")
     private Version version;
+    @Inject(name ="view-loader")
+    private ViewLoader viewLoader;
 
     @FXML
     private BorderPane root;
@@ -69,30 +71,30 @@ public class MainWindow extends View {
     }
 
     private void initDialogs() {
-        eventBus.register(new DialogListener());
+        eventBus.register(new DialogListener(viewLoader));
     }
 
     private void initToolbar() {
 
         List<MainView> views = new ArrayList<>(Arrays.asList(
-                ViewLoader.load(TrainingView.class),
-                ViewLoader.load(SetView.class),
+                viewLoader.load(TrainingView.class),
+                viewLoader.load(SetView.class),
                 null,
-                ViewLoader.load(FocusView.class),
-                ViewLoader.load(StrokeView.class),
+                viewLoader.load(FocusView.class),
+                viewLoader.load(StrokeView.class),
                 null,
-                ViewLoader.load(ScheduleView.class),
-                ViewLoader.load(ClubView.class),
-                ViewLoader.load(TeamView.class),
-                ViewLoader.load(SwimmerView.class),
-                ViewLoader.load(BirthdayView.class),
+                viewLoader.load(ScheduleView.class),
+                viewLoader.load(ClubView.class),
+                viewLoader.load(TeamView.class),
+                viewLoader.load(SwimmerView.class),
+                viewLoader.load(BirthdayView.class),
                 null,
-                ViewLoader.load(ResultView.class)
+                viewLoader.load(ResultView.class)
         ));
 
         if (version.equals(Version.forIntegers(0))) {
             views.add(null);
-            views.add(ViewLoader.load(ConsoleView.class));
+            views.add(viewLoader.load(ConsoleView.class));
         }
 
         for (MainView v : views) {

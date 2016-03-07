@@ -75,7 +75,7 @@ public final class VersionChecker {
         try {
             v = Version.valueOf(Constants.downloadString(Constants.REMOTE_PROGRAM_VERSION_URL));
         } catch (Exception e) {
-            LOGGER.warn("", e);
+            LOGGER.info("Can't download remote version string: " + e.getMessage());
             v = Version.forIntegers(0);
         }
         remoteVersion = v;
