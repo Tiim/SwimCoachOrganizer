@@ -9,14 +9,10 @@ import java.util.Locale;
 import java.util.Properties;
 
 public class Settings {
-
-    private static final String CONFIG = "settings.properties"; //NON-NLS
-    public static final Settings INSTANCE = new Settings(Paths.get(CONFIG));
-
     private Properties config;
     private Path file;
 
-    private Settings(Path file) {
+    public Settings(Path file) {
         this.file = file;
         this.config = new Properties();
         try {

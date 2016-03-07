@@ -30,6 +30,7 @@ import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.nio.file.Paths;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -42,6 +43,7 @@ public class Main extends Application {
 
     private ResourceBundleEx bundle;
     private ViewLoader viewLoader;
+    private Settings settings;
 
 
     public static void main(final String[] args) {
@@ -56,7 +58,8 @@ public class Main extends Application {
         eventBus.register(listener);
         eventBus.register(this);
 
-        Locale locale = Settings.INSTANCE.getLocale("default_locale", Locale.getDefault());
+        settings = new Settings(Paths.get("settings.properties")); //NON-NLS
+        Locale locale = settings.getLocale("default_locale", Locale.getDefault());
         bundle = new ResourceBundleEx(ResourceBundleUtil.getResourceBundle(locale));
         viewLoader = new ViewLoader(bundle);
 
