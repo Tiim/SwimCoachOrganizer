@@ -66,8 +66,6 @@ public class MainWindow extends View {
         //Wait until the stage got resized. Otherwise
         //the split plane has not the right ratio.
         Platform.runLater(() -> ((Button) toolBar.getItems().get(0)).getOnAction().handle(null));
-
-        Platform.runLater(() -> showPrivacyDialog());
     }
 
     private void initDialogs() {
@@ -110,30 +108,6 @@ public class MainWindow extends View {
                     this.menu.getMenus().set(1, v.getMenu());
                     v.opened();
                 });
-            }
-        }
-    }
-
-    private void showPrivacyDialog() {
-        if (Settings.INSTANCE.getBoolean("show_privacy_dialog", true)) {
-            URL uri = MainWindow.class.getResource("main/text/privacy.txt"); //NON-NLS
-            Alert alert = null;
-            try {
-                alert = new Alert(
-                        Alert.AlertType.INFORMATION,
-                        Resources.toString(uri, Charset.forName("UTF-8")),
-                        ButtonType.YES, ButtonType.NO
-                );
-            } catch (IOException e) {
-                throw new OutOfCoffeeException("Can't read " + uri, e);
-            }
-            Optional<ButtonType> res = alert.showAndWait();
-            if (res.isPresent()) {
-                Settings.INSTANCE.setBoolean("show_privacy_dialog", false);
-                if (res.get() == ButtonType.YES) {
-                    Settings.INSTANCE.setBoolean("loggly.enabled", true);
-                }
-                Logging.reloadLoggerConfig();
             }
         }
     }
