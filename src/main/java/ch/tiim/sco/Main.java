@@ -45,7 +45,6 @@ public class Main extends Application {
     private ResourceBundleEx bundle;
     private ViewLoader viewLoader;
     private Settings settings;
-    private MainWindow mainWindow;
 
 
     public static void main(final String[] args) {
@@ -132,7 +131,7 @@ public class Main extends Application {
 
 
     private void initRootLayout() {
-        mainWindow = viewLoader.load(MainWindow.class);
+        MainWindow mainWindow = viewLoader.load(MainWindow.class);
         mainWindow.show();
     }
 
