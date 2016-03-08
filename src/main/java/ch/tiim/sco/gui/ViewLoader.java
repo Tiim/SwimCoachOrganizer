@@ -4,13 +4,16 @@ import ch.tiim.sco.util.OutOfCoffeeException;
 import ch.tiim.sco.util.lang.ResourceBundleEx;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import org.codehaus.groovy.runtime.powerassert.SourceText;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.util.ResourceBundle;
 
 public class ViewLoader {
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(ViewLoader.class);
     private ResourceBundle bundle;
 
     public ViewLoader(ResourceBundleEx bundle) {
