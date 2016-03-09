@@ -66,6 +66,12 @@ public class Main extends Application {
         eventBus.register(listener);
         eventBus.register(this);
 
+        if (getParameters().getNamed().containsKey("version")) { //NON-NLS
+            VersionChecker.overrideCurrentVersion(Version.valueOf(
+                    getParameters().getNamed().get("version") //NON-NLS
+            ));
+        }
+
         initProgram(primaryStage, splash);
     }
 
@@ -130,11 +136,6 @@ public class Main extends Application {
         Injector.getInstance().addInjectable(this, "app"); //NON-NLS
         Injector.getInstance().addInjectable(eventBus, "event-bus"); //NON-NLS
 
-        if (getParameters().getNamed().containsKey("version")) { //NON-NLS
-            VersionChecker.overrideCurrentVersion(Version.valueOf(
-                    getParameters().getNamed().get("version") //NON-NLS
-            ));
-        }
 
         executor.submit(loadVersion);
         executor.submit(loadConfig);
