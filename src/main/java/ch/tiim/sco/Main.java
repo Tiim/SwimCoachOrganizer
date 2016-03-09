@@ -21,6 +21,7 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.beans.binding.DoubleBinding;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -55,7 +56,8 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        primaryStage.setScene(new Scene(new Splash(primaryStage)));
+        Splash splash = new Splash(primaryStage);
+        primaryStage.setScene(new Scene(splash));
         primaryStage.show();
 
         ExecutorEventListener listener =
@@ -64,6 +66,10 @@ public class Main extends Application {
         eventBus.register(listener);
         eventBus.register(this);
 
+        initProgram(primaryStage, splash);
+    }
+
+    private void initProgram(Stage primaryStage, Splash splash) {
         ExecutorService executor = Executors.newSingleThreadExecutor();
 
         LoadConfig loadConfig = new LoadConfig();
@@ -72,6 +78,13 @@ public class Main extends Application {
         LoadDatabase loadDatabase = new LoadDatabase();
         LoadVersion loadVersion = new LoadVersion();
 
+        DoubleBinding progress = loadConfig.progressProperty()
+                .add(loadLoc.progressProperty())
+                .add(loadSettings.progressProperty())
+                .add(loadDatabase.progressProperty())
+                .add(loadVersion.progressProperty()).divide(5);
+
+        splash.progressProperty().bind(progress);
 
         loadVersion.setOnSucceeded(it -> {
             Injector.getInstance().addInjectable(loadVersion.getValue(), "version"); //NON-NLS

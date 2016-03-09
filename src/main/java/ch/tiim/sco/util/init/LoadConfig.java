@@ -6,6 +6,9 @@ import javafx.concurrent.Task;
 public class LoadConfig extends Task<Config> {
     @Override
     protected Config call() throws Exception {
-        return new Config();
+        updateProgress(0, 10);
+        Config config = new Config();
+        updateProgress(10, 10);
+        return config;
     }
 }

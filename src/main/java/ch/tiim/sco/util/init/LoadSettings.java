@@ -8,6 +8,9 @@ import java.nio.file.Paths;
 public class LoadSettings extends Task<Settings> {
     @Override
     protected Settings call() throws Exception {
-        return new Settings(Paths.get("settings.properties")); //NON-NLS
+        updateProgress(0, 10);
+        Settings s = new Settings(Paths.get("settings.properties")); //NON-NLS
+        updateProgress(10, 10);
+        return s;
     }
 }

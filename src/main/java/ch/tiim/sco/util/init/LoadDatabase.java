@@ -6,8 +6,11 @@ import javafx.concurrent.Task;
 public class LoadDatabase extends Task<DatabaseController> {
     @Override
     protected DatabaseController call() throws Exception {
-        DatabaseController db = new DatabaseController("./file.db");
+        updateProgress(0, 10);
+        DatabaseController db = new DatabaseController("./file.db"); //NON-NLS
+        updateProgress(5, 10);
         db.initializeDefaultValues();
-        return db; //NON-NLS
+        updateProgress(10, 10);
+        return db;
     }
 }
