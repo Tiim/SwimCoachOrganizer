@@ -3,6 +3,7 @@ package ch.tiim.sco;
 import ch.tiim.inject.Injector;
 import ch.tiim.sco.config.Settings;
 import ch.tiim.sco.event.ShowDocumentEvent;
+import ch.tiim.sco.event.ShutdownEvent;
 import ch.tiim.sco.gui.MainWindow;
 import ch.tiim.sco.gui.Splash;
 import ch.tiim.sco.gui.ViewLoader;
@@ -30,7 +31,6 @@ import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.nio.file.Paths;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.concurrent.ExecutorService;
@@ -65,6 +65,11 @@ public class Main extends Application {
 
         eventBus.register(listener);
         eventBus.register(this);
+
+        primaryStage.setOnCloseRequest(event -> {
+            eventBus.post(new ShutdownEvent());
+            System.exit(0);
+        });
 
         if (getParameters().getNamed().containsKey("version")) { //NON-NLS
             VersionChecker.overrideCurrentVersion(Version.valueOf(
