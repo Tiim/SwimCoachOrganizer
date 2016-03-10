@@ -28,6 +28,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,7 +47,7 @@ public class Main extends Application {
     private ResourceBundleEx bundle;
     private ViewLoader viewLoader;
     private Settings settings;
-
+    private Stage splashStage;
 
     public static void main(final String[] args) {
         LOGGER.trace("Starting up"); //NON-NLS
@@ -55,10 +56,12 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-
-        Splash splash = new Splash(primaryStage);
-        primaryStage.setScene(new Scene(splash));
-        primaryStage.show();
+        splashStage = new Stage(StageStyle.UNDECORATED);
+        splashStage.setWidth(300);
+        splashStage.setHeight(200);
+        Splash splash = new Splash();
+        splashStage.setScene(new Scene(splash));
+        splashStage.show();
 
         ExecutorEventListener listener =
                 new ExecutorEventListener(new ScheduledThreadPoolExecutor(5, new DaemonFactory()));
@@ -152,6 +155,7 @@ public class Main extends Application {
     private void initRootLayout() {
         MainWindow mainWindow = viewLoader.load(MainWindow.class);
         mainWindow.show();
+        splashStage.close();
     }
 
 
