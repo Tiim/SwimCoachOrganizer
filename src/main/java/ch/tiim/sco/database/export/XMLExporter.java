@@ -8,7 +8,7 @@ import org.w3c.dom.Text;
 
 public abstract class XMLExporter<T extends Model> {
 
-    public abstract void export(T data, int id, Document doc, ExportController exp) throws Exception;
+    public abstract void export(T data, int id, Document doc, ExportController exp) throws ExportException;
 
     protected Element getRootElement(Document doc) {
         return doc.getDocumentElement();

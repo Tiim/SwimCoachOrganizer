@@ -8,7 +8,7 @@ import org.w3c.dom.Element;
 public class SwimmerExporter extends XMLExporter<Swimmer> {
 
     @Override
-    public void export(Swimmer data, int id, Document doc, ExportController exp) throws Exception {
+    public void export(Swimmer data, int id, Document doc, ExportController exp) throws ExportException {
         Element root = getRootElement(doc);
         Element swimmers = getOrCreateElement(doc, root, "Swimmers");
         Element swimmer = doc.createElement("Swimmer");

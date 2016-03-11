@@ -8,7 +8,7 @@ import org.w3c.dom.Element;
 public class StrokeExporter extends XMLExporter<SetStroke> {
 
     @Override
-    public void export(SetStroke data, int id, Document doc, ExportController exp) throws Exception {
+    public void export(SetStroke data, int id, Document doc, ExportController exp) throws ExportException {
         Element root = getRootElement(doc);
         Element strokes = getOrCreateElement(doc, root, "Strokes");
 

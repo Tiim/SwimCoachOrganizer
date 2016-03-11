@@ -8,7 +8,7 @@ import org.w3c.dom.Element;
 public class SetExporter extends XMLExporter<Set> {
 
     @Override
-    public void export(Set data, int id, Document doc, ExportController exp) throws Exception {
+    public void export(Set data, int id, Document doc, ExportController exp) throws ExportException {
         Element root = getRootElement(doc);
         Element sets = getOrCreateElement(doc, root, "Sets");
 

@@ -8,7 +8,7 @@ import org.w3c.dom.Element;
 public class FocusExporter extends XMLExporter<SetFocus> {
 
     @Override
-    public void export(SetFocus data, int id, Document doc, ExportController exp) throws Exception {
+    public void export(SetFocus data, int id, Document doc, ExportController exp) throws ExportException {
         Element root = getRootElement(doc);
         Element foci = getOrCreateElement(doc, root, "Foci");
 

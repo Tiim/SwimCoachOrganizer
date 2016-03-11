@@ -25,7 +25,7 @@ public class TrainingExporter extends XMLExporter<Training> {
     }
 
     @Override
-    public void export(Training data, int id, Document doc, ExportController exp) throws Exception {
+    public void export(Training data, int id, Document doc, ExportController exp) throws ExportException {
         db = exp.getDatabase();
         Element root = getRootElement(doc);
         Element trainings = getOrCreateElement(doc, root, "Trainings");
@@ -36,10 +36,15 @@ public class TrainingExporter extends XMLExporter<Training> {
         training.setAttribute("id", String.valueOf(id));
         appendElement(doc, training, "Date", data.getDate().toString());
 
-        List<Pair<Integer, IndexedSet>> sets = getSetsForTraining(data)
-                .stream()
-                .map(it -> new Pair<>(exp.addData(it.getSet()), it))
-                .collect(Collectors.toList());
+        List<Pair<Integer, IndexedSet>> sets = null;
+        try {
+            sets = getSetsForTraining(data)
+                    .stream()
+                    .map(it -> new Pair<>(exp.addData(it.getSet()), it))
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            throw new ExportException(e);
+        }
         Element setsElement = doc.createElement("SetsID");
         training.appendChild(setsElement);
         int totalDistance = sets.stream().mapToInt(it -> it.getValue().getSet().getTotalDistance()).sum();

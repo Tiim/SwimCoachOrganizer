@@ -10,13 +10,18 @@ import org.w3c.dom.Element;
 @SuppressWarnings("HardCodedStringLiteral")
 public class ResultExporter extends XMLExporter<Result> {
     @Override
-    public void export(Result data, int id, Document doc, ExportController exp) throws Exception {
+    public void export(Result data, int id, Document doc, ExportController exp) throws ExportException {
         Element root = getRootElement(doc);
         Element results = getOrCreateElement(doc, root, "Results");
         Element result = doc.createElement("Result");
         results.appendChild(result);
 
-        int si = exp.addData(getSwimmerForResult(data, exp.getDatabase()));
+        int si = 0;
+        try {
+            si = exp.addData(getSwimmerForResult(data, exp.getDatabase()));
+        } catch (Exception e) {
+            throw new ExportException(e);
+        }
 
 
         result.setAttribute("id", String.valueOf(id));

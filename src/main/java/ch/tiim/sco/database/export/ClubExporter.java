@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 public class ClubExporter extends XMLExporter<Club> {
 
     @Override
-    public void export(Club data, int id, Document doc, ExportController exp) throws Exception {
+    public void export(Club data, int id, Document doc, ExportController exp) throws ExportException {
         Element root = getRootElement(doc);
         Element clubs = getOrCreateElement(doc, root, "Clubs");
         Element club = doc.createElement("Club");
@@ -33,9 +33,14 @@ public class ClubExporter extends XMLExporter<Club> {
 
         Element teams = doc.createElement("TeamsID");
         club.appendChild(teams);
-        List<Integer> ids = getTeams(data, exp.getDatabase()).stream()
-                .map(exp::addData)
-                .collect(Collectors.toList());
+        List<Integer> ids = null;
+        try {
+            ids = getTeams(data, exp.getDatabase()).stream()
+                    .map(exp::addData)
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            throw new ExportException(e);
+        }
         for (Integer i : ids) {
             Element team = doc.createElement("TeamID");
             teams.appendChild(team);
