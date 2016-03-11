@@ -5,6 +5,7 @@ import ch.tiim.sco.database.DatabaseController;
 import ch.tiim.sco.database.model.Set;
 import ch.tiim.sco.gui.alert.ExceptionAlert;
 import ch.tiim.sco.gui.events.SetEvent;
+import ch.tiim.sco.gui.util.ExportUtil;
 import ch.tiim.sco.gui.util.ModelCell;
 import ch.tiim.sco.util.OutOfCoffeeException;
 import ch.tiim.sco.util.lang.ResourceBundleEx;
@@ -76,14 +77,16 @@ public class SetView extends MainView {
 
     private void initMenu() {
         getMenu().getItems().setAll(
-                createItem(lang.format("gui.export", "gui.set"), isSelected, event -> {
-                    throw new OutOfCoffeeException("Not implemented");
-                }),
+                createItem(lang.format("gui.export", "gui.set"), isSelected, event -> onExport()),
                 new SeparatorMenuItem(),
                 createItem(lang.format("gui.new", "gui.set"), null, event1 -> onNew()),
                 createItem(lang.format("gui.edit", "gui.set"), isSelected, event2 -> onEdit()),
                 createItem(lang.format("gui.delete", "gui.set"), isSelected, event3 -> onDelete())
         );
+    }
+
+    private void onExport() {
+        new ExportUtil(db).export(sets.getSelectionModel().getSelectedItem(), mainStage, lang);
     }
 
     private void onSelected(Set set) {

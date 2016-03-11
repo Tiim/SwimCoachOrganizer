@@ -7,6 +7,7 @@ import ch.tiim.sco.database.model.Team;
 import ch.tiim.sco.event.EmailEvent;
 import ch.tiim.sco.gui.alert.ExceptionAlert;
 import ch.tiim.sco.gui.events.TeamEvent;
+import ch.tiim.sco.gui.util.ExportUtil;
 import ch.tiim.sco.gui.util.ModelCell;
 import ch.tiim.sco.util.OutOfCoffeeException;
 import ch.tiim.sco.util.lang.ResourceBundleEx;
@@ -86,9 +87,7 @@ public class TeamView extends MainView {
 
     private void initMenu() {
         getMenu().getItems().addAll(
-                createItem(lang.format("gui.export", "gui.team"), isSelected, event -> {
-                    throw new OutOfCoffeeException("Not implemented yet");
-                }),
+                createItem(lang.format("gui.export", "gui.team"), isSelected, event -> onExport()),
                 new SeparatorMenuItem(),
                 createItem(lang.str("gui.email.team"), isSelected, event1 -> onEmail()),
                 new SeparatorMenuItem(),
@@ -96,6 +95,10 @@ public class TeamView extends MainView {
                 createItem(lang.format("gui.edit", "gui.team"), isSelected, event3 -> onEdit()),
                 createItem(lang.format("gui.delete", "gui.team"), isSelected, event4 -> onDelete())
         );
+    }
+
+    private void onExport() {
+        new ExportUtil(db).export(teams.getSelectionModel().getSelectedItem(), mainStage, lang);
     }
 
     private void select(Team team) {

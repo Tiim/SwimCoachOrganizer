@@ -6,6 +6,7 @@ import ch.tiim.sco.database.model.Swimmer;
 import ch.tiim.sco.event.EmailEvent;
 import ch.tiim.sco.gui.alert.ExceptionAlert;
 import ch.tiim.sco.gui.events.SwimmerEvent;
+import ch.tiim.sco.gui.util.ExportUtil;
 import ch.tiim.sco.gui.util.ModelCell;
 import ch.tiim.sco.util.OutOfCoffeeException;
 import ch.tiim.sco.util.lang.ResourceBundleEx;
@@ -93,9 +94,7 @@ public class SwimmerView extends MainView {
 
     private void initMenu() {
         getMenu().getItems().addAll(
-                createItem(lang.format("gui.export", "gui.swimmer"), isSelected, event -> {
-                    throw new OutOfCoffeeException("Not implemented yet");
-                }),
+                createItem(lang.format("gui.export", "gui.swimmer"), isSelected, event -> onExport()),
                 new SeparatorMenuItem(),
                 createItem(lang.str("gui.email.swimmer"), isSelected, event1 -> onEmail()),
                 new SeparatorMenuItem(),
@@ -103,6 +102,10 @@ public class SwimmerView extends MainView {
                 createItem(lang.format("gui.edit", "gui.swimmer"), isSelected, event3 -> onEdit()),
                 createItem(lang.format("gui.delete", "gui.swimmer"), isSelected, event4 -> onDelete())
         );
+    }
+
+    private void onExport() {
+        new ExportUtil(db).export(swimmers.getSelectionModel().getSelectedItem(), mainStage, lang);
     }
 
     private void selected(Swimmer swimmer) {

@@ -5,6 +5,7 @@ import ch.tiim.sco.database.DatabaseController;
 import ch.tiim.sco.database.model.SetStroke;
 import ch.tiim.sco.gui.alert.ExceptionAlert;
 import ch.tiim.sco.gui.events.StrokeEvent;
+import ch.tiim.sco.gui.util.ExportUtil;
 import ch.tiim.sco.gui.util.ModelCell;
 import ch.tiim.sco.util.OutOfCoffeeException;
 import ch.tiim.sco.util.lang.ResourceBundleEx;
@@ -64,14 +65,16 @@ public class StrokeView extends MainView {
 
     private void initMenu() {
         getMenu().getItems().addAll(
-                createItem(lang.format("gui.export", "gui.stroke"), isSelected, event -> {
-                    throw new OutOfCoffeeException("Not implemented Yet");
-                }),
+                createItem(lang.format("gui.export", "gui.stroke"), isSelected, event -> onExport()),
                 new SeparatorMenuItem(),
                 createItem(lang.format("gui.new", "gui.stroke"), null, event1 -> onNew()),
                 createItem(lang.format("gui.edit", "gui.stroke"), isSelected, event2 -> onEdit()),
                 createItem(lang.format("gui.delete", "gui.stroke"), isSelected, event3 -> onDelete())
         );
+    }
+
+    private void onExport() {
+        new ExportUtil(db).export(strokes.getSelectionModel().getSelectedItem(), mainStage, lang);
     }
 
     private void onSelect(SetStroke stroke) {

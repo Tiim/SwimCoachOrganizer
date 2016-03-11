@@ -10,6 +10,7 @@ import ch.tiim.sco.gui.component.CalendarControl;
 import ch.tiim.sco.gui.events.ScheduleEvent;
 import ch.tiim.sco.gui.events.TeamEvent;
 import ch.tiim.sco.gui.events.TrainingEvent;
+import ch.tiim.sco.gui.util.ExportUtil;
 import ch.tiim.sco.gui.util.ModelCell;
 import ch.tiim.sco.util.ColorUtil;
 import ch.tiim.sco.util.lang.ResourceBundleEx;
@@ -21,6 +22,7 @@ import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.ListView;
+import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
@@ -80,9 +82,16 @@ public class ScheduleView extends MainView {
 
     private void initMenu() {
         getMenu().getItems().addAll(
+                createItem(lang.format("gui.export", "gui.schedule"), isScheduleSelected, it -> onExport()),
+                new SeparatorMenuItem(),
                 createItem(lang.format("gui.new", "gui.schedule"), null, event -> onNew()),
                 createItem(lang.format("gui.delete", "gui.schedule"), isScheduleSelected, event1 -> onDelete())
         );
+    }
+
+    private void onExport() {
+        new ExportUtil(db).export(schedules.getSelectionModel().getSelectedItem(), mainStage, lang);
+
     }
 
     private void selected(Team newValue) {

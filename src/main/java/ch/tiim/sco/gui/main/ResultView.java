@@ -7,6 +7,7 @@ import ch.tiim.sco.database.model.Swimmer;
 import ch.tiim.sco.gui.alert.ExceptionAlert;
 import ch.tiim.sco.gui.events.ResultEvent;
 import ch.tiim.sco.gui.util.DurationTableCell;
+import ch.tiim.sco.gui.util.ExportUtil;
 import ch.tiim.sco.gui.util.ModelCell;
 import ch.tiim.sco.util.OutOfCoffeeException;
 import ch.tiim.sco.util.lang.ResourceBundleEx;
@@ -94,15 +95,18 @@ public class ResultView extends MainView {
 
     private void initMenu() {
         getMenu().getItems().addAll(
-                createItem(lang.format("gui.export", "gui.result"), isSwimmerSelected, event -> {
-                    throw new OutOfCoffeeException("Not implemented yet");
-                }),
+                createItem(lang.format("gui.export", "gui.result"), isResultSelected, event -> onExport()),
                 createItem(lang.str("gui.import.result"), null, event1 -> onImport()),
                 new SeparatorMenuItem(),
                 createItem(lang.format("gui.new", "gui.result"), isSwimmerSelected, event2 -> onNew()),
                 createItem(lang.format("gui.edit", "gui.result"), isResultSelected, event3 -> onEdit()),
                 createItem(lang.format("gui.delete", "gui.result"), isResultSelected, event4 -> onDelete())
         );
+    }
+
+    private void onExport() {
+        new ExportUtil(db).export(results.getSelectionModel().getSelectedItem(), mainStage, lang);
+
     }
 
     private void selected(Swimmer swimmer) {

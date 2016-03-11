@@ -2,13 +2,14 @@ package ch.tiim.sco.gui.main;
 
 import ch.tiim.inject.Inject;
 import ch.tiim.sco.database.DatabaseController;
+import ch.tiim.sco.database.export.ExportController;
 import ch.tiim.sco.database.model.*;
 import ch.tiim.sco.gui.alert.ExceptionAlert;
 import ch.tiim.sco.gui.events.SetEvent;
 import ch.tiim.sco.gui.events.TrainingEvent;
+import ch.tiim.sco.gui.util.ExportUtil;
 import ch.tiim.sco.gui.util.ModelCell;
 import ch.tiim.sco.print.PrintTask;
-import ch.tiim.sco.util.OutOfCoffeeException;
 import ch.tiim.sco.util.lang.ResourceBundleEx;
 import com.google.common.eventbus.Subscribe;
 import javafx.beans.property.BooleanProperty;
@@ -100,15 +101,18 @@ public class TrainingView extends MainView {
 
     private void initMenu() {
         getMenu().getItems().setAll(
-                createItem(lang.format("gui.export", "gui.training"), isSelected, event -> {
-                    throw new OutOfCoffeeException("Not implemented yet");
-                }),
+                createItem(lang.format("gui.export", "gui.training"), isSelected, event -> onExport()),
                 createItem(lang.str("gui.export.pdf"), isSelected, event -> onPDF()),
                 new SeparatorMenuItem(),
                 createItem(lang.format("gui.new", "gui.training"), null, event -> onNew()),
                 createItem(lang.format("gui.edit", "gui.training"), isSelected, event -> onEdit()),
                 createItem(lang.format("gui.delete", "gui.training"), isSelected, event -> onDelete())
         );
+    }
+
+    private void onExport() {
+        new ExportUtil(db)
+                .export(trainings.getSelectionModel().getSelectedItem(), mainStage, lang);
     }
 
     private void selected(Training newValue) {
