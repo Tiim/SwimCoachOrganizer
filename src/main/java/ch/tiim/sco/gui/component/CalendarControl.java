@@ -36,6 +36,8 @@ public class CalendarControl<T> extends BorderPane {
 
     @Inject(name = "lang")
     private ResourceBundleEx lang;
+    @Inject(name = "view-loader")
+    private ViewLoader viewLoader;
 
     @FXML
     private Label title;
@@ -55,8 +57,8 @@ public class CalendarControl<T> extends BorderPane {
             new SimpleObjectProperty<>();
 
     public CalendarControl() {
-        ViewLoader.load(this, "Calendar.fxml"); //NON-NLS
         Injector.getInstance().inject(this, null);
+        viewLoader.load(this, "Calendar.fxml"); //NON-NLS
         getStylesheets().add("ch/tiim/sco/gui/component/Calendar.css"); //NON-NLS
         init();
         selectedDate.addListener(observable -> dateChanged());

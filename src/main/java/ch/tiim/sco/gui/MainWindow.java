@@ -40,6 +40,8 @@ public class MainWindow extends View {
     private Stage mainStage;
     @Inject(name = "version")
     private Version version;
+    @Inject(name ="view-loader")
+    private ViewLoader viewLoader;
 
     @FXML
     private BorderPane root;
@@ -64,35 +66,33 @@ public class MainWindow extends View {
         //Wait until the stage got resized. Otherwise
         //the split plane has not the right ratio.
         Platform.runLater(() -> ((Button) toolBar.getItems().get(0)).getOnAction().handle(null));
-
-        Platform.runLater(() -> showPrivacyDialog());
     }
 
     private void initDialogs() {
-        eventBus.register(new DialogListener());
+        eventBus.register(new DialogListener(viewLoader));
     }
 
     private void initToolbar() {
 
         List<MainView> views = new ArrayList<>(Arrays.asList(
-                ViewLoader.load(TrainingView.class),
-                ViewLoader.load(SetView.class),
+                viewLoader.load(TrainingView.class),
+                viewLoader.load(SetView.class),
                 null,
-                ViewLoader.load(FocusView.class),
-                ViewLoader.load(StrokeView.class),
+                viewLoader.load(FocusView.class),
+                viewLoader.load(StrokeView.class),
                 null,
-                ViewLoader.load(ScheduleView.class),
-                ViewLoader.load(ClubView.class),
-                ViewLoader.load(TeamView.class),
-                ViewLoader.load(SwimmerView.class),
-                ViewLoader.load(BirthdayView.class),
+                viewLoader.load(ScheduleView.class),
+                viewLoader.load(ClubView.class),
+                viewLoader.load(TeamView.class),
+                viewLoader.load(SwimmerView.class),
+                viewLoader.load(BirthdayView.class),
                 null,
-                ViewLoader.load(ResultView.class)
+                viewLoader.load(ResultView.class)
         ));
 
         if (version.equals(Version.forIntegers(0))) {
             views.add(null);
-            views.add(ViewLoader.load(ConsoleView.class));
+            views.add(viewLoader.load(ConsoleView.class));
         }
 
         for (MainView v : views) {
@@ -108,30 +108,6 @@ public class MainWindow extends View {
                     this.menu.getMenus().set(1, v.getMenu());
                     v.opened();
                 });
-            }
-        }
-    }
-
-    private void showPrivacyDialog() {
-        if (Settings.INSTANCE.getBoolean("show_privacy_dialog", true)) {
-            URL uri = MainWindow.class.getResource("main/text/privacy.txt"); //NON-NLS
-            Alert alert = null;
-            try {
-                alert = new Alert(
-                        Alert.AlertType.INFORMATION,
-                        Resources.toString(uri, Charset.forName("UTF-8")),
-                        ButtonType.YES, ButtonType.NO
-                );
-            } catch (IOException e) {
-                throw new OutOfCoffeeException("Can't read " + uri, e);
-            }
-            Optional<ButtonType> res = alert.showAndWait();
-            if (res.isPresent()) {
-                Settings.INSTANCE.setBoolean("show_privacy_dialog", false);
-                if (res.get() == ButtonType.YES) {
-                    Settings.INSTANCE.setBoolean("loggly.enabled", true);
-                }
-                Logging.reloadLoggerConfig();
             }
         }
     }
