@@ -42,7 +42,7 @@ public class ExportUtil {
         return null;
     }
 
-    public Path export(List<Model> models, Stage stage, ResourceBundleEx lang) {
+    public Path export(List<? extends Model> models, Stage stage, ResourceBundleEx lang) {
         ExportController exp = new ExportController(db);
         models.forEach(exp::addData);
         FileChooser chooser = new FileChooser();

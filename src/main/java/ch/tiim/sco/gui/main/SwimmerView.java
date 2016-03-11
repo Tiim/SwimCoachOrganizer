@@ -95,6 +95,7 @@ public class SwimmerView extends MainView {
     private void initMenu() {
         getMenu().getItems().addAll(
                 createItem(lang.format("gui.export", "gui.swimmer"), isSelected, event -> onExport()),
+                createItem(lang.format("gui.export.all", "gui.swimmer"), null, it -> onExportAll()),
                 new SeparatorMenuItem(),
                 createItem(lang.str("gui.email.swimmer"), isSelected, event1 -> onEmail()),
                 new SeparatorMenuItem(),
@@ -102,6 +103,14 @@ public class SwimmerView extends MainView {
                 createItem(lang.format("gui.edit", "gui.swimmer"), isSelected, event3 -> onEdit()),
                 createItem(lang.format("gui.delete", "gui.swimmer"), isSelected, event4 -> onDelete())
         );
+    }
+
+    private void onExportAll() {
+        try {
+            new ExportUtil(db).export(db.getTblSwimmer().getAllSwimmers(), mainStage, lang);
+        } catch (Exception e) {
+            ExceptionAlert.showError(LOGGER, lang.format("error.load", "error.subj.swimmer"), e);
+        }
     }
 
     private void onExport() {

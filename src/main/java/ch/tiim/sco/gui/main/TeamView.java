@@ -88,13 +88,22 @@ public class TeamView extends MainView {
     private void initMenu() {
         getMenu().getItems().addAll(
                 createItem(lang.format("gui.export", "gui.team"), isSelected, event -> onExport()),
-                new SeparatorMenuItem(),
+                createItem(lang.format("gui.export.all", "gui.team"), null, it -> onExportAll()),
+        new SeparatorMenuItem(),
                 createItem(lang.str("gui.email.team"), isSelected, event1 -> onEmail()),
                 new SeparatorMenuItem(),
                 createItem(lang.format("gui.new", "gui.team"), null, event2 -> onNew()),
                 createItem(lang.format("gui.edit", "gui.team"), isSelected, event3 -> onEdit()),
                 createItem(lang.format("gui.delete", "gui.team"), isSelected, event4 -> onDelete())
         );
+    }
+
+    private void onExportAll() {
+        try {
+            new ExportUtil(db).export(db.getTblTeam().getAllTeams(), mainStage, lang);
+        } catch (Exception e) {
+            ExceptionAlert.showError(LOGGER, lang.format("error.load", "error.subj.team"), e);
+        }
     }
 
     private void onExport() {

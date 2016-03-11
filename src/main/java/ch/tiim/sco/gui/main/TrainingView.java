@@ -27,6 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.util.List;
 
 public class TrainingView extends MainView {
     private static final Logger LOGGER = LoggerFactory.getLogger(TrainingView.class);
@@ -102,12 +103,21 @@ public class TrainingView extends MainView {
     private void initMenu() {
         getMenu().getItems().setAll(
                 createItem(lang.format("gui.export", "gui.training"), isSelected, event -> onExport()),
+                createItem(lang.format("gui.export.all", "gui.training"), null, it -> onExportAll()),
                 createItem(lang.str("gui.export.pdf"), isSelected, event -> onPDF()),
                 new SeparatorMenuItem(),
                 createItem(lang.format("gui.new", "gui.training"), null, event -> onNew()),
                 createItem(lang.format("gui.edit", "gui.training"), isSelected, event -> onEdit()),
                 createItem(lang.format("gui.delete", "gui.training"), isSelected, event -> onDelete())
         );
+    }
+
+    private void onExportAll() {
+        try {
+            new ExportUtil(db).export(db.getTblTraining().getAllTrainings(), mainStage, lang);
+        } catch (Exception e) {
+            ExceptionAlert.showError(LOGGER, lang.format("error.load", "error.subj.training"), e);
+        }
     }
 
     private void onExport() {
