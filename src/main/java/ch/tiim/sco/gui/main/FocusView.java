@@ -5,6 +5,7 @@ import ch.tiim.sco.database.DatabaseController;
 import ch.tiim.sco.database.model.SetFocus;
 import ch.tiim.sco.gui.alert.ExceptionAlert;
 import ch.tiim.sco.gui.events.FocusEvent;
+import ch.tiim.sco.gui.util.ExportUtil;
 import ch.tiim.sco.gui.util.ModelCell;
 import ch.tiim.sco.util.OutOfCoffeeException;
 import ch.tiim.sco.util.lang.ResourceBundleEx;
@@ -64,14 +65,16 @@ public class FocusView extends MainView {
 
     private void initMenu() {
         getMenu().getItems().addAll(
-                createItem(lang.format("gui.export", "gui.focus"), isSelected, event -> {
-                    throw new OutOfCoffeeException("Not implemented");
-                }),
+                createItem(lang.format("gui.export", "gui.focus"), isSelected, event -> onExport()),
                 new SeparatorMenuItem(),
                 createItem(lang.format("gui.new", "gui.focus"), null, event -> onNew()),
                 createItem(lang.format("gui.edit", "gui.focus"), isSelected, event1 -> onEdit()),
                 createItem(lang.format("gui.delete", "gui.focus"), isSelected, event2 -> onDelete())
         );
+    }
+
+    private void onExport() {
+        new ExportUtil(db).export(foci.getSelectionModel().getSelectedItem(), mainStage, lang);
     }
 
     private void onSelect(SetFocus focus) {

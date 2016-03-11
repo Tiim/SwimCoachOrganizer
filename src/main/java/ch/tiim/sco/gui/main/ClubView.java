@@ -8,6 +8,7 @@ import ch.tiim.sco.database.model.Team;
 import ch.tiim.sco.event.EmailEvent;
 import ch.tiim.sco.gui.alert.ExceptionAlert;
 import ch.tiim.sco.gui.events.ClubEvent;
+import ch.tiim.sco.gui.util.ExportUtil;
 import ch.tiim.sco.gui.util.ModelCell;
 import ch.tiim.sco.util.OutOfCoffeeException;
 import ch.tiim.sco.util.lang.ResourceBundleEx;
@@ -89,9 +90,7 @@ public class ClubView extends MainView {
 
     private void initMenu() {
         getMenu().getItems().addAll(
-                createItem(lang.format("gui.export", "gui.club"), isSelected, event -> {
-                    throw new OutOfCoffeeException("Not implemented yet");
-                }),
+                createItem(lang.format("gui.export", "gui.club"), isSelected, event -> onExport()),
                 new SeparatorMenuItem(),
                 createItem(lang.str("gui.email.club"), isSelected, event4 -> onEmail()),
                 new SeparatorMenuItem(),
@@ -99,6 +98,10 @@ public class ClubView extends MainView {
                 createItem(lang.format("gui.edit", "gui.club"), isSelected, event2 -> onEdit()),
                 createItem(lang.format("gui.delete", "gui.club"), isSelected, event3 -> onDelete())
         );
+    }
+
+    private void onExport() {
+        new ExportUtil(db).export(clubs.getSelectionModel().getSelectedItem(), mainStage, lang);
     }
 
     private void selected(Club newValue) {
