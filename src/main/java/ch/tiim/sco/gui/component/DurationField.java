@@ -1,5 +1,6 @@
 package ch.tiim.sco.gui.component;
 
+import ch.tiim.inject.Inject;
 import ch.tiim.inject.Injector;
 import ch.tiim.sco.gui.ViewLoader;
 import javafx.beans.property.ObjectProperty;
@@ -13,6 +14,10 @@ import java.time.Duration;
 public class DurationField extends HBox {
 
     private static final String FORMAT = "%02d";
+
+    @Inject(name = "view-loader")
+    private ViewLoader viewLoader;
+
     @FXML
     private TextField hour;
     @FXML
@@ -26,8 +31,8 @@ public class DurationField extends HBox {
     private final ObjectProperty<Duration> duration;
 
     public DurationField() {
-        ViewLoader.load(this, "DurationField.fxml"); //NON-NLS
         Injector.getInstance().inject(this, null);
+        viewLoader.load(this, "DurationField.fxml"); //NON-NLS
         getStylesheets().add("ch/tiim/sco/gui/component/DurationField.css"); //NON-NLS
         duration = new SimpleObjectProperty<>(Duration.ZERO);
         duration.addListener(observable -> populate());
