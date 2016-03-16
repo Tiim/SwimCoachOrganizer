@@ -28,10 +28,9 @@ public class ClubExporter extends XMLExporter<Club> {
         appendElement(doc, club, "NameShortEn", data.getNameShortEn());
         appendElement(doc, club, "Nationality", data.getNationality());
         appendElement(doc, club, "Code", data.getCode());
-        appendElement(doc, club, "ClubID", String.valueOf(data.getId()));
         appendElement(doc, club, "ExternId", String.valueOf(data.getExternId()));
 
-        Element teams = doc.createElement("TeamsID");
+        Element teams = doc.createElement("TeamIDs");
         club.appendChild(teams);
         List<Integer> ids = null;
         try {

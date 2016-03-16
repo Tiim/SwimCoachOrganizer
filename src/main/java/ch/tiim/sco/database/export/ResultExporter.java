@@ -29,7 +29,7 @@ public class ResultExporter extends XMLExporter<Result> {
         appendElement(doc, result, "Meet", data.getMeet());
         appendElement(doc, result, "MeetDate", data.getMeetDate().toString());
         appendElement(doc, result, "Time", DurationFormatter.format(data.getSwimTime()));
-        appendElement(doc, result, "ReactionTime", DurationFormatter.format(data.getSwimTime()));
+        appendElement(doc, result, "ReactionTime", DurationFormatter.format(data.getReactionTime()));
         appendElement(doc, result, "Stroke", data.getStroke().toString());
         appendElement(doc, result, "Distance", String.valueOf(data.getDistance()));
         appendElement(doc, result, "Course", data.getCourse().toString());
