@@ -33,8 +33,19 @@ public class TrainingExporter extends XMLExporter<Training> {
         Element training = doc.createElement("Training");
         trainings.appendChild(training);
 
+        int team = 0;
+        if (data.getTeam() != null) {
+            team = exp.addData(data.getTeam());
+        }
+        int schedule = 0;
+        if (data.getSchedule() != null) {
+            schedule = exp.addData(data.getSchedule());
+        }
+
         training.setAttribute("id", String.valueOf(id));
         appendElement(doc, training, "Date", data.getDate().toString());
+        appendElement(doc, training, "TeamID", String.valueOf(team));
+        appendElement(doc, training, "ScheduleID", String.valueOf(schedule));
 
         List<Pair<Integer, IndexedSet>> sets = null;
         try {
